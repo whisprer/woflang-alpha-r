@@ -1,0 +1,380 @@
+{
+  "metadata": {
+    "name": "WofLang Constants & Units Module",
+    "version": "1.0",
+    "description": "Complete database of mathematical constants, physics constants, exponential operations, calculus operations, Modelica constants, and SI/derived units",
+    "categories": [
+      "math",
+      "physics",
+      "exponentials",
+      "calculus",
+      "modelica",
+      "units"
+    ]
+  },
+  "constants": {
+    "mathematics": [
+      {
+        "name": "pi",
+        "symbol": "π",
+        "value": 3.141592653589793,
+        "opcode": 3001,
+        "description": "Archimedes' constant",
+        "category": "mathlib_constants"
+      },
+      {
+        "name": "euler",
+        "symbol": "ℯ",
+        "value": 2.718281828459045,
+        "opcode": 3002,
+        "description": "Euler's number",
+        "category": "mathlib_constants"
+      }
+    ],
+    "physics": [
+      {
+        "name": "reduced_planck_constant",
+        "symbol": "ℏ",
+        "value": 1.0545718e-34,
+        "unit": "J·s",
+        "opcode": 3060,
+        "description": "Reduced Planck constant",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "speed_of_light",
+        "symbol": "c",
+        "value": 299792458,
+        "unit": "m/s",
+        "opcode": 3061,
+        "description": "Speed of light in vacuum",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "gravitational_acceleration",
+        "symbol": "g",
+        "value": 9.807,
+        "unit": "m/s²",
+        "opcode": 3062,
+        "description": "Standard gravitational acceleration",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "elementary_charge",
+        "symbol": "e⁻",
+        "value": 1.602176634e-19,
+        "unit": "C",
+        "opcode": 3063,
+        "description": "Elementary charge",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "electron_mass",
+        "symbol": "mₑ",
+        "value": 9.1093835611e-31,
+        "unit": "kg",
+        "opcode": 3064,
+        "description": "Rest mass of electron",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "proton_mass",
+        "symbol": "mₚ",
+        "value": 1.67262192369e-27,
+        "unit": "kg",
+        "opcode": 3065,
+        "description": "Rest mass of proton",
+        "category": "mathlib_constants_physics"
+      },
+      {
+        "name": "rydberg_constant",
+        "symbol": "R𝑦",
+        "value": 10973731.56850865,
+        "unit": "m⁻¹",
+        "opcode": 3066,
+        "description": "Rydberg constant for hydrogen",
+        "category": "mathlib_constants_physics"
+      }
+    ],
+    "modelica": [
+      {
+        "name": "two_pi",
+        "symbol": "π2",
+        "value": 6.283185307179586,
+        "opcode": 3050,
+        "description": "Two times pi (2π)",
+        "category": "mathlib_modelica_constants"
+      },
+      {
+        "name": "machine_epsilon",
+        "symbol": "eps",
+        "value": 2.220446049250313e-15,
+        "opcode": 3051,
+        "description": "Machine epsilon (approximately 10 × DBL_EPSILON)",
+        "category": "mathlib_modelica_constants"
+      },
+      {
+        "name": "local_seed",
+        "symbol": "localSeed",
+        "value": 715827883,
+        "opcode": 3052,
+        "description": "Local random seed value",
+        "category": "mathlib_modelica_constants"
+      },
+      {
+        "name": "iterations",
+        "symbol": "p",
+        "value": 10,
+        "opcode": 3053,
+        "description": "Default iteration count",
+        "category": "mathlib_modelica_constants"
+      },
+      {
+        "name": "state_count",
+        "symbol": "nState",
+        "value": 33,
+        "opcode": 3054,
+        "description": "Number of states in model",
+        "category": "mathlib_modelica_constants"
+      }
+    ]
+  },
+  "operations": {
+    "exponentials": [
+      {
+        "name": "square_root",
+        "symbol": "√",
+        "opcode": 3020,
+        "arity": 1,
+        "description": "Square root of top stack value",
+        "category": "mathlib_exponentials",
+        "example": "16 √  => 4"
+      },
+      {
+        "name": "power",
+        "symbol": "⁒",
+        "opcode": 3021,
+        "arity": 2,
+        "description": "Raise base to exponent (pop exp, pop base, push base^exp)",
+        "category": "mathlib_exponentials",
+        "example": "2 3 ⁒  => 8"
+      },
+      {
+        "name": "logarithm",
+        "symbol": "ƒlog",
+        "opcode": 3022,
+        "arity": 1,
+        "description": "Natural logarithm of top stack value",
+        "category": "mathlib_exponentials",
+        "example": "2.718281828 ƒlog  => 1"
+      },
+      {
+        "name": "exponential",
+        "symbol": "ƒexp",
+        "opcode": 3023,
+        "arity": 1,
+        "description": "e raised to the power of top stack value",
+        "category": "mathlib_exponentials",
+        "example": "1 ƒexp  => 2.718281828"
+      }
+    ],
+    "calculus": [
+      {
+        "name": "derivative",
+        "symbol": "∂",
+        "opcode": 3010,
+        "arity": 2,
+        "description": "Approximate derivative as (x2 - x1)",
+        "category": "mathlib_calculus",
+        "example": "5 3 ∂  => 2"
+      },
+      {
+        "name": "integral",
+        "symbol": "∫",
+        "opcode": 3011,
+        "arity": 2,
+        "description": "Approximate integral as trapezoid area",
+        "category": "mathlib_calculus",
+        "example": "3 5 ∫  => 8"
+      }
+    ]
+  },
+  "units": {
+    "base_si": [
+      {
+        "name": "meter",
+        "symbol": "m",
+        "multiplier": 1.0,
+        "dimension": "length",
+        "description": "SI base unit of length"
+      },
+      {
+        "name": "kilogram",
+        "symbol": "kg",
+        "multiplier": 1.0,
+        "dimension": "mass",
+        "description": "SI base unit of mass"
+      },
+      {
+        "name": "second",
+        "symbol": "s",
+        "multiplier": 1.0,
+        "dimension": "time",
+        "description": "SI base unit of time"
+      },
+      {
+        "name": "ampere",
+        "symbol": "A",
+        "multiplier": 1.0,
+        "dimension": "electric_current",
+        "description": "SI base unit of electric current"
+      },
+      {
+        "name": "kelvin",
+        "symbol": "K",
+        "multiplier": 1.0,
+        "dimension": "temperature",
+        "description": "SI base unit of thermodynamic temperature"
+      },
+      {
+        "name": "mole",
+        "symbol": "mol",
+        "multiplier": 1.0,
+        "dimension": "amount_of_substance",
+        "description": "SI base unit of amount of substance"
+      },
+      {
+        "name": "candela",
+        "symbol": "cd",
+        "multiplier": 1.0,
+        "dimension": "luminous_intensity",
+        "description": "SI base unit of luminous intensity"
+      }
+    ],
+    "derived_si": [
+      {
+        "name": "hertz",
+        "symbol": "Hz",
+        "multiplier": 1.0,
+        "base_units": "s⁻¹",
+        "dimension": "frequency",
+        "description": "Unit of frequency"
+      },
+      {
+        "name": "newton",
+        "symbol": "N",
+        "multiplier": 1.0,
+        "base_units": "kg·m·s⁻²",
+        "dimension": "force",
+        "description": "Unit of force"
+      },
+      {
+        "name": "joule",
+        "symbol": "J",
+        "multiplier": 1.0,
+        "base_units": "kg·m²·s⁻²",
+        "dimension": "energy",
+        "description": "Unit of energy and work"
+      },
+      {
+        "name": "watt",
+        "symbol": "W",
+        "multiplier": 1.0,
+        "base_units": "kg·m²·s⁻³",
+        "dimension": "power",
+        "description": "Unit of power"
+      },
+      {
+        "name": "pascal",
+        "symbol": "Pa",
+        "multiplier": 1.0,
+        "base_units": "kg·m⁻¹·s⁻²",
+        "dimension": "pressure",
+        "description": "Unit of pressure and stress"
+      },
+      {
+        "name": "volt",
+        "symbol": "V",
+        "multiplier": 1.0,
+        "base_units": "kg·m²·s⁻³·A⁻¹",
+        "dimension": "electric_potential",
+        "description": "Unit of electric potential"
+      },
+      {
+        "name": "ohm",
+        "symbol": "Ohm",
+        "multiplier": 1.0,
+        "base_units": "kg·m²·s⁻³·A⁻²",
+        "dimension": "electric_resistance",
+        "description": "Unit of electrical resistance"
+      },
+      {
+        "name": "lumen",
+        "symbol": "lm",
+        "multiplier": 1.0,
+        "base_units": "cd·sr",
+        "dimension": "luminous_flux",
+        "description": "Unit of luminous flux"
+      },
+      {
+        "name": "lux",
+        "symbol": "lx",
+        "multiplier": 1.0,
+        "base_units": "cd·sr·m⁻²",
+        "dimension": "illuminance",
+        "description": "Unit of illuminance"
+      }
+    ],
+    "si_prefixes": [
+      {
+        "name": "kilo",
+        "symbol": "k",
+        "multiplier": 1000.0,
+        "exponent": 3,
+        "description": "10³"
+      },
+      {
+        "name": "mega",
+        "symbol": "M",
+        "multiplier": 1000000.0,
+        "exponent": 6,
+        "description": "10⁶"
+      },
+      {
+        "name": "giga",
+        "symbol": "G",
+        "multiplier": 1000000000.0,
+        "exponent": 9,
+        "description": "10⁹"
+      },
+      {
+        "name": "milli",
+        "symbol": "m",
+        "multiplier": 0.001,
+        "exponent": -3,
+        "description": "10⁻³"
+      },
+      {
+        "name": "micro",
+        "symbol": "μ",
+        "multiplier": 1e-06,
+        "exponent": -6,
+        "description": "10⁻⁶"
+      },
+      {
+        "name": "nano",
+        "symbol": "n",
+        "multiplier": 1e-09,
+        "exponent": -9,
+        "description": "10⁻⁹"
+      },
+      {
+        "name": "pico",
+        "symbol": "p",
+        "multiplier": 1e-12,
+        "exponent": -12,
+        "description": "10⁻¹²"
+      }
+    ]
+  }
+}

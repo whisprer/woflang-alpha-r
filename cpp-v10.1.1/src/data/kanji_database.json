@@ -1,0 +1,2640 @@
+{
+  "metadata": {
+    "total_kanji": 374,
+    "levels": {
+      "N5": 111,
+      "N4": 115,
+      "N3": 99,
+      "N2": 49
+    },
+    "description": "Comprehensive Kanji Database organized by JLPT levels"
+  },
+  "kanji_by_level": {
+    "N5_BASIC": [
+      {
+        "kanji": "一",
+        "onyomi": "イチ、イツ",
+        "romaji": "ichi, itsu",
+        "meaning": "one",
+        "example": "一つ (hitotsu)"
+      },
+      {
+        "kanji": "二",
+        "onyomi": "ニ",
+        "romaji": "ni",
+        "meaning": "two",
+        "example": "二人 (futari)"
+      },
+      {
+        "kanji": "三",
+        "onyomi": "サン",
+        "romaji": "san",
+        "meaning": "three",
+        "example": "三月 (sangatsu)"
+      },
+      {
+        "kanji": "四",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "four",
+        "example": "四時 (yoji)"
+      },
+      {
+        "kanji": "五",
+        "onyomi": "ゴ",
+        "romaji": "go",
+        "meaning": "five",
+        "example": "五日 (itsuka)"
+      },
+      {
+        "kanji": "六",
+        "onyomi": "ロク",
+        "romaji": "roku",
+        "meaning": "six",
+        "example": "六月 (rokugatsu)"
+      },
+      {
+        "kanji": "七",
+        "onyomi": "シチ",
+        "romaji": "shichi",
+        "meaning": "seven",
+        "example": "七時 (shichiji)"
+      },
+      {
+        "kanji": "八",
+        "onyomi": "ハチ",
+        "romaji": "hachi",
+        "meaning": "eight",
+        "example": "八日 (youka)"
+      },
+      {
+        "kanji": "九",
+        "onyomi": "キュウ、ク",
+        "romaji": "kyuu, ku",
+        "meaning": "nine",
+        "example": "九時 (kuji)"
+      },
+      {
+        "kanji": "十",
+        "onyomi": "ジュウ、ジッ",
+        "romaji": "juu, ji'",
+        "meaning": "ten",
+        "example": "十分 (juppun)"
+      },
+      {
+        "kanji": "百",
+        "onyomi": "ヒャク",
+        "romaji": "hyaku",
+        "meaning": "hundred",
+        "example": "百円 (hyakuen)"
+      },
+      {
+        "kanji": "千",
+        "onyomi": "セン",
+        "romaji": "sen",
+        "meaning": "thousand",
+        "example": "千円 (sen'en)"
+      },
+      {
+        "kanji": "万",
+        "onyomi": "マン、バン",
+        "romaji": "man, ban",
+        "meaning": "ten thousand",
+        "example": "一万円 (ichiman'en)"
+      },
+      {
+        "kanji": "円",
+        "onyomi": "エン",
+        "romaji": "en",
+        "meaning": "circle; yen",
+        "example": "百円 (hyakuen)"
+      },
+      {
+        "kanji": "半",
+        "onyomi": "ハン",
+        "romaji": "han",
+        "meaning": "half",
+        "example": "半分 (hanbun)"
+      },
+      {
+        "kanji": "年",
+        "onyomi": "ネン",
+        "romaji": "nen",
+        "meaning": "year",
+        "example": "今年 (kotoshi)"
+      },
+      {
+        "kanji": "月",
+        "onyomi": "ゲツ、ガツ",
+        "romaji": "getsu, gatsu",
+        "meaning": "moon; month",
+        "example": "月曜日 (getsuyoubi)"
+      },
+      {
+        "kanji": "日",
+        "onyomi": "ニチ、ジツ",
+        "romaji": "nichi, jitsu",
+        "meaning": "day; sun",
+        "example": "今日 (kyou)"
+      },
+      {
+        "kanji": "時",
+        "onyomi": "ジ",
+        "romaji": "ji",
+        "meaning": "time; hour",
+        "example": "時間 (jikan)"
+      },
+      {
+        "kanji": "分",
+        "onyomi": "フン、ブン",
+        "romaji": "fun, bun",
+        "meaning": "minute; divide",
+        "example": "三十分 (sanjuppun)"
+      },
+      {
+        "kanji": "週",
+        "onyomi": "シュウ",
+        "romaji": "shuu",
+        "meaning": "week",
+        "example": "今週 (konshuu)"
+      },
+      {
+        "kanji": "今",
+        "onyomi": "コン、キン",
+        "romaji": "kon, kin",
+        "meaning": "now",
+        "example": "今日 (kyou)"
+      },
+      {
+        "kanji": "毎",
+        "onyomi": "マイ",
+        "romaji": "mai",
+        "meaning": "every",
+        "example": "毎日 (mainichi)"
+      },
+      {
+        "kanji": "午",
+        "onyomi": "ゴ",
+        "romaji": "go",
+        "meaning": "noon",
+        "example": "午前 (gozen)"
+      },
+      {
+        "kanji": "前",
+        "onyomi": "ゼン",
+        "romaji": "zen",
+        "meaning": "before; front",
+        "example": "午前 (gozen)"
+      },
+      {
+        "kanji": "後",
+        "onyomi": "ゴ、コウ",
+        "romaji": "go, kou",
+        "meaning": "after; behind",
+        "example": "午後 (gogo)"
+      },
+      {
+        "kanji": "人",
+        "onyomi": "ジン、ニン",
+        "romaji": "jin, nin",
+        "meaning": "person",
+        "example": "日本人 (nihonjin)"
+      },
+      {
+        "kanji": "本",
+        "onyomi": "ホン",
+        "romaji": "hon",
+        "meaning": "book; origin",
+        "example": "日本 (nihon)"
+      },
+      {
+        "kanji": "大",
+        "onyomi": "ダイ、タイ",
+        "romaji": "dai, tai",
+        "meaning": "big; large",
+        "example": "大きい (ookii)"
+      },
+      {
+        "kanji": "小",
+        "onyomi": "ショウ",
+        "romaji": "shou",
+        "meaning": "small; little",
+        "example": "小さい (chiisai)"
+      },
+      {
+        "kanji": "中",
+        "onyomi": "チュウ",
+        "romaji": "chuu",
+        "meaning": "middle; inside",
+        "example": "中国 (chuugoku)"
+      },
+      {
+        "kanji": "国",
+        "onyomi": "コク",
+        "romaji": "koku",
+        "meaning": "country",
+        "example": "外国 (gaikoku)"
+      },
+      {
+        "kanji": "外",
+        "onyomi": "ガイ、ゲ",
+        "romaji": "gai, ge",
+        "meaning": "outside",
+        "example": "外国人 (gaikokujin)"
+      },
+      {
+        "kanji": "内",
+        "onyomi": "ナイ、ダイ",
+        "romaji": "nai, dai",
+        "meaning": "inside",
+        "example": "家内 (kanai)"
+      },
+      {
+        "kanji": "上",
+        "onyomi": "ジョウ",
+        "romaji": "jou",
+        "meaning": "up; above",
+        "example": "上手 (jouzu)"
+      },
+      {
+        "kanji": "下",
+        "onyomi": "カ、ゲ",
+        "romaji": "ka, ge",
+        "meaning": "below; down",
+        "example": "下さい (kudasai)"
+      },
+      {
+        "kanji": "左",
+        "onyomi": "サ",
+        "romaji": "sa",
+        "meaning": "left",
+        "example": "左 (hidari)"
+      },
+      {
+        "kanji": "右",
+        "onyomi": "ウ、ユウ",
+        "romaji": "u, yuu",
+        "meaning": "right",
+        "example": "右 (migi)"
+      },
+      {
+        "kanji": "東",
+        "onyomi": "トウ",
+        "romaji": "tou",
+        "meaning": "east",
+        "example": "東京 (toukyou)"
+      },
+      {
+        "kanji": "西",
+        "onyomi": "セイ、サイ",
+        "romaji": "sei, sai",
+        "meaning": "west",
+        "example": "西 (nishi)"
+      },
+      {
+        "kanji": "南",
+        "onyomi": "ナン",
+        "romaji": "nan",
+        "meaning": "south",
+        "example": "南 (minami)"
+      },
+      {
+        "kanji": "北",
+        "onyomi": "ホク",
+        "romaji": "hoku",
+        "meaning": "north",
+        "example": "北海道 (hokkaidou)"
+      },
+      {
+        "kanji": "高",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "tall; expensive",
+        "example": "高い (takai)"
+      },
+      {
+        "kanji": "安",
+        "onyomi": "アン",
+        "romaji": "an",
+        "meaning": "cheap; peaceful",
+        "example": "安い (yasui)"
+      },
+      {
+        "kanji": "新",
+        "onyomi": "シン",
+        "romaji": "shin",
+        "meaning": "new",
+        "example": "新しい (atarashii)"
+      },
+      {
+        "kanji": "古",
+        "onyomi": "コ",
+        "romaji": "ko",
+        "meaning": "old",
+        "example": "古い (furui)"
+      },
+      {
+        "kanji": "長",
+        "onyomi": "チョウ",
+        "romaji": "chou",
+        "meaning": "long",
+        "example": "長い (nagai)"
+      },
+      {
+        "kanji": "行",
+        "onyomi": "コウ、ギョウ",
+        "romaji": "kou, gyou",
+        "meaning": "go; conduct",
+        "example": "行く (iku)"
+      },
+      {
+        "kanji": "来",
+        "onyomi": "ライ",
+        "romaji": "rai",
+        "meaning": "come",
+        "example": "来る (kuru)"
+      },
+      {
+        "kanji": "入",
+        "onyomi": "ニュウ",
+        "romaji": "nyuu",
+        "meaning": "enter",
+        "example": "入る (hairu)"
+      },
+      {
+        "kanji": "出",
+        "onyomi": "シュツ、スイ",
+        "romaji": "shutsu, sui",
+        "meaning": "exit; put out",
+        "example": "出る (deru)"
+      },
+      {
+        "kanji": "見",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "see",
+        "example": "見る (miru)"
+      },
+      {
+        "kanji": "聞",
+        "onyomi": "ブン、モン",
+        "romaji": "bun, mon",
+        "meaning": "hear; ask",
+        "example": "聞く (kiku)"
+      },
+      {
+        "kanji": "食",
+        "onyomi": "ショク",
+        "romaji": "shoku",
+        "meaning": "eat; food",
+        "example": "食べる (taberu)"
+      },
+      {
+        "kanji": "飲",
+        "onyomi": "イン",
+        "romaji": "in",
+        "meaning": "drink",
+        "example": "飲む (nomu)"
+      },
+      {
+        "kanji": "読",
+        "onyomi": "ドク、トク、トウ",
+        "romaji": "doku, toku, tou",
+        "meaning": "read",
+        "example": "読む (yomu)"
+      },
+      {
+        "kanji": "書",
+        "onyomi": "ショ",
+        "romaji": "sho",
+        "meaning": "write",
+        "example": "書く (kaku)"
+      },
+      {
+        "kanji": "話",
+        "onyomi": "ワ",
+        "romaji": "wa",
+        "meaning": "talk; story",
+        "example": "話す (hanasu)"
+      },
+      {
+        "kanji": "買",
+        "onyomi": "バイ",
+        "romaji": "bai",
+        "meaning": "buy",
+        "example": "買う (kau)"
+      },
+      {
+        "kanji": "売",
+        "onyomi": "バイ",
+        "romaji": "bai",
+        "meaning": "sell",
+        "example": "売る (uru)"
+      },
+      {
+        "kanji": "立",
+        "onyomi": "リツ、リュウ",
+        "romaji": "ritsu, ryuu",
+        "meaning": "stand",
+        "example": "立つ (tatsu)"
+      },
+      {
+        "kanji": "待",
+        "onyomi": "タイ",
+        "romaji": "tai",
+        "meaning": "wait",
+        "example": "待つ (matsu)"
+      },
+      {
+        "kanji": "作",
+        "onyomi": "サク、サ",
+        "romaji": "saku, sa",
+        "meaning": "make",
+        "example": "作る (tsukuru)"
+      },
+      {
+        "kanji": "休",
+        "onyomi": "キュウ",
+        "romaji": "kyuu",
+        "meaning": "rest",
+        "example": "休む (yasumu)"
+      },
+      {
+        "kanji": "会",
+        "onyomi": "カイ、エ",
+        "romaji": "kai, e",
+        "meaning": "meet",
+        "example": "会う (au)"
+      },
+      {
+        "kanji": "男",
+        "onyomi": "ダン、ナン",
+        "romaji": "dan, nan",
+        "meaning": "man",
+        "example": "男の人 (otoko no hito)"
+      },
+      {
+        "kanji": "女",
+        "onyomi": "ジョ、ニョ",
+        "romaji": "jo, nyo",
+        "meaning": "woman",
+        "example": "女の人 (onna no hito)"
+      },
+      {
+        "kanji": "子",
+        "onyomi": "シ、ス",
+        "romaji": "shi, su",
+        "meaning": "child",
+        "example": "子供 (kodomo)"
+      },
+      {
+        "kanji": "父",
+        "onyomi": "フ",
+        "romaji": "fu",
+        "meaning": "father",
+        "example": "お父さん (otousan)"
+      },
+      {
+        "kanji": "母",
+        "onyomi": "ボ",
+        "romaji": "bo",
+        "meaning": "mother",
+        "example": "お母さん (okaasan)"
+      },
+      {
+        "kanji": "兄",
+        "onyomi": "ケイ、キョウ",
+        "romaji": "kei, kyou",
+        "meaning": "older brother",
+        "example": "お兄さん (oniisan)"
+      },
+      {
+        "kanji": "姉",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "older sister",
+        "example": "お姉さん (oneesan)"
+      },
+      {
+        "kanji": "弟",
+        "onyomi": "テイ、ダイ、デ",
+        "romaji": "tei, dai, de",
+        "meaning": "younger brother",
+        "example": "弟 (otouto)"
+      },
+      {
+        "kanji": "妹",
+        "onyomi": "マイ",
+        "romaji": "mai",
+        "meaning": "younger sister",
+        "example": "妹 (imouto)"
+      },
+      {
+        "kanji": "友",
+        "onyomi": "ユウ",
+        "romaji": "yuu",
+        "meaning": "friend",
+        "example": "友達 (tomodachi)"
+      },
+      {
+        "kanji": "生",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "life; birth",
+        "example": "学生 (gakusei)"
+      },
+      {
+        "kanji": "先",
+        "onyomi": "セン",
+        "romaji": "sen",
+        "meaning": "previous; ahead",
+        "example": "先生 (sensei)"
+      },
+      {
+        "kanji": "学",
+        "onyomi": "ガク",
+        "romaji": "gaku",
+        "meaning": "study; learning",
+        "example": "学校 (gakkou)"
+      },
+      {
+        "kanji": "校",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "school",
+        "example": "学校 (gakkou)"
+      },
+      {
+        "kanji": "山",
+        "onyomi": "サン",
+        "romaji": "san",
+        "meaning": "mountain",
+        "example": "富士山 (fujisan)"
+      },
+      {
+        "kanji": "川",
+        "onyomi": "セン",
+        "romaji": "sen",
+        "meaning": "river",
+        "example": "川 (kawa)"
+      },
+      {
+        "kanji": "天",
+        "onyomi": "テン",
+        "romaji": "ten",
+        "meaning": "heaven; sky",
+        "example": "天気 (tenki)"
+      },
+      {
+        "kanji": "気",
+        "onyomi": "キ、ケ",
+        "romaji": "ki, ke",
+        "meaning": "spirit; air",
+        "example": "天気 (tenki)"
+      },
+      {
+        "kanji": "雨",
+        "onyomi": "ウ",
+        "romaji": "u",
+        "meaning": "rain",
+        "example": "雨 (ame)"
+      },
+      {
+        "kanji": "電",
+        "onyomi": "デン",
+        "romaji": "den",
+        "meaning": "electricity",
+        "example": "電話 (denwa)"
+      },
+      {
+        "kanji": "車",
+        "onyomi": "シャ",
+        "romaji": "sha",
+        "meaning": "car; vehicle",
+        "example": "車 (kuruma)"
+      },
+      {
+        "kanji": "駅",
+        "onyomi": "エキ",
+        "romaji": "eki",
+        "meaning": "station",
+        "example": "駅 (eki)"
+      },
+      {
+        "kanji": "店",
+        "onyomi": "テン",
+        "romaji": "ten",
+        "meaning": "shop",
+        "example": "店 (mise)"
+      },
+      {
+        "kanji": "道",
+        "onyomi": "ドウ、トウ",
+        "romaji": "dou, tou",
+        "meaning": "road; way",
+        "example": "道 (michi)"
+      },
+      {
+        "kanji": "間",
+        "onyomi": "カン、ケン",
+        "romaji": "kan, ken",
+        "meaning": "interval; room",
+        "example": "時間 (jikan)"
+      },
+      {
+        "kanji": "手",
+        "onyomi": "シュ",
+        "romaji": "shu",
+        "meaning": "hand",
+        "example": "手 (te)"
+      },
+      {
+        "kanji": "足",
+        "onyomi": "ソク",
+        "romaji": "soku",
+        "meaning": "foot; leg",
+        "example": "足 (ashi)"
+      },
+      {
+        "kanji": "目",
+        "onyomi": "モク、ボク",
+        "romaji": "moku, boku",
+        "meaning": "eye",
+        "example": "目 (me)"
+      },
+      {
+        "kanji": "耳",
+        "onyomi": "ジ",
+        "romaji": "ji",
+        "meaning": "ear",
+        "example": "耳 (mimi)"
+      },
+      {
+        "kanji": "口",
+        "onyomi": "コウ、ク",
+        "romaji": "kou, ku",
+        "meaning": "mouth",
+        "example": "口 (kuchi)"
+      },
+      {
+        "kanji": "力",
+        "onyomi": "リョク、リキ",
+        "romaji": "ryoku, riki",
+        "meaning": "power; force",
+        "example": "力 (chikara)"
+      },
+      {
+        "kanji": "金",
+        "onyomi": "キン、コン",
+        "romaji": "kin, kon",
+        "meaning": "gold; money",
+        "example": "お金 (okane)"
+      },
+      {
+        "kanji": "水",
+        "onyomi": "スイ",
+        "romaji": "sui",
+        "meaning": "water",
+        "example": "水 (mizu)"
+      },
+      {
+        "kanji": "火",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "fire",
+        "example": "火曜日 (kayoubi)"
+      },
+      {
+        "kanji": "木",
+        "onyomi": "モク、ボク",
+        "romaji": "moku, boku",
+        "meaning": "tree; wood",
+        "example": "木曜日 (mokuyoubi)"
+      },
+      {
+        "kanji": "土",
+        "onyomi": "ド、ト",
+        "romaji": "do, to",
+        "meaning": "soil; earth",
+        "example": "土曜日 (doyoubi)"
+      },
+      {
+        "kanji": "花",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "flower",
+        "example": "花 (hana)"
+      },
+      {
+        "kanji": "犬",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "dog",
+        "example": "犬 (inu)"
+      },
+      {
+        "kanji": "魚",
+        "onyomi": "ギョ",
+        "romaji": "gyo",
+        "meaning": "fish",
+        "example": "魚 (sakana)"
+      },
+      {
+        "kanji": "鳥",
+        "onyomi": "チョウ",
+        "romaji": "chou",
+        "meaning": "bird",
+        "example": "鳥 (tori)"
+      },
+      {
+        "kanji": "白",
+        "onyomi": "ハク、ビャク",
+        "romaji": "haku, byaku",
+        "meaning": "white",
+        "example": "白い (shiroi)"
+      },
+      {
+        "kanji": "赤",
+        "onyomi": "セキ、シャク",
+        "romaji": "seki, shaku",
+        "meaning": "red",
+        "example": "赤い (akai)"
+      },
+      {
+        "kanji": "青",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "blue",
+        "example": "青い (aoi)"
+      },
+      {
+        "kanji": "名",
+        "onyomi": "メイ、ミョウ",
+        "romaji": "mei, myou",
+        "meaning": "name",
+        "example": "名前 (namae)"
+      },
+      {
+        "kanji": "語",
+        "onyomi": "ゴ",
+        "romaji": "go",
+        "meaning": "language; word",
+        "example": "日本語 (nihongo)"
+      },
+      {
+        "kanji": "何",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "what",
+        "example": "何 (nani)"
+      }
+    ],
+    "N4_ELEMENTARY": [
+      {
+        "kanji": "事",
+        "onyomi": "ジ、ズ",
+        "romaji": "ji, zu",
+        "meaning": "thing; matter",
+        "example": "仕事 (shigoto)"
+      },
+      {
+        "kanji": "自",
+        "onyomi": "ジ、シ",
+        "romaji": "ji, shi",
+        "meaning": "oneself",
+        "example": "自分 (jibun)"
+      },
+      {
+        "kanji": "社",
+        "onyomi": "シャ",
+        "romaji": "sha",
+        "meaning": "company; shrine",
+        "example": "会社 (kaisha)"
+      },
+      {
+        "kanji": "発",
+        "onyomi": "ハツ、ホツ",
+        "romaji": "hatsu, hotsu",
+        "meaning": "depart; emit",
+        "example": "出発 (shuppatsu)"
+      },
+      {
+        "kanji": "者",
+        "onyomi": "シャ",
+        "romaji": "sha",
+        "meaning": "person",
+        "example": "医者 (isha)"
+      },
+      {
+        "kanji": "地",
+        "onyomi": "チ、ジ",
+        "romaji": "chi, ji",
+        "meaning": "earth; land",
+        "example": "地下鉄 (chikatetsu)"
+      },
+      {
+        "kanji": "業",
+        "onyomi": "ギョウ、ゴウ",
+        "romaji": "gyou, gou",
+        "meaning": "business; study",
+        "example": "仕事 (shigoto)"
+      },
+      {
+        "kanji": "場",
+        "onyomi": "ジョウ",
+        "romaji": "jou",
+        "meaning": "place",
+        "example": "場所 (basho)"
+      },
+      {
+        "kanji": "員",
+        "onyomi": "イン",
+        "romaji": "in",
+        "meaning": "member",
+        "example": "会社員 (kaishain)"
+      },
+      {
+        "kanji": "立",
+        "onyomi": "リツ、リュウ",
+        "romaji": "ritsu, ryuu",
+        "meaning": "stand",
+        "example": "立つ (tatsu)"
+      },
+      {
+        "kanji": "開",
+        "onyomi": "カイ",
+        "romaji": "kai",
+        "meaning": "open",
+        "example": "開ける (akeru)"
+      },
+      {
+        "kanji": "問",
+        "onyomi": "モン",
+        "romaji": "mon",
+        "meaning": "question",
+        "example": "質問 (shitsumon)"
+      },
+      {
+        "kanji": "代",
+        "onyomi": "ダイ、タイ",
+        "romaji": "dai, tai",
+        "meaning": "substitute; generation",
+        "example": "時代 (jidai)"
+      },
+      {
+        "kanji": "明",
+        "onyomi": "メイ、ミョウ",
+        "romaji": "mei, myou",
+        "meaning": "bright",
+        "example": "明日 (ashita)"
+      },
+      {
+        "kanji": "動",
+        "onyomi": "ドウ",
+        "romaji": "dou",
+        "meaning": "move",
+        "example": "運動 (undou)"
+      },
+      {
+        "kanji": "京",
+        "onyomi": "キョウ、ケイ",
+        "romaji": "kyou, kei",
+        "meaning": "capital",
+        "example": "東京 (toukyou)"
+      },
+      {
+        "kanji": "通",
+        "onyomi": "ツウ、ツ",
+        "romaji": "tsuu, tsu",
+        "meaning": "pass through",
+        "example": "通る (tooru)"
+      },
+      {
+        "kanji": "言",
+        "onyomi": "ゲン、ゴン",
+        "romaji": "gen, gon",
+        "meaning": "say; word",
+        "example": "言う (iu)"
+      },
+      {
+        "kanji": "理",
+        "onyomi": "リ",
+        "romaji": "ri",
+        "meaning": "reason; logic",
+        "example": "料理 (ryouri)"
+      },
+      {
+        "kanji": "体",
+        "onyomi": "タイ、テイ",
+        "romaji": "tai, tei",
+        "meaning": "body",
+        "example": "体 (karada)"
+      },
+      {
+        "kanji": "田",
+        "onyomi": "デン",
+        "romaji": "den",
+        "meaning": "rice field",
+        "example": "田んぼ (tanbo)"
+      },
+      {
+        "kanji": "主",
+        "onyomi": "シュ、ス",
+        "romaji": "shu, su",
+        "meaning": "master; main",
+        "example": "主人 (shujin)"
+      },
+      {
+        "kanji": "題",
+        "onyomi": "ダイ",
+        "romaji": "dai",
+        "meaning": "topic; subject",
+        "example": "問題 (mondai)"
+      },
+      {
+        "kanji": "意",
+        "onyomi": "イ",
+        "romaji": "i",
+        "meaning": "meaning; intention",
+        "example": "注意 (chuui)"
+      },
+      {
+        "kanji": "不",
+        "onyomi": "フ、ブ",
+        "romaji": "fu, bu",
+        "meaning": "not; un-",
+        "example": "不便 (fuben)"
+      },
+      {
+        "kanji": "用",
+        "onyomi": "ヨウ",
+        "romaji": "you",
+        "meaning": "use",
+        "example": "用事 (youji)"
+      },
+      {
+        "kanji": "度",
+        "onyomi": "ド、ト、タク",
+        "romaji": "do, to, taku",
+        "meaning": "degree; time",
+        "example": "温度 (ondo)"
+      },
+      {
+        "kanji": "強",
+        "onyomi": "キョウ、ゴウ",
+        "romaji": "kyou, gou",
+        "meaning": "strong",
+        "example": "強い (tsuyoi)"
+      },
+      {
+        "kanji": "公",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "public",
+        "example": "公園 (kouen)"
+      },
+      {
+        "kanji": "持",
+        "onyomi": "ジ",
+        "romaji": "ji",
+        "meaning": "hold; have",
+        "example": "持つ (motsu)"
+      },
+      {
+        "kanji": "野",
+        "onyomi": "ヤ",
+        "romaji": "ya",
+        "meaning": "field; plains",
+        "example": "野原 (nohara)"
+      },
+      {
+        "kanji": "以",
+        "onyomi": "イ",
+        "romaji": "i",
+        "meaning": "by means of",
+        "example": "以上 (ijou)"
+      },
+      {
+        "kanji": "思",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "think",
+        "example": "思う (omou)"
+      },
+      {
+        "kanji": "家",
+        "onyomi": "カ、ケ",
+        "romaji": "ka, ke",
+        "meaning": "house; family",
+        "example": "家族 (kazoku)"
+      },
+      {
+        "kanji": "世",
+        "onyomi": "セイ、セ",
+        "romaji": "sei, se",
+        "meaning": "world; generation",
+        "example": "世界 (sekai)"
+      },
+      {
+        "kanji": "多",
+        "onyomi": "タ",
+        "romaji": "ta",
+        "meaning": "many",
+        "example": "多い (ooi)"
+      },
+      {
+        "kanji": "正",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "correct",
+        "example": "正しい (tadashii)"
+      },
+      {
+        "kanji": "院",
+        "onyomi": "イン",
+        "romaji": "in",
+        "meaning": "institution",
+        "example": "病院 (byouin)"
+      },
+      {
+        "kanji": "心",
+        "onyomi": "シン",
+        "romaji": "shin",
+        "meaning": "heart; mind",
+        "example": "心配 (shinpai)"
+      },
+      {
+        "kanji": "界",
+        "onyomi": "カイ",
+        "romaji": "kai",
+        "meaning": "world; boundary",
+        "example": "世界 (sekai)"
+      },
+      {
+        "kanji": "教",
+        "onyomi": "キョウ",
+        "romaji": "kyou",
+        "meaning": "teach",
+        "example": "教える (oshieru)"
+      },
+      {
+        "kanji": "文",
+        "onyomi": "ブン、モン",
+        "romaji": "bun, mon",
+        "meaning": "sentence; culture",
+        "example": "文化 (bunka)"
+      },
+      {
+        "kanji": "物",
+        "onyomi": "ブツ、モツ",
+        "romaji": "butsu, motsu",
+        "meaning": "thing; object",
+        "example": "食べ物 (tabemono)"
+      },
+      {
+        "kanji": "最",
+        "onyomi": "サイ",
+        "romaji": "sai",
+        "meaning": "most",
+        "example": "最初 (saisho)"
+      },
+      {
+        "kanji": "合",
+        "onyomi": "ゴウ、ガッ、カッ",
+        "romaji": "gou, ga', ka'",
+        "meaning": "fit; join",
+        "example": "都合 (tsugou)"
+      },
+      {
+        "kanji": "同",
+        "onyomi": "ドウ",
+        "romaji": "dou",
+        "meaning": "same",
+        "example": "同じ (onaji)"
+      },
+      {
+        "kanji": "味",
+        "onyomi": "ミ",
+        "romaji": "mi",
+        "meaning": "flavor; taste",
+        "example": "味 (aji)"
+      },
+      {
+        "kanji": "写",
+        "onyomi": "シャ",
+        "romaji": "sha",
+        "meaning": "copy; photograph",
+        "example": "写真 (shashin)"
+      },
+      {
+        "kanji": "字",
+        "onyomi": "ジ",
+        "romaji": "ji",
+        "meaning": "letter; character",
+        "example": "漢字 (kanji)"
+      },
+      {
+        "kanji": "答",
+        "onyomi": "トウ",
+        "romaji": "tou",
+        "meaning": "answer",
+        "example": "答える (kotaeru)"
+      },
+      {
+        "kanji": "夜",
+        "onyomi": "ヤ",
+        "romaji": "ya",
+        "meaning": "night",
+        "example": "夜 (yoru)"
+      },
+      {
+        "kanji": "音",
+        "onyomi": "オン、イン",
+        "romaji": "on, in",
+        "meaning": "sound",
+        "example": "音楽 (ongaku)"
+      },
+      {
+        "kanji": "注",
+        "onyomi": "チュウ",
+        "romaji": "chuu",
+        "meaning": "pour;注意",
+        "example": "注意 (chuui)"
+      },
+      {
+        "kanji": "真",
+        "onyomi": "シン",
+        "romaji": "shin",
+        "meaning": "true",
+        "example": "写真 (shashin)"
+      },
+      {
+        "kanji": "近",
+        "onyomi": "キン",
+        "romaji": "kin",
+        "meaning": "near",
+        "example": "近い (chikai)"
+      },
+      {
+        "kanji": "考",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "think",
+        "example": "考える (kangaeru)"
+      },
+      {
+        "kanji": "画",
+        "onyomi": "ガ、カク",
+        "romaji": "ga, kaku",
+        "meaning": "picture; stroke",
+        "example": "映画 (eiga)"
+      },
+      {
+        "kanji": "海",
+        "onyomi": "カイ",
+        "romaji": "kai",
+        "meaning": "sea",
+        "example": "海 (umi)"
+      },
+      {
+        "kanji": "売",
+        "onyomi": "バイ",
+        "romaji": "bai",
+        "meaning": "sell",
+        "example": "売る (uru)"
+      },
+      {
+        "kanji": "知",
+        "onyomi": "チ",
+        "romaji": "chi",
+        "meaning": "know",
+        "example": "知る (shiru)"
+      },
+      {
+        "kanji": "道",
+        "onyomi": "ドウ、トウ",
+        "romaji": "dou, tou",
+        "meaning": "road; way",
+        "example": "道 (michi)"
+      },
+      {
+        "kanji": "集",
+        "onyomi": "シュウ",
+        "romaji": "shuu",
+        "meaning": "gather",
+        "example": "集める (atsumeru)"
+      },
+      {
+        "kanji": "別",
+        "onyomi": "ベツ",
+        "romaji": "betsu",
+        "meaning": "separate",
+        "example": "別れる (wakareru)"
+      },
+      {
+        "kanji": "物",
+        "onyomi": "ブツ、モツ",
+        "romaji": "butsu, motsu",
+        "meaning": "thing",
+        "example": "荷物 (nimotsu)"
+      },
+      {
+        "kanji": "使",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "use",
+        "example": "使う (tsukau)"
+      },
+      {
+        "kanji": "品",
+        "onyomi": "ヒン",
+        "romaji": "hin",
+        "meaning": "goods; article",
+        "example": "品物 (shinamono)"
+      },
+      {
+        "kanji": "計",
+        "onyomi": "ケイ",
+        "romaji": "kei",
+        "meaning": "measure; plan",
+        "example": "時計 (tokei)"
+      },
+      {
+        "kanji": "死",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "death",
+        "example": "死ぬ (shinu)"
+      },
+      {
+        "kanji": "特",
+        "onyomi": "トク",
+        "romaji": "toku",
+        "meaning": "special",
+        "example": "特別 (tokubetsu)"
+      },
+      {
+        "kanji": "私",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "I; private",
+        "example": "私 (watashi)"
+      },
+      {
+        "kanji": "始",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "begin",
+        "example": "始める (hajimeru)"
+      },
+      {
+        "kanji": "朝",
+        "onyomi": "チョウ",
+        "romaji": "chou",
+        "meaning": "morning",
+        "example": "朝 (asa)"
+      },
+      {
+        "kanji": "運",
+        "onyomi": "ウン",
+        "romaji": "un",
+        "meaning": "carry; luck",
+        "example": "運転 (unten)"
+      },
+      {
+        "kanji": "終",
+        "onyomi": "シュウ",
+        "romaji": "shuu",
+        "meaning": "end",
+        "example": "終わる (owaru)"
+      },
+      {
+        "kanji": "台",
+        "onyomi": "ダイ、タイ",
+        "romaji": "dai, tai",
+        "meaning": "pedestal; counter",
+        "example": "台所 (daidokoro)"
+      },
+      {
+        "kanji": "広",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "wide",
+        "example": "広い (hiroi)"
+      },
+      {
+        "kanji": "住",
+        "onyomi": "ジュウ",
+        "romaji": "juu",
+        "meaning": "dwell; live",
+        "example": "住む (sumu)"
+      },
+      {
+        "kanji": "真",
+        "onyomi": "シン",
+        "romaji": "shin",
+        "meaning": "true",
+        "example": "真面目 (majime)"
+      },
+      {
+        "kanji": "有",
+        "onyomi": "ユウ、ウ",
+        "romaji": "yuu, u",
+        "meaning": "exist; have",
+        "example": "有名 (yuumei)"
+      },
+      {
+        "kanji": "口",
+        "onyomi": "コウ、ク",
+        "romaji": "kou, ku",
+        "meaning": "mouth; entrance",
+        "example": "入口 (iriguchi)"
+      },
+      {
+        "kanji": "少",
+        "onyomi": "ショウ",
+        "romaji": "shou",
+        "meaning": "few; little",
+        "example": "少ない (sukunai)"
+      },
+      {
+        "kanji": "町",
+        "onyomi": "チョウ",
+        "romaji": "chou",
+        "meaning": "town",
+        "example": "町 (machi)"
+      },
+      {
+        "kanji": "料",
+        "onyomi": "リョウ",
+        "romaji": "ryou",
+        "meaning": "fee; material",
+        "example": "料理 (ryouri)"
+      },
+      {
+        "kanji": "工",
+        "onyomi": "コウ、ク",
+        "romaji": "kou, ku",
+        "meaning": "craft; construction",
+        "example": "工場 (koujou)"
+      },
+      {
+        "kanji": "建",
+        "onyomi": "ケン、コン",
+        "romaji": "ken, kon",
+        "meaning": "build",
+        "example": "建てる (tateru)"
+      },
+      {
+        "kanji": "空",
+        "onyomi": "クウ",
+        "romaji": "kuu",
+        "meaning": "sky; empty",
+        "example": "空港 (kuukou)"
+      },
+      {
+        "kanji": "急",
+        "onyomi": "キュウ",
+        "romaji": "kyuu",
+        "meaning": "hurry; sudden",
+        "example": "急ぐ (isogu)"
+      },
+      {
+        "kanji": "止",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "stop",
+        "example": "止まる (tomaru)"
+      },
+      {
+        "kanji": "送",
+        "onyomi": "ソウ",
+        "romaji": "sou",
+        "meaning": "send",
+        "example": "送る (okuru)"
+      },
+      {
+        "kanji": "切",
+        "onyomi": "セツ、サイ",
+        "romaji": "setsu, sai",
+        "meaning": "cut",
+        "example": "切る (kiru)"
+      },
+      {
+        "kanji": "転",
+        "onyomi": "テン",
+        "romaji": "ten",
+        "meaning": "revolve",
+        "example": "運転 (unten)"
+      },
+      {
+        "kanji": "研",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "sharpen; study",
+        "example": "研究 (kenkyuu)"
+      },
+      {
+        "kanji": "足",
+        "onyomi": "ソク",
+        "romaji": "soku",
+        "meaning": "foot; sufficient",
+        "example": "満足 (manzoku)"
+      },
+      {
+        "kanji": "究",
+        "onyomi": "キュウ",
+        "romaji": "kyuu",
+        "meaning": "research",
+        "example": "研究 (kenkyuu)"
+      },
+      {
+        "kanji": "楽",
+        "onyomi": "ガク、ラク",
+        "romaji": "gaku, raku",
+        "meaning": "music; pleasure",
+        "example": "音楽 (ongaku)"
+      },
+      {
+        "kanji": "起",
+        "onyomi": "キ",
+        "romaji": "ki",
+        "meaning": "get up; occur",
+        "example": "起きる (okiru)"
+      },
+      {
+        "kanji": "着",
+        "onyomi": "チャク",
+        "romaji": "chaku",
+        "meaning": "wear; arrive",
+        "example": "着る (kiru)"
+      },
+      {
+        "kanji": "店",
+        "onyomi": "テン",
+        "romaji": "ten",
+        "meaning": "shop",
+        "example": "店 (mise)"
+      },
+      {
+        "kanji": "病",
+        "onyomi": "ビョウ、ヘイ",
+        "romaji": "byou, hei",
+        "meaning": "sick",
+        "example": "病気 (byouki)"
+      },
+      {
+        "kanji": "質",
+        "onyomi": "シツ、シチ、チ",
+        "romaji": "shitsu, shichi, chi",
+        "meaning": "quality",
+        "example": "質問 (shitsumon)"
+      },
+      {
+        "kanji": "待",
+        "onyomi": "タイ",
+        "romaji": "tai",
+        "meaning": "wait",
+        "example": "待つ (matsu)"
+      },
+      {
+        "kanji": "試",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "test; try",
+        "example": "試験 (shiken)"
+      },
+      {
+        "kanji": "験",
+        "onyomi": "ケン、ゲン",
+        "romaji": "ken, gen",
+        "meaning": "test",
+        "example": "試験 (shiken)"
+      },
+      {
+        "kanji": "借",
+        "onyomi": "シャク",
+        "romaji": "shaku",
+        "meaning": "borrow",
+        "example": "借りる (kariru)"
+      },
+      {
+        "kanji": "貸",
+        "onyomi": "タイ",
+        "romaji": "tai",
+        "meaning": "lend",
+        "example": "貸す (kasu)"
+      },
+      {
+        "kanji": "必",
+        "onyomi": "ヒツ",
+        "romaji": "hitsu",
+        "meaning": "necessary",
+        "example": "必要 (hitsuyou)"
+      },
+      {
+        "kanji": "要",
+        "onyomi": "ヨウ",
+        "romaji": "you",
+        "meaning": "need; important",
+        "example": "必要 (hitsuyou)"
+      },
+      {
+        "kanji": "進",
+        "onyomi": "シン",
+        "romaji": "shin",
+        "meaning": "advance",
+        "example": "進む (susumu)"
+      },
+      {
+        "kanji": "鉄",
+        "onyomi": "テツ",
+        "romaji": "tetsu",
+        "meaning": "iron",
+        "example": "地下鉄 (chikatetsu)"
+      },
+      {
+        "kanji": "反",
+        "onyomi": "ハン、ホン、タン",
+        "romaji": "han, hon, tan",
+        "meaning": "anti-; opposite",
+        "example": "反対 (hantai)"
+      },
+      {
+        "kanji": "対",
+        "onyomi": "タイ、ツイ",
+        "romaji": "tai, tsui",
+        "meaning": "opposite; versus",
+        "example": "反対 (hantai)"
+      },
+      {
+        "kanji": "館",
+        "onyomi": "カン",
+        "romaji": "kan",
+        "meaning": "hall; building",
+        "example": "図書館 (toshokan)"
+      },
+      {
+        "kanji": "苦",
+        "onyomi": "ク",
+        "romaji": "ku",
+        "meaning": "bitter; suffer",
+        "example": "苦しい (kurushii)"
+      },
+      {
+        "kanji": "軽",
+        "onyomi": "ケイ",
+        "romaji": "kei",
+        "meaning": "light; easy",
+        "example": "軽い (karui)"
+      },
+      {
+        "kanji": "低",
+        "onyomi": "テイ",
+        "romaji": "tei",
+        "meaning": "low",
+        "example": "低い (hikui)"
+      }
+    ],
+    "N3_INTERMEDIATE": [
+      {
+        "kanji": "政",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "politics",
+        "example": "政治 (seiji)"
+      },
+      {
+        "kanji": "治",
+        "onyomi": "ジ、チ",
+        "romaji": "ji, chi",
+        "meaning": "govern; cure",
+        "example": "政治 (seiji)"
+      },
+      {
+        "kanji": "済",
+        "onyomi": "サイ、セイ",
+        "romaji": "sai, sei",
+        "meaning": "settle; finish",
+        "example": "経済 (keizai)"
+      },
+      {
+        "kanji": "経",
+        "onyomi": "ケイ、キョウ",
+        "romaji": "kei, kyou",
+        "meaning": "pass through; manage",
+        "example": "経済 (keizai)"
+      },
+      {
+        "kanji": "営",
+        "onyomi": "エイ",
+        "romaji": "ei",
+        "meaning": "manage; operate",
+        "example": "営業 (eigyou)"
+      },
+      {
+        "kanji": "指",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "finger; point",
+        "example": "指 (yubi)"
+      },
+      {
+        "kanji": "若",
+        "onyomi": "ジャク、ニャク",
+        "romaji": "jaku, nyaku",
+        "meaning": "young",
+        "example": "若い (wakai)"
+      },
+      {
+        "kanji": "制",
+        "onyomi": "セイ",
+        "romaji": "sei",
+        "meaning": "system; control",
+        "example": "制度 (seido)"
+      },
+      {
+        "kanji": "性",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "nature; gender",
+        "example": "性格 (seikaku)"
+      },
+      {
+        "kanji": "格",
+        "onyomi": "カク、コウ",
+        "romaji": "kaku, kou",
+        "meaning": "status; case",
+        "example": "性格 (seikaku)"
+      },
+      {
+        "kanji": "保",
+        "onyomi": "ホ",
+        "romaji": "ho",
+        "meaning": "protect; maintain",
+        "example": "保険 (hoken)"
+      },
+      {
+        "kanji": "費",
+        "onyomi": "ヒ",
+        "romaji": "hi",
+        "meaning": "expense",
+        "example": "費用 (hiyou)"
+      },
+      {
+        "kanji": "比",
+        "onyomi": "ヒ",
+        "romaji": "hi",
+        "meaning": "compare",
+        "example": "比べる (kuraberu)"
+      },
+      {
+        "kanji": "況",
+        "onyomi": "キョウ",
+        "romaji": "kyou",
+        "meaning": "condition",
+        "example": "状況 (joukyou)"
+      },
+      {
+        "kanji": "状",
+        "onyomi": "ジョウ",
+        "romaji": "jou",
+        "meaning": "condition; letter",
+        "example": "状況 (joukyou)"
+      },
+      {
+        "kanji": "報",
+        "onyomi": "ホウ",
+        "romaji": "hou",
+        "meaning": "report",
+        "example": "報告 (houkoku)"
+      },
+      {
+        "kanji": "告",
+        "onyomi": "コク",
+        "romaji": "koku",
+        "meaning": "announce",
+        "example": "報告 (houkoku)"
+      },
+      {
+        "kanji": "示",
+        "onyomi": "ジ、シ",
+        "romaji": "ji, shi",
+        "meaning": "show",
+        "example": "示す (shimesu)"
+      },
+      {
+        "kanji": "関",
+        "onyomi": "カン",
+        "romaji": "kan",
+        "meaning": "related; barrier",
+        "example": "関係 (kankei)"
+      },
+      {
+        "kanji": "係",
+        "onyomi": "ケイ",
+        "romaji": "kei",
+        "meaning": "connection; person in charge",
+        "example": "関係 (kankei)"
+      },
+      {
+        "kanji": "件",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "matter; case",
+        "example": "事件 (jiken)"
+      },
+      {
+        "kanji": "果",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "fruit; result",
+        "example": "結果 (kekka)"
+      },
+      {
+        "kanji": "結",
+        "onyomi": "ケツ",
+        "romaji": "ketsu",
+        "meaning": "tie; connect",
+        "example": "結果 (kekka)"
+      },
+      {
+        "kanji": "現",
+        "onyomi": "ゲン",
+        "romaji": "gen",
+        "meaning": "present; appear",
+        "example": "現在 (genzai)"
+      },
+      {
+        "kanji": "在",
+        "onyomi": "ザイ",
+        "romaji": "zai",
+        "meaning": "exist; be located",
+        "example": "現在 (genzai)"
+      },
+      {
+        "kanji": "決",
+        "onyomi": "ケツ",
+        "romaji": "ketsu",
+        "meaning": "decide",
+        "example": "決める (kimeru)"
+      },
+      {
+        "kanji": "定",
+        "onyomi": "テイ、ジョウ",
+        "romaji": "tei, jou",
+        "meaning": "decide; fix",
+        "example": "予定 (yotei)"
+      },
+      {
+        "kanji": "予",
+        "onyomi": "ヨ",
+        "romaji": "yo",
+        "meaning": "beforehand",
+        "example": "予定 (yotei)"
+      },
+      {
+        "kanji": "増",
+        "onyomi": "ゾウ",
+        "romaji": "zou",
+        "meaning": "increase",
+        "example": "増える (fueru)"
+      },
+      {
+        "kanji": "減",
+        "onyomi": "ゲン",
+        "romaji": "gen",
+        "meaning": "decrease",
+        "example": "減る (heru)"
+      },
+      {
+        "kanji": "支",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "branch; support",
+        "example": "支える (sasaeru)"
+      },
+      {
+        "kanji": "払",
+        "onyomi": "フツ、ヒツ",
+        "romaji": "futsu, hitsu",
+        "meaning": "pay",
+        "example": "払う (harau)"
+      },
+      {
+        "kanji": "育",
+        "onyomi": "イク",
+        "romaji": "iku",
+        "meaning": "raise; nurture",
+        "example": "教育 (kyouiku)"
+      },
+      {
+        "kanji": "約",
+        "onyomi": "ヤク",
+        "romaji": "yaku",
+        "meaning": "promise; approximately",
+        "example": "約束 (yakusoku)"
+      },
+      {
+        "kanji": "束",
+        "onyomi": "ソク",
+        "romaji": "soku",
+        "meaning": "bundle",
+        "example": "約束 (yakusoku)"
+      },
+      {
+        "kanji": "可",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "possible; approve",
+        "example": "可能 (kanou)"
+      },
+      {
+        "kanji": "能",
+        "onyomi": "ノウ",
+        "romaji": "nou",
+        "meaning": "ability",
+        "example": "可能 (kanou)"
+      },
+      {
+        "kanji": "構",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "construct; mind",
+        "example": "構造 (kouzou)"
+      },
+      {
+        "kanji": "造",
+        "onyomi": "ゾウ",
+        "romaji": "zou",
+        "meaning": "create; build",
+        "example": "構造 (kouzou)"
+      },
+      {
+        "kanji": "認",
+        "onyomi": "ニン",
+        "romaji": "nin",
+        "meaning": "recognize; admit",
+        "example": "確認 (kakunin)"
+      },
+      {
+        "kanji": "確",
+        "onyomi": "カク",
+        "romaji": "kaku",
+        "meaning": "certain",
+        "example": "確認 (kakunin)"
+      },
+      {
+        "kanji": "達",
+        "onyomi": "タツ、ダチ",
+        "romaji": "tatsu, dachi",
+        "meaning": "reach; plural suffix",
+        "example": "友達 (tomodachi)"
+      },
+      {
+        "kanji": "続",
+        "onyomi": "ゾク",
+        "romaji": "zoku",
+        "meaning": "continue",
+        "example": "続く (tsuzuku)"
+      },
+      {
+        "kanji": "両",
+        "onyomi": "リョウ",
+        "romaji": "ryou",
+        "meaning": "both",
+        "example": "両方 (ryouhou)"
+      },
+      {
+        "kanji": "完",
+        "onyomi": "カン",
+        "romaji": "kan",
+        "meaning": "complete",
+        "example": "完成 (kansei)"
+      },
+      {
+        "kanji": "成",
+        "onyomi": "セイ、ジョウ",
+        "romaji": "sei, jou",
+        "meaning": "become; succeed",
+        "example": "完成 (kansei)"
+      },
+      {
+        "kanji": "過",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "pass; exceed",
+        "example": "過ぎる (sugiru)"
+      },
+      {
+        "kanji": "程",
+        "onyomi": "テイ、ホド",
+        "romaji": "tei, hodo",
+        "meaning": "extent; degree",
+        "example": "程度 (teido)"
+      },
+      {
+        "kanji": "基",
+        "onyomi": "キ",
+        "romaji": "ki",
+        "meaning": "foundation",
+        "example": "基本 (kihon)"
+      },
+      {
+        "kanji": "化",
+        "onyomi": "カ、ケ",
+        "romaji": "ka, ke",
+        "meaning": "change; -ization",
+        "example": "文化 (bunka)"
+      },
+      {
+        "kanji": "全",
+        "onyomi": "ゼン",
+        "romaji": "zen",
+        "meaning": "whole; all",
+        "example": "全部 (zenbu)"
+      },
+      {
+        "kanji": "部",
+        "onyomi": "ブ",
+        "romaji": "bu",
+        "meaning": "part; section",
+        "example": "全部 (zenbu)"
+      },
+      {
+        "kanji": "法",
+        "onyomi": "ホウ、ハッ、ホッ",
+        "romaji": "hou, ha', ho'",
+        "meaning": "law; method",
+        "example": "方法 (houhou)"
+      },
+      {
+        "kanji": "方",
+        "onyomi": "ホウ",
+        "romaji": "hou",
+        "meaning": "direction; way",
+        "example": "方法 (houhou)"
+      },
+      {
+        "kanji": "的",
+        "onyomi": "テキ",
+        "romaji": "teki",
+        "meaning": "target; -ical",
+        "example": "目的 (mokuteki)"
+      },
+      {
+        "kanji": "無",
+        "onyomi": "ム、ブ",
+        "romaji": "mu, bu",
+        "meaning": "nothing; without",
+        "example": "無理 (muri)"
+      },
+      {
+        "kanji": "然",
+        "onyomi": "ゼン、ネン",
+        "romaji": "zen, nen",
+        "meaning": "as it is; so",
+        "example": "自然 (shizen)"
+      },
+      {
+        "kanji": "組",
+        "onyomi": "ソ",
+        "romaji": "so",
+        "meaning": "group; assemble",
+        "example": "組む (kumu)"
+      },
+      {
+        "kanji": "産",
+        "onyomi": "サン",
+        "romaji": "san",
+        "meaning": "give birth; produce",
+        "example": "生産 (seisan)"
+      },
+      {
+        "kanji": "相",
+        "onyomi": "ソウ、ショウ",
+        "romaji": "sou, shou",
+        "meaning": "mutually; aspect",
+        "example": "相談 (soudan)"
+      },
+      {
+        "kanji": "談",
+        "onyomi": "ダン",
+        "romaji": "dan",
+        "meaning": "discuss",
+        "example": "相談 (soudan)"
+      },
+      {
+        "kanji": "民",
+        "onyomi": "ミン",
+        "romaji": "min",
+        "meaning": "people",
+        "example": "国民 (kokumin)"
+      },
+      {
+        "kanji": "求",
+        "onyomi": "キュウ",
+        "romaji": "kyuu",
+        "meaning": "request; seek",
+        "example": "要求 (youkyuu)"
+      },
+      {
+        "kanji": "形",
+        "onyomi": "ケイ、ギョウ",
+        "romaji": "kei, gyou",
+        "meaning": "shape; form",
+        "example": "形 (katachi)"
+      },
+      {
+        "kanji": "術",
+        "onyomi": "ジュツ",
+        "romaji": "jutsu",
+        "meaning": "art; technique",
+        "example": "技術 (gijutsu)"
+      },
+      {
+        "kanji": "技",
+        "onyomi": "ギ",
+        "romaji": "gi",
+        "meaning": "skill",
+        "example": "技術 (gijutsu)"
+      },
+      {
+        "kanji": "号",
+        "onyomi": "ゴウ",
+        "romaji": "gou",
+        "meaning": "number; sign",
+        "example": "番号 (bangou)"
+      },
+      {
+        "kanji": "番",
+        "onyomi": "バン",
+        "romaji": "ban",
+        "meaning": "number; turn",
+        "example": "番号 (bangou)"
+      },
+      {
+        "kanji": "得",
+        "onyomi": "トク",
+        "romaji": "toku",
+        "meaning": "obtain; gain",
+        "example": "得る (eru)"
+      },
+      {
+        "kanji": "当",
+        "onyomi": "トウ",
+        "romaji": "tou",
+        "meaning": "hit; apply",
+        "example": "当たる (ataru)"
+      },
+      {
+        "kanji": "機",
+        "onyomi": "キ",
+        "romaji": "ki",
+        "meaning": "machine; opportunity",
+        "example": "機会 (kikai)"
+      },
+      {
+        "kanji": "記",
+        "onyomi": "キ",
+        "romaji": "ki",
+        "meaning": "write down; record",
+        "example": "記録 (kiroku)"
+      },
+      {
+        "kanji": "録",
+        "onyomi": "ロク",
+        "romaji": "roku",
+        "meaning": "record",
+        "example": "記録 (kiroku)"
+      },
+      {
+        "kanji": "受",
+        "onyomi": "ジュ",
+        "romaji": "ju",
+        "meaning": "receive",
+        "example": "受ける (ukeru)"
+      },
+      {
+        "kanji": "取",
+        "onyomi": "シュ",
+        "romaji": "shu",
+        "meaning": "take",
+        "example": "取る (toru)"
+      },
+      {
+        "kanji": "与",
+        "onyomi": "ヨ",
+        "romaji": "yo",
+        "meaning": "give",
+        "example": "与える (ataeru)"
+      },
+      {
+        "kanji": "交",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "mix; exchange",
+        "example": "交通 (koutsuu)"
+      },
+      {
+        "kanji": "活",
+        "onyomi": "カツ",
+        "romaji": "katsu",
+        "meaning": "active; life",
+        "example": "生活 (seikatsu)"
+      },
+      {
+        "kanji": "放",
+        "onyomi": "ホウ",
+        "romaji": "hou",
+        "meaning": "release; emit",
+        "example": "放送 (housou)"
+      },
+      {
+        "kanji": "設",
+        "onyomi": "セツ",
+        "romaji": "setsu",
+        "meaning": "establish",
+        "example": "設置 (secchi)"
+      },
+      {
+        "kanji": "置",
+        "onyomi": "チ",
+        "romaji": "chi",
+        "meaning": "place; put",
+        "example": "設置 (secchi)"
+      },
+      {
+        "kanji": "選",
+        "onyomi": "セン",
+        "romaji": "sen",
+        "meaning": "choose",
+        "example": "選ぶ (erabu)"
+      },
+      {
+        "kanji": "挙",
+        "onyomi": "キョ",
+        "romaji": "kyo",
+        "meaning": "raise; hold",
+        "example": "選挙 (senkyo)"
+      },
+      {
+        "kanji": "各",
+        "onyomi": "カク",
+        "romaji": "kaku",
+        "meaning": "each",
+        "example": "各自 (kakuji)"
+      },
+      {
+        "kanji": "評",
+        "onyomi": "ヒョウ",
+        "romaji": "hyou",
+        "meaning": "evaluate",
+        "example": "評価 (hyouka)"
+      },
+      {
+        "kanji": "価",
+        "onyomi": "カ",
+        "romaji": "ka",
+        "meaning": "value; price",
+        "example": "評価 (hyouka)"
+      },
+      {
+        "kanji": "識",
+        "onyomi": "シキ",
+        "romaji": "shiki",
+        "meaning": "know; discriminate",
+        "example": "知識 (chishiki)"
+      },
+      {
+        "kanji": "常",
+        "onyomi": "ジョウ",
+        "romaji": "jou",
+        "meaning": "usual; always",
+        "example": "非常 (hijou)"
+      },
+      {
+        "kanji": "非",
+        "onyomi": "ヒ",
+        "romaji": "hi",
+        "meaning": "not; un-",
+        "example": "非常 (hijou)"
+      },
+      {
+        "kanji": "改",
+        "onyomi": "カイ",
+        "romaji": "kai",
+        "meaning": "reform",
+        "example": "改善 (kaizen)"
+      },
+      {
+        "kanji": "善",
+        "onyomi": "ゼン",
+        "romaji": "zen",
+        "meaning": "good; virtue",
+        "example": "改善 (kaizen)"
+      },
+      {
+        "kanji": "失",
+        "onyomi": "シツ",
+        "romaji": "shitsu",
+        "meaning": "lose",
+        "example": "失敗 (shippai)"
+      },
+      {
+        "kanji": "敗",
+        "onyomi": "ハイ",
+        "romaji": "hai",
+        "meaning": "defeat",
+        "example": "失敗 (shippai)"
+      },
+      {
+        "kanji": "利",
+        "onyomi": "リ",
+        "romaji": "ri",
+        "meaning": "profit; advantage",
+        "example": "便利 (benri)"
+      },
+      {
+        "kanji": "便",
+        "onyomi": "ベン、ビン",
+        "romaji": "ben, bin",
+        "meaning": "convenience; mail",
+        "example": "便利 (benri)"
+      },
+      {
+        "kanji": "単",
+        "onyomi": "タン",
+        "romaji": "tan",
+        "meaning": "simple; single",
+        "example": "簡単 (kantan)"
+      },
+      {
+        "kanji": "簡",
+        "onyomi": "カン",
+        "romaji": "kan",
+        "meaning": "simple",
+        "example": "簡単 (kantan)"
+      },
+      {
+        "kanji": "容",
+        "onyomi": "ヨウ",
+        "romaji": "you",
+        "meaning": "contain; appearance",
+        "example": "内容 (naiyou)"
+      },
+      {
+        "kanji": "許",
+        "onyomi": "キョ",
+        "romaji": "kyo",
+        "meaning": "permit",
+        "example": "許す (yurusu)"
+      }
+    ],
+    "N2_ADVANCED": [
+      {
+        "kanji": "値",
+        "onyomi": "チ",
+        "romaji": "chi",
+        "meaning": "value; price",
+        "example": "価値 (kachi)"
+      },
+      {
+        "kanji": "張",
+        "onyomi": "チョウ",
+        "romaji": "chou",
+        "meaning": "stretch; spread",
+        "example": "主張 (shuchou)"
+      },
+      {
+        "kanji": "党",
+        "onyomi": "トウ",
+        "romaji": "tou",
+        "meaning": "party; faction",
+        "example": "政党 (seitou)"
+      },
+      {
+        "kanji": "派",
+        "onyomi": "ハ",
+        "romaji": "ha",
+        "meaning": "faction;派遣",
+        "example": "派遣 (haken)"
+      },
+      {
+        "kanji": "遣",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "dispatch",
+        "example": "派遣 (haken)"
+      },
+      {
+        "kanji": "探",
+        "onyomi": "タン",
+        "romaji": "tan",
+        "meaning": "search",
+        "example": "探す (sagasu)"
+      },
+      {
+        "kanji": "検",
+        "onyomi": "ケン",
+        "romaji": "ken",
+        "meaning": "examine",
+        "example": "検査 (kensa)"
+      },
+      {
+        "kanji": "査",
+        "onyomi": "サ",
+        "romaji": "sa",
+        "meaning": "investigate",
+        "example": "検査 (kensa)"
+      },
+      {
+        "kanji": "討",
+        "onyomi": "トウ",
+        "romaji": "tou",
+        "meaning": "discuss; attack",
+        "example": "検討 (kentou)"
+      },
+      {
+        "kanji": "導",
+        "onyomi": "ドウ",
+        "romaji": "dou",
+        "meaning": "guide; lead",
+        "example": "指導 (shidou)"
+      },
+      {
+        "kanji": "類",
+        "onyomi": "ルイ",
+        "romaji": "rui",
+        "meaning": "kind; type",
+        "example": "種類 (shurui)"
+      },
+      {
+        "kanji": "種",
+        "onyomi": "シュ",
+        "romaji": "shu",
+        "meaning": "kind; seed",
+        "example": "種類 (shurui)"
+      },
+      {
+        "kanji": "志",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "intention; will",
+        "example": "志す (kokorozasu)"
+      },
+      {
+        "kanji": "誌",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "magazine; document",
+        "example": "雑誌 (zasshi)"
+      },
+      {
+        "kanji": "雑",
+        "onyomi": "ザツ、ゾウ",
+        "romaji": "zatsu, zou",
+        "meaning": "miscellaneous",
+        "example": "雑誌 (zasshi)"
+      },
+      {
+        "kanji": "応",
+        "onyomi": "オウ",
+        "romaji": "ou",
+        "meaning": "respond",
+        "example": "応援 (ouen)"
+      },
+      {
+        "kanji": "援",
+        "onyomi": "エン",
+        "romaji": "en",
+        "meaning": "aid; assist",
+        "example": "応援 (ouen)"
+      },
+      {
+        "kanji": "差",
+        "onyomi": "サ",
+        "romaji": "sa",
+        "meaning": "difference",
+        "example": "差 (sa)"
+      },
+      {
+        "kanji": "例",
+        "onyomi": "レイ",
+        "romaji": "rei",
+        "meaning": "example",
+        "example": "例 (rei)"
+      },
+      {
+        "kanji": "限",
+        "onyomi": "ゲン",
+        "romaji": "gen",
+        "meaning": "limit",
+        "example": "限る (kagiru)"
+      },
+      {
+        "kanji": "存",
+        "onyomi": "ソン、ゾン",
+        "romaji": "son, zon",
+        "meaning": "exist",
+        "example": "存在 (sonzai)"
+      },
+      {
+        "kanji": "素",
+        "onyomi": "ソ、ス",
+        "romaji": "so, su",
+        "meaning": "element; bare",
+        "example": "素晴らしい (subarashii)"
+      },
+      {
+        "kanji": "晴",
+        "onyomi": "セイ",
+        "romaji": "sei",
+        "meaning": "clear weather",
+        "example": "晴れる (hareru)"
+      },
+      {
+        "kanji": "興",
+        "onyomi": "キョウ、コウ",
+        "romaji": "kyou, kou",
+        "meaning": "interest; entertain",
+        "example": "興味 (kyoumi)"
+      },
+      {
+        "kanji": "効",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "effect",
+        "example": "効果 (kouka)"
+      },
+      {
+        "kanji": "精",
+        "onyomi": "セイ、ショウ",
+        "romaji": "sei, shou",
+        "meaning": "spirit; essence",
+        "example": "精神 (seishin)"
+      },
+      {
+        "kanji": "神",
+        "onyomi": "シン、ジン",
+        "romaji": "shin, jin",
+        "meaning": "god; spirit",
+        "example": "精神 (seishin)"
+      },
+      {
+        "kanji": "景",
+        "onyomi": "ケイ",
+        "romaji": "kei",
+        "meaning": "scenery",
+        "example": "風景 (fuukei)"
+      },
+      {
+        "kanji": "風",
+        "onyomi": "フウ、フ",
+        "romaji": "fuu, fu",
+        "meaning": "wind; style",
+        "example": "風景 (fuukei)"
+      },
+      {
+        "kanji": "観",
+        "onyomi": "カン",
+        "romaji": "kan",
+        "meaning": "observe; view",
+        "example": "観光 (kankou)"
+      },
+      {
+        "kanji": "光",
+        "onyomi": "コウ",
+        "romaji": "kou",
+        "meaning": "light; shine",
+        "example": "観光 (kankou)"
+      },
+      {
+        "kanji": "念",
+        "onyomi": "ネン",
+        "romaji": "nen",
+        "meaning": "thought; sense",
+        "example": "記念 (kinen)"
+      },
+      {
+        "kanji": "職",
+        "onyomi": "ショク",
+        "romaji": "shoku",
+        "meaning": "employment; job",
+        "example": "職業 (shokugyou)"
+      },
+      {
+        "kanji": "責",
+        "onyomi": "セキ",
+        "romaji": "seki",
+        "meaning": "responsibility",
+        "example": "責任 (sekinin)"
+      },
+      {
+        "kanji": "任",
+        "onyomi": "ニン",
+        "romaji": "nin",
+        "meaning": "duty; appoint",
+        "example": "責任 (sekinin)"
+      },
+      {
+        "kanji": "労",
+        "onyomi": "ロウ",
+        "romaji": "rou",
+        "meaning": "labor",
+        "example": "労働 (roudou)"
+      },
+      {
+        "kanji": "働",
+        "onyomi": "ドウ",
+        "romaji": "dou",
+        "meaning": "work",
+        "example": "労働 (roudou)"
+      },
+      {
+        "kanji": "因",
+        "onyomi": "イン",
+        "romaji": "in",
+        "meaning": "cause; reason",
+        "example": "原因 (gen'in)"
+      },
+      {
+        "kanji": "原",
+        "onyomi": "ゲン",
+        "romaji": "gen",
+        "meaning": "origin; field",
+        "example": "原因 (gen'in)"
+      },
+      {
+        "kanji": "含",
+        "onyomi": "ガン",
+        "romaji": "gan",
+        "meaning": "include",
+        "example": "含む (fukumu)"
+      },
+      {
+        "kanji": "示",
+        "onyomi": "ジ、シ",
+        "romaji": "ji, shi",
+        "meaning": "show; indicate",
+        "example": "表示 (hyouji)"
+      },
+      {
+        "kanji": "表",
+        "onyomi": "ヒョウ",
+        "romaji": "hyou",
+        "meaning": "surface; express",
+        "example": "表示 (hyouji)"
+      },
+      {
+        "kanji": "逆",
+        "onyomi": "ギャク",
+        "romaji": "gyaku",
+        "meaning": "reverse",
+        "example": "逆 (gyaku)"
+      },
+      {
+        "kanji": "復",
+        "onyomi": "フク",
+        "romaji": "fuku",
+        "meaning": "return; again",
+        "example": "復習 (fukushuu)"
+      },
+      {
+        "kanji": "習",
+        "onyomi": "シュウ",
+        "romaji": "shuu",
+        "meaning": "learn; practice",
+        "example": "復習 (fukushuu)"
+      },
+      {
+        "kanji": "易",
+        "onyomi": "エキ、イ",
+        "romaji": "eki, i",
+        "meaning": "easy",
+        "example": "易しい (yasashii)"
+      },
+      {
+        "kanji": "難",
+        "onyomi": "ナン",
+        "romaji": "nan",
+        "meaning": "difficult",
+        "example": "難しい (muzukashii)"
+      },
+      {
+        "kanji": "律",
+        "onyomi": "リツ、リチ",
+        "romaji": "ritsu, richi",
+        "meaning": "law; rhythm",
+        "example": "法律 (houritsu)"
+      },
+      {
+        "kanji": "師",
+        "onyomi": "シ",
+        "romaji": "shi",
+        "meaning": "teacher; expert",
+        "example": "医師 (ishi)"
+      }
+    ]
+  }
+}

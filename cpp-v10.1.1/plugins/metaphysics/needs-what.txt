@@ -1,0 +1,29 @@
+assert_ops.cpp - iuncomplete stub
+prophecy_ops.cpp - blank stub
+moses_ops - blank stub
+chemistry_ops - incomplete stub
+entropy_ops - blank stub
+duality_ops - fake! NO OG
+numerical_diff_ops - blank stub
+calculus_ops - stubbed NO OG
+math_greek_ops - not completed, stub
+gradient_hessian_oops - blank stub
+geom_transform_ops - blank stub
+fractal_ops - incomplete stub
+discrete_math_ops - blank stub
+category_theory_ops  incomplete stub
+logic_ops - incomplete stub
+logic_ops.hpp - is needed? is stub? NO OG
+graph_coloring_ops - blank stub
+graph_search_ops - blank stub
+graph_theory_ops - blank stub
+shortest_path_ops - blank stub
+neural_chess_ops - blank stub
+simple-chess_ops - stub
+symbolic_pattern_solve_ops - stubbed NO OG
+modexp_ops - stub
+music_ops - blank stub
+stack_ops - stubbed; possible duplicate?
+
+plus 2 missings
+

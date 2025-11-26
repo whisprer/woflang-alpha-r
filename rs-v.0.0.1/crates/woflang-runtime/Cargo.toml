@@ -10,6 +10,7 @@ description = "Runtime interpreter for the Woflang stack-based language"
 [dependencies]
 woflang-core.workspace = true
 thiserror.workspace = true
+dirs = "5.0"
 libloading = { workspace = true, optional = true }
 
 [dev-dependencies]

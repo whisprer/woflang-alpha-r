@@ -43,12 +43,14 @@
 #![allow(clippy::module_name_repetitions)]
 
 mod interpreter;
+mod keybind;
 #[cfg(feature = "dynamic-plugins")]
 mod plugin;
 mod registry;
 mod tokenizer;
 
-pub use interpreter::Interpreter;
+pub use interpreter::{FunctionDef, Interpreter, LoopType, OwnedToken};
+pub use keybind::KeyBindings;
 #[cfg(feature = "dynamic-plugins")]
 pub use plugin::PluginLoader;
 pub use registry::{OpFn, Registry};

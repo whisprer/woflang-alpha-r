@@ -1,15 +1,15 @@
 # plugins/equation_solver/CMakeLists.txt
 
 woflang_add_plugin(symbolic_rules_simplify_ops
-    ops_symbolic_rules_simplify_ops.cpp
+    symbolic_rules_simplify_ops.cpp
 )
 
 woflang_add_plugin(symbolic_linear_solve_ops
-    ops_symbolic_linear_solve_ops.cpp
+    symbolic_linear_solve_ops.cpp
 )
 
 woflang_add_plugin(symbolic_pattern_solve_ops
-    ops_symbolic_pattern_solve_ops.cpp
+    symbolic_pattern_solve_ops.cpp
 )
 
 woflang_add_plugin(symbolic_calc_ops

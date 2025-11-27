@@ -1,5 +1,5 @@
 // ==================================================
-// dreamlog_ops.cpp - Surreal Glyph Debug Stream
+// dreaming_ops.cpp - Surreal Glyph Debug Stream
 // ==================================================
 
 #ifndef WOFLANG_PLUGIN_EXPORT
@@ -46,7 +46,7 @@ extern "C" WOFLANG_PLUGIN_EXPORT void
 register_plugin(WoflangInterpreter& interp) {
     using namespace woflang;
 
-    interp.register_op(":dreamlog", [](WoflangInterpreter& ip) {
+    interp.register_op(":dreaming_ops", [](WoflangInterpreter& ip) {
         WofStackAdapter S{ip.stack};
 
         static const std::vector<std::string> glyphs = {

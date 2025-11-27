@@ -1,6 +1,6 @@
 # plugins/crypto/CMakeLists.txt
 
-woflang_add_plugin(cryto_div_trial_ops
+woflang_add_plugin(crypto_div_trial_ops
     crypto_div_trial_ops.cpp
 )
 

@@ -1,0 +1,23 @@
+# ninja log v7
+8	46	7859456421706423	D:/code/woflang-alpha-r/cpp-v10.1.1/build/CMakeFiles/cmake.verify_globs	6fc91e3692bf372d
+56	2763	7859456422174641	CMakeFiles/woflang_core.dir/src/io/tokenizer.cpp.obj	4ff61cf15d1f4ebf
+74	5081	7859456422461562	plugins/arts/CMakeFiles/music.dir/music.cpp.obj	b97fb79d72b5dd89
+137	5227	7859456423102663	plugins/equation_solver/CMakeFiles/symbolic_pattern_solve_ops.dir/symbolic_pattern_solve_ops.cpp.obj	b3804e8df86bb0a1
+62	5240	7859456422332541	CMakeFiles/woflang_core.dir/src/repl/repl_main.cpp.obj	be2fd3ccd60e8435
+112	5530	7859456422847072	plugins/crypto/CMakeFiles/prime_heck_ops.dir/prime_heck_ops.cpp.obj	69f843ef25456d91
+103	5840	7859456422756517	plugins/crypto/CMakeFiles/modexp_ops.dir/modexp_ops.cpp.obj	dffdccc1c77231e0
+120	5872	7859456422931849	plugins/equation_solver/CMakeFiles/symbolic_rules_simplify_ops.dir/symbolic_rules_simplify_ops.cpp.obj	c31e7355b6b58c0b
+147	6032	7859456423198244	plugins/equation_solver/CMakeFiles/symbolic_calc_ops.dir/symbolic_calc_ops.cpp.obj	74a029855f021e9d
+67	6103	7859456422332541	CMakeFiles/woflang.dir/main.cpp.obj	5bcc345438092504
+95	6340	7859456422676178	plugins/crypto/CMakeFiles/crypto_ops.dir/crypto_ops.cpp.obj	ff3b3efbf552927d
+88	6516	7859456422599952	plugins/crypto/CMakeFiles/crypto_div_trial_ops.dir/crypto_div_trial_ops.cpp.obj	11b43fd637dfb99
+51	7228	7859456422174641	CMakeFiles/woflang_core.dir/src/core/woflang.cpp.obj	e20073af7e1cafc9
+2771	8712	7859456449432260	plugins/equation_solver/CMakeFiles/symbolic_logic_ops.dir/symbolic_logic_ops.cpp.obj	de5b361810b83c0f
+5242	10138	7859456474154462	plugins/games/CMakeFiles/simple_chess_ops.dir/simple_chess_ops.cpp.obj	113169cdf67ed912
+5544	10141	7859456477157359	plugins/graph/CMakeFiles/graph_theory_ops.dir/graph_theory_ops.cpp.obj	4f349e34bca324da
+5229	10331	7859456474018632	plugins/games/CMakeFiles/neural_chess_ops.dir/neural_chess_ops.cpp.obj	aa92f7b53689c05b
+5862	10369	7859456480343508	plugins/graph/CMakeFiles/graph_search_ops.dir/graph_search_ops.cpp.obj	d7505a54560a0575
+5873	10445	7859456480461812	plugins/graph/CMakeFiles/graph_coloring_ops.dir/graph_coloring_ops.cpp.obj	dc50c74f8c41ea23
+6036	10485	7859456482094785	plugins/graph/CMakeFiles/shortest_path_ops.dir/shortest_path_ops.cpp.obj	364aaba45412e1ef
+80	12382	7859456422490927	plugins/constants/CMakeFiles/constants_ops.dir/constants_ops.cpp.obj	1a9ac1417e16fae5
+6104	13492	7859456482772929	plugins/language/CMakeFiles/kanji_ops.dir/kanji_ops.cpp.obj	ab3f52c5cf292e98

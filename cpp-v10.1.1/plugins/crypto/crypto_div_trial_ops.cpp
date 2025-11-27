@@ -51,11 +51,9 @@ auto make_num(double x, long) -> decltype(T(x)) {
     return T(x);
 }
 
-template<typename T>
+template <typename T>
 T make_num(double x, ...) {
-    T v;
-    v.d = x;
-    return v;
+    return WofValue::make_double(x);
 }
 
 inline std::int64_t to_int64(const WofValue& v) {
@@ -67,7 +65,7 @@ inline std::int64_t to_int64(const WofValue& v) {
 }
 
 inline WofValue make_bool(bool b) {
-    return make_num<WofValue>(b ? 1.0 : 0.0, 0);
+    return WofValue::make_double(b ? 1.0 : 0.0);
 }
 
 // Deterministic trial-division primality test for 64-bit integers

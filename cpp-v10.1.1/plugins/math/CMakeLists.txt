@@ -29,13 +29,13 @@ woflang_add_plugin(math_greek_ops
 )
 
 woflang_add_plugin(numerical_diff_ops
-    numerical_differentiation_ops.cpp
+    numerical_diff_ops.cpp
 )
 
 woflang_add_plugin(expo_log_ops
-    mathlib_exponentials_ops.cpp
+    expo_log_ops.cpp
 )
 
 woflang_add_plugin(calculus_ops
-    mathlib_calculus_ops.cpp
+    calculus_ops.cpp
 )

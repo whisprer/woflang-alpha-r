@@ -5,16 +5,18 @@ function(woflang_add_plugin plugin_name)
     add_library(${plugin_name} SHARED ${ARGN})
 
     target_include_directories(${plugin_name} PRIVATE
+        ${CMAKE_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/src/core
+        ${CMAKE_SOURCE_DIR}/src/data      # for json.hpp, etc.
         ${CMAKE_SOURCE_DIR}/plugins
     )
 
     # Make sure all plugin DLLs/SOs land in one directory:
     set_target_properties(${plugin_name} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
-        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+        RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/plugins"
+        LIBRARY_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/plugins"
+        ARCHIVE_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/plugins"
     )
 endfunction()
 
@@ -25,6 +27,7 @@ add_subdirectory(crypto)
 add_subdirectory(equation_solver)
 add_subdirectory(games)
 add_subdirectory(graph)
+add_subdirectory(language)
 add_subdirectory(logic)
 add_subdirectory(markov)
 add_subdirectory(math)

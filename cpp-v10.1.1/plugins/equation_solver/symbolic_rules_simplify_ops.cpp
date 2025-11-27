@@ -18,6 +18,22 @@ using woflang::WoflangInterpreter;
 using woflang::WofValue;
 using woflang::WofType;
 
+// ---------- Local helpers to construct WofValue safely ----------
+
+static WofValue make_int_value(std::int64_t n) {
+    WofValue v;
+    v.type  = WofType::Integer;
+    v.value = n;                 // matches as_int: std::get<std::int64_t>(v.value)
+    return v;
+}
+
+static WofValue make_string_value(const std::string& s) {
+    WofValue v;
+    v.type  = WofType::String;
+    v.value = s;                 // matches as_text: std::get<std::string>(v.value)
+    return v;
+}
+
 // Helpers for symbolic/syntactic manipulation
 static bool is_symbol(const WofValue& v) {
     return v.type == WofType::Symbol;
@@ -61,9 +77,9 @@ static void op_simplify_sum(WoflangInterpreter& interp) {
 
     if (match) {
         // X X +  ->  2 X *
-        interp.push(WofValue::make_integer(2));
+        interp.push(make_int_value(2));
         interp.push(a); // same symbol
-        interp.push(WofValue::make_string("*"));
+        interp.push(make_string_value("*"));
     } else {
         // No change: restore original triple
         interp.push(a);
@@ -108,7 +124,7 @@ extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp
         try {
             op_simplify_sum(ip);
         } catch (const std::exception& e) {
-            ip.push(WofValue::make_string(std::string("simplify_sum error: ") + e.what()));
+            ip.push(make_string_value(std::string("simplify_sum error: ") + e.what()));
         }
     });
 
@@ -116,7 +132,7 @@ extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp
         try {
             op_simplify_mul_one(ip);
         } catch (const std::exception& e) {
-            ip.push(WofValue::make_string(std::string("simplify_mul_one error: ") + e.what()));
+            ip.push(make_string_value(std::string("simplify_mul_one error: ") + e.what()));
         }
     });
 

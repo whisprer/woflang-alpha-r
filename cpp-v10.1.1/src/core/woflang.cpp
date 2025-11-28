@@ -17,28 +17,28 @@ namespace woflang {
 
 WofValue WofValue::make_int(std::int64_t v) {
     WofValue w;
-    w.type = WofType::Integer;
+    w.type  = WofType::Integer;
     w.value = v;
     return w;
 }
 
 WofValue WofValue::make_double(double v) {
     WofValue w;
-    w.type = WofType::Double;
+    w.type  = WofType::Double;
     w.value = v;
     return w;
 }
 
 WofValue WofValue::make_string(const std::string& s) {
     WofValue w;
-    w.type = WofType::String;
+    w.type  = WofType::String;
     w.value = s;
     return w;
 }
 
 WofValue WofValue::make_symbol(const std::string& s) {
     WofValue w;
-    w.type = WofType::Symbol;
+    w.type  = WofType::Symbol;
     w.value = s;
     return w;
 }
@@ -54,134 +54,121 @@ bool WofValue::operator==(const WofValue& other) const {
     } else if (unit || other.unit) {
         return false;
     }
-    return value == other.value;
-}
 
-bool WofValue::operator!=(const WofValue& other) const {
-    return !(*this == other);
+    switch (type) {
+        case WofType::Unknown:
+            return true;
+        case WofType::Integer:
+            return std::get<std::int64_t>(value) == std::get<std::int64_t>(other.value);
+        case WofType::Double:
+            return std::get<double>(value) == std::get<double>(other.value);
+        case WofType::String:
+        case WofType::Symbol:
+            return std::get<std::string>(value) == std::get<std::string>(other.value);
+    }
+    return false;
 }
 
 std::string WofValue::to_string() const {
-    std::ostringstream oss;
     switch (type) {
-        case WofType::Integer:
-            oss << std::get<std::int64_t>(value);
-            break;
-        case WofType::Double:
-            oss << std::get<double>(value);
-            break;
-        case WofType::String:
-        case WofType::Symbol:
-            oss << std::get<std::string>(value);
-            break;
         case WofType::Unknown:
-        default:
-            oss << "<unknown>";
-            break;
+            return "<unknown>";
+        case WofType::Integer:
+            return std::to_string(std::get<std::int64_t>(value));
+        case WofType::Double: {
+            std::ostringstream oss;
+            oss << std::get<double>(value);
+            return oss.str();
+        }
+        case WofType::String:
+            return "\"" + std::get<std::string>(value) + "\"";
+        case WofType::Symbol:
+            return std::get<std::string>(value);
     }
-    if (unit) {
-        oss << " " << unit->name;
-    }
-    return oss.str();
-}
-
-double WofValue::as_numeric() const {
-    if (type == WofType::Integer) {
-        return static_cast<double>(std::get<std::int64_t>(value));
-    }
-    if (type == WofType::Double) {
-        return std::get<double>(value);
-    }
-    throw std::runtime_error("WofValue::as_numeric: value is not numeric");
+    return "<invalid>";
 }
 
 bool WofValue::is_numeric() const {
     return type == WofType::Integer || type == WofType::Double;
 }
 
-// ======== WoflangInterpreter implementation ========
+double WofValue::as_numeric() const {
+    switch (type) {
+        case WofType::Integer:
+            return static_cast<double>(std::get<std::int64_t>(value));
+        case WofType::Double:
+            return std::get<double>(value);
+        case WofType::String:
+        case WofType::Symbol:
+            // In numeric contexts, non-numeric values are treated as 0.0
+            return 0.0;
+        case WofType::Unknown:
+            return 0.0;
+    }
+    return 0.0;
+}
+
+// ======== Internal helpers (anonymous namespace) ========
 
 namespace {
 
-std::string trim(const std::string& s) {
-    std::size_t start = 0;
-    while (start < s.size() && std::isspace(static_cast<unsigned char>(s[start]))) {
-        ++start;
-    }
-    std::size_t end = s.size();
-    while (end > start && std::isspace(static_cast<unsigned char>(s[end - 1]))) {
-        --end;
-    }
-    return s.substr(start, end - start);
-}
-
-bool is_integer_token(const std::string& token) {
+bool is_number(const std::string& token) {
     if (token.empty()) {
         return false;
     }
-    std::size_t pos = 0;
-    if (token[pos] == '+' || token[pos] == '-') {
-        ++pos;
-    }
-    if (pos >= token.size()) {
+    char* endptr = nullptr;
+    std::strtod(token.c_str(), &endptr);
+    return endptr == token.c_str() + token.size();
+}
+
+bool is_integer(const std::string& token) {
+    if (token.empty()) {
         return false;
     }
-    for (; pos < token.size(); ++pos) {
-        if (!std::isdigit(static_cast<unsigned char>(token[pos]))) {
+    std::size_t i = 0;
+    if (token[0] == '-' || token[0] == '+') {
+        i = 1;
+    }
+    if (i == token.size()) {
+        return false;
+    }
+    for (; i < token.size(); ++i) {
+        if (!std::isdigit(static_cast<unsigned char>(token[i]))) {
             return false;
         }
     }
     return true;
 }
 
-bool is_float_token(const std::string& token) {
-    if (token.empty()) {
-        return false;
-    }
-    bool seen_dot = false;
-    std::size_t pos = 0;
-    if (token[pos] == '+' || token[pos] == '-') {
-        ++pos;
-    }
-    bool any_digit = false;
-    for (; pos < token.size(); ++pos) {
-        char c = token[pos];
-        if (std::isdigit(static_cast<unsigned char>(c))) {
-            any_digit = true;
-        } else if (c == '.') {
-            if (seen_dot) {
-                return false;
-            }
-            seen_dot = true;
-        } else {
-            return false;
-        }
-    }
-    return any_digit && seen_dot;
-}
-
-// Simple whitespace tokenizer that keeps quoted strings together.
 std::vector<std::string> simple_tokenize(const std::string& line) {
     std::vector<std::string> tokens;
-    std::string current;
-    bool in_quotes = false;
+    std::string              current;
+    bool                     in_string = false;
 
-    for (std::size_t i = 0; i < line.size(); ++i) {
-        char c = line[i];
-        if (c == '"') {
-            current.push_back(c);
-            if (in_quotes) {
+    for (char ch : line) {
+        if (in_string) {
+            if (ch == '"') {
+                in_string = false;
                 tokens.push_back(current);
                 current.clear();
-            }
-            in_quotes = !in_quotes;
-        } else if (std::isspace(static_cast<unsigned char>(c)) && !in_quotes) {
-            if (!current.empty()) {
-                tokens.push_back(current);
-                current.clear();
+            } else {
+                current.push_back(ch);
             }
         } else {
-            current.push_back(c);
+            if (std::isspace(static_cast<unsigned char>(ch))) {
+                if (!current.empty()) {
+                    tokens.push_back(current);
+                    current.clear();
+                }
+            } else if (ch == '"') {
+                if (!current.empty()) {
+                    tokens.push_back(current);
+                    current.clear();
+                }
+                in_string = true;
+            } else {
+                current.push_back(ch);
+            }
         }
     }
 
@@ -194,241 +181,98 @@ std::vector<std::string> simple_tokenize(const std::string& line) {
 
 } // anonymous namespace
 
+// ======== WoflangInterpreter implementation ========
+
 WoflangInterpreter::WoflangInterpreter() {
-    // Core arithmetic operations
+    // Core arithmetic operators
     register_op("+", [](WoflangInterpreter& interp) {
-        double b = interp.pop_numeric();
-        double a = interp.pop_numeric();
-        interp.push(WofValue::make_double(a + b));
+        if (!interp.stack_has(2)) {
+            throw std::runtime_error("Stack underflow for +");
+        }
+        WofValue b = interp.pop();
+        WofValue a = interp.pop();
+
+        if (a.is_numeric() && b.is_numeric()) {
+            double res = a.as_numeric() + b.as_numeric();
+            interp.push(WofValue::make_double(res));
+        } else {
+            std::string sa = a.to_string();
+            std::string sb = b.to_string();
+            interp.push(WofValue::make_string(sa + sb));
+        }
     });
 
     register_op("-", [](WoflangInterpreter& interp) {
-        double b = interp.pop_numeric();
-        double a = interp.pop_numeric();
-        interp.push(WofValue::make_double(a - b));
+        if (!interp.stack_has(2)) {
+            throw std::runtime_error("Stack underflow for -");
+        }
+        WofValue b = interp.pop();
+        WofValue a = interp.pop();
+        double   res = a.as_numeric() - b.as_numeric();
+        interp.push(WofValue::make_double(res));
     });
 
     register_op("*", [](WoflangInterpreter& interp) {
-        double b = interp.pop_numeric();
-        double a = interp.pop_numeric();
-        interp.push(WofValue::make_double(a * b));
+        if (!interp.stack_has(2)) {
+            throw std::runtime_error("Stack underflow for *");
+        }
+        WofValue b = interp.pop();
+        WofValue a = interp.pop();
+        double   res = a.as_numeric() * b.as_numeric();
+        interp.push(WofValue::make_double(res));
     });
 
     register_op("/", [](WoflangInterpreter& interp) {
-        double b = interp.pop_numeric();
-        double a = interp.pop_numeric();
-        if (b == 0.0) {
-            interp.error("division by zero");
-        }
-        interp.push(WofValue::make_double(a / b));
-    });
-
-    // Stack manipulation
-    register_op("dup", [](WoflangInterpreter& interp) {
-        if (!interp.stack_has(1)) {
-            interp.error("dup requires at least one value on the stack");
-        }
-        const auto& stk = interp.get_stack();
-        WofValue v = stk.back();
-        interp.push(v);
-    });
-
-    register_op("drop", [](WoflangInterpreter& interp) {
-        if (!interp.stack_has(1)) {
-            interp.error("drop requires at least one value on the stack");
-        }
-        (void)interp.pop();
-    });
-
-    register_op("swap", [](WoflangInterpreter& interp) {
         if (!interp.stack_has(2)) {
-            interp.error("swap requires at least two values on the stack");
+            throw std::runtime_error("Stack underflow for /");
         }
-        auto& stk = const_cast<std::vector<WofValue>&>(interp.get_stack());
-        std::swap(stk[stk.size() - 1], stk[stk.size() - 2]);
+        WofValue b = interp.pop();
+        WofValue a = interp.pop();
+        double   denom = b.as_numeric();
+        if (denom == 0.0) {
+            throw std::runtime_error("Division by zero");
+        }
+        double res = a.as_numeric() / denom;
+        interp.push(WofValue::make_double(res));
     });
 
-    register_op("print", [](WoflangInterpreter& interp) {
-        if (!interp.stack_has(1)) {
-            std::cout << "(stack empty)" << std::endl;
-            return;
-        }
-        const auto& stk = interp.get_stack();
-        std::cout << stk.back().to_string() << std::endl;
-    });
-
+    // Stack inspection helper
     register_op(".s", [](WoflangInterpreter& interp) {
         interp.print_stack();
     });
 }
 
 WoflangInterpreter::~WoflangInterpreter() {
-    for (auto handle : plugin_handles) {
 #ifdef _WIN32
-        if (handle != nullptr) {
+    for (auto handle : plugin_handles) {
+        if (handle) {
             FreeLibrary(handle);
         }
+    }
 #else
-        if (handle != nullptr) {
+    for (auto handle : plugin_handles) {
+        if (handle) {
             dlclose(handle);
         }
-#endif
     }
-    plugin_handles.clear();
-}
-
-void WoflangInterpreter::register_op(const std::string& name, WofOpHandler handler) {
-    ops[name] = std::move(handler);
-}
-
-void WoflangInterpreter::load_plugin(const std::filesystem::path& dll_path) {
-    if (!std::filesystem::exists(dll_path)) {
-        // Silently ignore missing plugin path; caller usually iterates directory.
-        return;
-    }
-
-#ifdef _WIN32
-    PluginHandle handle = LoadLibraryA(dll_path.string().c_str());
-    if (!handle) {
-        std::cerr << "Failed to load plugin: " << dll_path.string() << std::endl;
-        return;
-    }
-
-    using RegisterPluginFunc = void (*)(WoflangInterpreter&);
-    auto* raw = GetProcAddress(handle, "register_plugin");
-    if (!raw) {
-        std::cerr << "Plugin " << dll_path.string() << " has no register_plugin symbol" << std::endl;
-        FreeLibrary(handle);
-        return;
-    }
-
-    auto register_func = reinterpret_cast<RegisterPluginFunc>(raw);
-    register_func(*this);
-    plugin_handles.push_back(handle);
-#else
-    PluginHandle handle = dlopen(dll_path.c_str(), RTLD_LAZY);
-    if (!handle) {
-        std::cerr << "Failed to load plugin: " << dll_path.string()
-                  << " (" << dlerror() << ")" << std::endl;
-        return;
-    }
-
-    using RegisterPluginFunc = void (*)(WoflangInterpreter&);
-    dlerror(); // clear
-    auto* raw = dlsym(handle, "register_plugin");
-    const char* err = dlerror();
-    if (err != nullptr || !raw) {
-        std::cerr << "Plugin " << dll_path.string()
-                  << " has no register_plugin symbol (" << (err ? err : "") << ")"
-                  << std::endl;
-        dlclose(handle);
-        return;
-    }
-
-    auto register_func = reinterpret_cast<RegisterPluginFunc>(raw);
-    register_func(*this);
-    plugin_handles.push_back(handle);
 #endif
 }
 
-void WoflangInterpreter::load_plugins(const std::filesystem::path& plugin_dir) {
-    if (!std::filesystem::exists(plugin_dir) || !std::filesystem::is_directory(plugin_dir)) {
-        return;
-    }
-
-    for (const auto& entry : std::filesystem::directory_iterator(plugin_dir)) {
-        if (!entry.is_regular_file()) {
-            continue;
-        }
-        const auto& path = entry.path();
-#ifdef _WIN32
-        if (path.extension() == ".dll")
-#else
-        if (path.extension() == ".so" || path.extension() == ".dylib")
-#endif
-        {
-            load_plugin(path);
-        }
-    }
+void WoflangInterpreter::push(const WofValue& v) {
+    stack.push_back(v);
 }
 
-void WoflangInterpreter::dispatch_token(const std::string& token) {
-    // Comment support: ignore everything after '#'
-    if (!token.empty() && token[0] == '#') {
-        return;
-    }
-
-    // Quoted string
-    if (token.size() >= 2 && token.front() == '"' && token.back() == '"') {
-        std::string inner = token.substr(1, token.size() - 2);
-        push(WofValue::make_string(inner));
-        return;
-    }
-
-    // Integers / floats
-    if (is_integer_token(token)) {
-        std::int64_t v = std::stoll(token);
-        push(WofValue::make_int(v));
-        return;
-    }
-    if (is_float_token(token)) {
-        double v = std::stod(token);
-        push(WofValue::make_double(v));
-        return;
-    }
-
-    // Known operator?
-    auto it = ops.find(token);
-    if (it != ops.end()) {
-        it->second(*this);
-        return;
-    }
-
-    // Fallback: treat as symbol and push onto the stack.
-    push(WofValue::make_symbol(token));
+bool WoflangInterpreter::stack_has(std::size_t n) const {
+    return stack.size() >= n;
 }
 
-void WoflangInterpreter::exec_line(const std::string& line) {
-    const std::string trimmed = trim(line);
-    if (trimmed.empty()) {
-        return;
-    }
-    auto tokens = simple_tokenize(trimmed);
-    for (const auto& tok : tokens) {
-        dispatch_token(tok);
-    }
-}
-
-void WoflangInterpreter::exec_script(const std::filesystem::path& filename) {
-    std::ifstream in(filename);
-    if (!in) {
-        error("failed to open script: " + filename.string());
-    }
-    std::string line;
-    while (std::getline(in, line)) {
-        exec_line(line);
-    }
-}
-
-void WoflangInterpreter::repl() {
-    std::cout << "Woflang REPL. Ctrl+D or Ctrl+Z to exit." << std::endl;
-    std::string line;
-    while (true) {
-        std::cout << "wofl> " << std::flush;
-        if (!std::getline(std::cin, line)) {
-            break;
-        }
-        try {
-            exec_line(line);
-        } catch (const std::exception& ex) {
-            std::cerr << "Error: " << ex.what() << std::endl;
-        }
-    }
+const std::vector<WofValue>& WoflangInterpreter::get_stack() const {
+    return stack;
 }
 
 WofValue WoflangInterpreter::pop() {
     if (stack.empty()) {
-        error("stack underflow");
+        throw std::runtime_error("Stack underflow in pop()");
     }
     WofValue v = stack.back();
     stack.pop_back();
@@ -441,31 +285,19 @@ std::int64_t WoflangInterpreter::pop_int() {
         return std::get<std::int64_t>(v.value);
     }
     if (v.type == WofType::Double) {
-        return static_cast<std::int64_t>(std::llround(std::get<double>(v.value)));
+        return static_cast<std::int64_t>(std::get<double>(v.value));
     }
-    error("pop_int: value is not numeric");
+    throw std::runtime_error("pop_int: value is not numeric");
 }
 
 double WoflangInterpreter::pop_double() {
     WofValue v = pop();
-    if (v.type == WofType::Double) {
-        return std::get<double>(v.value);
-    }
-    if (v.type == WofType::Integer) {
-        return static_cast<double>(std::get<std::int64_t>(v.value));
-    }
-    error("pop_double: value is not numeric");
+    return v.as_numeric();
 }
 
 double WoflangInterpreter::pop_numeric() {
     WofValue v = pop();
-    if (v.type == WofType::Double) {
-        return std::get<double>(v.value);
-    }
-    if (v.type == WofType::Integer) {
-        return static_cast<double>(std::get<std::int64_t>(v.value));
-    }
-    error("pop_numeric: value is not numeric");
+    return v.as_numeric();
 }
 
 std::string WoflangInterpreter::pop_string() {
@@ -473,7 +305,7 @@ std::string WoflangInterpreter::pop_string() {
     if (v.type == WofType::String || v.type == WofType::Symbol) {
         return std::get<std::string>(v.value);
     }
-    error("pop_string: value is not a string");
+    return v.to_string();
 }
 
 std::string WoflangInterpreter::pop_symbol() {
@@ -481,7 +313,7 @@ std::string WoflangInterpreter::pop_symbol() {
     if (v.type == WofType::Symbol) {
         return std::get<std::string>(v.value);
     }
-    error("pop_symbol: value is not a symbol");
+    throw std::runtime_error("pop_symbol: value is not a symbol");
 }
 
 bool WoflangInterpreter::pop_bool() {
@@ -494,25 +326,197 @@ bool WoflangInterpreter::pop_bool() {
     }
     if (v.type == WofType::String || v.type == WofType::Symbol) {
         const auto& s = std::get<std::string>(v.value);
-        return !s.empty() && s != "0" && s != "false" && s != "False";
+        return !s.empty() && s != "0" && s != "false";
     }
     return false;
 }
 
+// ========== Op registration and execution ==========
+
+void WoflangInterpreter::register_op(const std::string& name, WofOpHandler handler) {
+    ops[name] = std::move(handler);
+}
+
+void WoflangInterpreter::dispatch_token(const std::string& token) {
+    // String literal?
+    if (!token.empty() && token.front() == '"' && token.back() == '"' && token.size() >= 2) {
+        std::string inner = token.substr(1, token.size() - 2);
+        push(WofValue::make_string(inner));
+        return;
+    }
+
+    // Number?
+    if (is_integer(token)) {
+        std::int64_t iv = std::stoll(token);
+        push(WofValue::make_int(iv));
+        return;
+    }
+    if (is_number(token)) {
+        double dv = std::stod(token);
+        push(WofValue::make_double(dv));
+        return;
+    }
+
+    // Registered op?
+    auto it = ops.find(token);
+    if (it != ops.end()) {
+        it->second(*this);
+        return;
+    }
+
+    // Otherwise treat as symbol
+    push(WofValue::make_symbol(token));
+}
+
+void WoflangInterpreter::exec_line(const std::string& line) {
+    auto tokens = simple_tokenize(line);
+    for (const auto& t : tokens) {
+        dispatch_token(t);
+    }
+}
+
+void WoflangInterpreter::exec_script(const std::filesystem::path& filename) {
+    std::ifstream in(filename);
+    if (!in) {
+        throw std::runtime_error("Cannot open script: " + filename.string());
+    }
+    std::string line;
+    while (std::getline(in, line)) {
+        exec_line(line);
+    }
+}
+
+// ========== Plugin loading (new + legacy) ==========
+
+void WoflangInterpreter::load_plugin(const std::filesystem::path& path) {
+#ifdef _WIN32
+    HMODULE handle = LoadLibraryW(path.wstring().c_str());
+    if (!handle) {
+        throw std::runtime_error("Failed to load plugin: " + path.string());
+    }
+
+    using RegisterPluginFunc = void (*)(WoflangInterpreter&);
+    using CreatePluginFunc   = WoflangPlugin* (*)();
+
+    FARPROC raw_reg    = GetProcAddress(handle, "register_plugin");
+    FARPROC raw_create = nullptr;
+
+    if (raw_reg) {
+        auto register_func = reinterpret_cast<RegisterPluginFunc>(raw_reg);
+        register_func(*this);
+    } else {
+        raw_create = GetProcAddress(handle, "create_plugin");
+        if (!raw_create) {
+            FreeLibrary(handle);
+            throw std::runtime_error("No register_plugin/create_plugin in plugin: " + path.string());
+        }
+        auto create_func = reinterpret_cast<CreatePluginFunc>(raw_create);
+        std::unique_ptr<WoflangPlugin> plugin(create_func());
+        plugin->register_ops(*this);
+        plugin_objects.push_back(std::move(plugin));
+    }
+
+    plugin_handles.push_back(handle);
+
+#else
+    void* handle = dlopen(path.string().c_str(), RTLD_NOW);
+    if (!handle) {
+        throw std::runtime_error(std::string("Failed to load plugin: ") + dlerror());
+    }
+
+    dlerror(); // clear
+    using RegisterPluginFunc = void (*)(WoflangInterpreter&);
+    using CreatePluginFunc   = WoflangPlugin* (*)();
+
+    auto raw_reg = dlsym(handle, "register_plugin");
+    const char* err = dlerror();
+
+    if (!err && raw_reg) {
+        auto register_func = reinterpret_cast<RegisterPluginFunc>(raw_reg);
+        register_func(*this);
+    } else {
+        dlerror(); // clear
+        auto raw_create = dlsym(handle, "create_plugin");
+        err = dlerror();
+        if (err || !raw_create) {
+            dlclose(handle);
+            throw std::runtime_error(std::string("No register_plugin/create_plugin in plugin: ") + path.string());
+        }
+        auto create_func = reinterpret_cast<CreatePluginFunc>(raw_create);
+        std::unique_ptr<WoflangPlugin> plugin(create_func());
+        plugin->register_ops(*this);
+        plugin_objects.push_back(std::move(plugin));
+    }
+
+    plugin_handles.push_back(handle);
+#endif
+}
+
+void WoflangInterpreter::load_plugins(const std::filesystem::path& dir) {
+    namespace fs = std::filesystem;
+    if (!fs::exists(dir) || !fs::is_directory(dir)) {
+        return;
+    }
+
+    for (const auto& entry : fs::directory_iterator(dir)) {
+        if (!entry.is_regular_file()) {
+            continue;
+        }
+#ifdef _WIN32
+        if (entry.path().extension() == ".dll") {
+            load_plugin(entry.path());
+        }
+#else
+        if (entry.path().extension() == ".so" || entry.path().extension() == ".dylib") {
+            load_plugin(entry.path());
+        }
+#endif
+    }
+}
+
+// ========== REPL and stack display ==========
+
+void WoflangInterpreter::repl() {
+    std::cout << "Welcome to woflang. Type 'quit' to exit.\n";
+    std::string line;
+    while (true) {
+        std::cout << "wof> ";
+        if (!std::getline(std::cin, line)) {
+            break;
+        }
+        if (line == "quit") {
+            break;
+        }
+        if (line == "clear") {
+            clear_stack();
+            continue;
+        }
+        if (line == "show") {
+            print_stack();
+            continue;
+        }
+        try {
+            exec_line(line);
+        } catch (const std::exception& ex) {
+            std::cout << "Error: " << ex.what() << '\n';
+        }
+    }
+}
+
 void WoflangInterpreter::print_stack() const {
-    std::cout << "Stack [" << stack.size() << "]" << std::endl;
-    for (std::size_t i = 0; i < stack.size(); ++i) {
-        const auto& v = stack[i];
-        std::cout << "  [" << i << "] " << v.to_string() << std::endl;
+    if (stack.empty()) {
+        std::cout << "[stack is empty]\n";
+        return;
+    }
+
+    std::cout << "Stack (top → bottom):\n";
+    for (auto it = stack.rbegin(); it != stack.rend(); ++it) {
+        std::cout << "  - " << it->to_string() << '\n';
     }
 }
 
 void WoflangInterpreter::clear_stack() {
     stack.clear();
-}
-
-[[noreturn]] void WoflangInterpreter::error(const std::string& msg) {
-    throw std::runtime_error(msg);
 }
 
 } // namespace woflang

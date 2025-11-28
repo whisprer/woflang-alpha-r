@@ -15,11 +15,26 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-whisprer%2Fwoflang--alpha--r-blue?logo=github&style=flat-square)](https://github.com/whisprer/woflang-alpha-r)
 [![C++ Version](https://img.shields.io/badge/C%2B%2B-v10.1.1-00599C?logo=cplusplus&style=flat-square)](https://github.com/whisprer/woflang-alpha-r/tree/main/cpp-v10.1.1)
-[![Rust Version](https://img.shields.io/badge/Rust-v0.0.1-CE422B?logo=rust&style=flat-square)](https://github.com/whisprer/woflang-alpha-r/tree/main/rs-v0.0.1)
+[![Rust Version](https://img.shields.io/badge/Rust-v0.0.3-CE422B?logo=rust&style=flat-square)](https://github.com/whisprer/woflang-alpha-r/tree/main/rs-v0.0.1)
 [![License](https://img.shields.io/badge/License-MIT%20%2F%20Apache--2.0-green?style=flat-square)](LICENSE.md)
 [![Status](https://img.shields.io/badge/Status-Alpha%20Release-orange?style=flat-square)](CHANGELOG.md)
 
 ---
+
+
+----------------------------------------------------------------
+
+╦ ╦┌─┐┌─┐┬  ┌─┐┌┐┌┌─┐  
+║║║│ │├┤ │  ├─┤││││ ┬  
+╚╩╝└─┘└  ┴─┘┴ ┴┘└┘└─┘ v10.1.1/v.0.3
+
+# WofLang - A Unicode-native Stack Language  
+**Creative, Symbolic, Secure Computation for the Modern Era**
+
+----------------------------------------------------------------
+
+---
+
 
 ## What is WofLang?
 

@@ -1,32 +1,53 @@
-// =======================================================
-// prophecy_ops.cpp - [All operations currently just log that they are unimplemented.]
-// Auto-generated Stub to ensure build success with the new Woflang core.
-// =======================================================
+// plugins/sigils/prophecy_ops.cpp
+
+#include "woflang.hpp"
 
 #include <iostream>
+#include <random>
 #include <string>
-#include "woflang.hpp"
+#include <vector>
+
+using namespace woflang;
 
 #ifndef WOFLANG_PLUGIN_EXPORT
 # ifdef _WIN32
-#  define WOFLANG_PLUGIN_EXPORT __declspec(dllexport)
+#  define WOFLANG_PLUGIN_EXPORT extern "C" __declspec(dllexport)
 # else
-#  define WOFLANG_PLUGIN_EXPORT __attribute__((visibility("default")))
+#  define WOFLANG_PLUGIN_EXPORT extern "C"
 # endif
 #endif
 
-using woflang::WoflangInterpreter;
+static std::mt19937 &prophecy_rng() {
+    static std::mt19937 rng{std::random_device{}()};
+    return rng;
+}
 
-extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
+static void op_prophecy(WoflangInterpreter &interp) {
+    static const std::vector<std::string> prophecies = {
+        "In the glyph’s shadow, your stack’s fate is sealed.",
+        "Beware: the next push may tip the void.",
+        "The stack will echo your intent, not your command.",
+        "A silent glyph is the most powerful of all.",
+        "When the top is light, the bottom bears the weight.",
+        "Three swaps from now, a revelation will surface.",
+        "Between ∅ and ∞, your next op chooses the path.",
+        "The slayer sleeps… for now."
+    };
 
-    interp.register_op("oracle", [](WoflangInterpreter& ip) {
-        std::cout << "[prophecy_ops] op \"oracle\" is not yet implemented."
-                  << " Stack size: " << ip.stack.size() << "\n";
-    });
+    auto &rng = prophecy_rng();
+    std::uniform_int_distribution<std::size_t> dist(0, prophecies.size() - 1);
+    const std::string &chosen = prophecies[dist(rng)];
 
-    interp.register_op("prophecy", [](WoflangInterpreter& ip) {
-        std::cout << "[prophecy_ops] op \"prophecy\" is not yet implemented."
-                  << " Stack size: " << ip.stack.size() << "\n";
-    });
+    std::cout << "[Prophecy] " << chosen << "\n";
 
+    // Also push the prophecy text onto the stack as a String value
+    WofValue v;
+    v.type  = WofType::String;
+    v.value = chosen;
+    interp.stack.push_back(v);
+}
+
+WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter &interp) {
+    interp.register_op("prophecy", op_prophecy);
+    std::cout << "[prophecy_ops] Plugin loaded.\n";
 }

@@ -2,19 +2,29 @@
 // stack_void_division_ops.cpp - beware division by zero in the stack
 // ===================================================================
 
-#include "../../src/core/woflang.hpp"
+#ifndef WOFLANG_PLUGIN_EXPORT
+# ifdef _WIN32
+#  define WOFLANG_PLUGIN_EXPORT __declspec(dllexport)
+# else
+#  define WOFLANG_PLUGIN_EXPORT __attribute__((visibility("default")))
+# endif
+#endif
+
+#include "woflang.hpp"
 #include <iostream>
 
-class GlyphProphecyStackVoidDivisionPlugin : public WoflangPlugin {
-public:
-    void register_ops(WoflangInterpreter& interp) override {
-        interp.register_op("glyph_prophecy", [](WoflangInterpreter&) {
-            std::cout << "[Forbidden] The encrypted glyph prophecy divides the stack void. Beware division by zero!" << std::endl;
-        });
-    }
-};
+using woflang::WoflangInterpreter;
 
-WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
-    static GlyphProphecyStackVoidDivisionPlugin plugin;
-    plugin.register_ops(interp);
+static void op_glyph_prophecy(WoflangInterpreter& /*interp*/) {
+    std::cout << "[Forbidden] The encrypted glyph prophecy divides the stack void. "
+                 "Beware division by zero!"
+              << std::endl;
+}
+
+extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
+    interp.register_op("glyph_prophecy", [](WoflangInterpreter& ip) {
+        op_glyph_prophecy(ip);
+    });
+
+    std::cout << "[stack_void_division_ops] Plugin loaded.\n";
 }

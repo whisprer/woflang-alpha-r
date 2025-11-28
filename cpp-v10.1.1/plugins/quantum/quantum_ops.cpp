@@ -2,10 +2,6 @@
 // quantum_ops.cpp - your very own quantum computer!
 // =================================================
 
-#include <iostream>
-#include <random>
-#include "woflang.hpp"
-
 #ifndef WOFLANG_PLUGIN_EXPORT
 # ifdef _WIN32
 #  define WOFLANG_PLUGIN_EXPORT __declspec(dllexport)
@@ -14,9 +10,17 @@
 # endif
 #endif
 
+#include "woflang.hpp"
+
+#include <iostream>
+#include <random>
+#include <cstdint>
+
 using woflang::WoflangInterpreter;
 using woflang::WofValue;
 using woflang::WofType;
+
+// ---- local helpers -------------------------------------------------
 
 static std::mt19937& rng() {
     static std::mt19937 gen{std::random_device{}()};
@@ -36,10 +40,17 @@ static std::int64_t as_int(const WofValue& v) {
     return std::get<std::int64_t>(v.value);
 }
 
+static WofValue make_int_value(std::int64_t n) {
+    WofValue v;
+    v.type  = WofType::Integer;
+    v.value = n;
+    return v;
+}
+
 // |ψ⟩  -> push random qubit {0,1}
 static void op_qubit_superposition(WoflangInterpreter& ip) {
     int bit = rand_bit();
-    ip.push(WofValue::make_integer(bit));
+    ip.push(make_int_value(bit));
     std::cout << "[quantum] |ψ⟩ superposition -> pushed qubit " << bit << "\n";
 }
 
@@ -49,7 +60,7 @@ static void op_hadamard(WoflangInterpreter& ip) {
         ip.stack.pop_back();
     }
     int bit = rand_bit();
-    ip.push(WofValue::make_integer(bit));
+    ip.push(make_int_value(bit));
     std::cout << "[quantum] H gate -> new qubit " << bit << "\n";
 }
 
@@ -68,9 +79,9 @@ static void op_pauli_x(WoflangInterpreter& ip) {
         return;
     }
 
-    std::int64_t v = as_int(q);
+    std::int64_t v       = as_int(q);
     std::int64_t flipped = (v == 0) ? 1 : 0;
-    ip.push(WofValue::make_integer(flipped));
+    ip.push(make_int_value(flipped));
     std::cout << "[quantum] X gate: " << v << " -> " << flipped << "\n";
 }
 
@@ -89,7 +100,7 @@ static void op_measure(WoflangInterpreter& ip) {
         v = as_int(q);
     }
     std::cout << "[quantum] measured: " << v << "\n";
-    ip.push(WofValue::make_integer(v));
+    ip.push(make_int_value(v));
 }
 
 extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {

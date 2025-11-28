@@ -39,3 +39,7 @@ woflang_add_plugin(prophecy_ops
 woflang_add_plugin(whitexmas_ops
     whitexmas_ops.cpp
 )
+
+woflang_add_plugin(hebrew_ops
+    hebrew_ops.cpp
+)

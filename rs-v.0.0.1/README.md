@@ -1,4 +1,21 @@
-# 🐺 Woflang
+[README.md] 20251128213859
+
+# README.md for Rust v0.0.3
+
+hopefully the first successful Rust port of woflang…
+
+
+----------------------------------------------------------------
+
+╦ ╦┌─┐┌─┐┬  ┌─┐┌┐┌┌─┐  
+║║║│ │├┤ │  ├─┤││││ ┬  
+╚╩╝└─┘└  ┴─┘┴ ┴┘└┘└─┘ v10.1.1
+
+# WofLang - A Unicode-native Stack Language  
+**Creative, Symbolic, Secure Computation for the Modern Era**
+
+----------------------------------------------------------------
+
 
 [![CI](https://github.com/wofl/woflang-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/wofl/woflang-rs/actions)
 [![Crates.io](https://img.shields.io/crates/v/woflang-core.svg)](https://crates.io/crates/woflang-core)

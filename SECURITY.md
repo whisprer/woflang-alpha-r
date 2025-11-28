@@ -2,7 +2,7 @@ Security Policy
 Supported Versions
 Component	Version Range	Support Level
 C++ WofLang	v10.1.1	✅ Active
-Rust WofLang	v0.0.1 (alpha)	✅ Active
+Rust WofLang	v0.0.3 (alpha)	✅ Active
 WofLang Alpha-R is currently in an alpha phase; security expectations should match an experimental research and tooling project rather than a hardened production system.
 
 Reporting a Vulnerability
@@ -72,3 +72,4 @@ Build from source using your own toolchain.
 Run interpreters and plugins inside containers or VMs when evaluating untrusted scripts.
 
 If you are performing a formal audit and need clarification, please reach out via a private channel first.
+

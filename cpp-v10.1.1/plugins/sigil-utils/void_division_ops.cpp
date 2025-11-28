@@ -1,5 +1,5 @@
 // ==========================================================
-// void_division_ops.cpp - Forbidden Mathematical Operations (v10.1.1 API)
+// void_division_ops.cpp - Forbidden Mathematical Operations
 // ==========================================================
 
 #ifndef WOFLANG_PLUGIN_EXPORT
@@ -10,11 +10,11 @@
 # endif
 #endif
 
-#include "../../src/core/woflang.hpp"
+#include "woflang.hpp"
 
 #include <iostream>
 #include <limits>
-#include math>
+#include <cstdlib>
 
 using woflang::WoflangInterpreter;
 using woflang::WofValue;
@@ -32,8 +32,7 @@ struct WofStackAdapter {
 };
 }
 
-extern "C" WOFLANG_PLUGIN_EXPORT void
-register_plugin(WoflangInterpreter& interp) {
+extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
     using namespace woflang;
 
     interp.register_op("void_division", [](WoflangInterpreter& ip) {

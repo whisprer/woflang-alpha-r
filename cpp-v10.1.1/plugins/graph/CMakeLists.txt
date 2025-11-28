@@ -12,6 +12,6 @@ woflang_add_plugin(graph_coloring_ops
     graph_coloring_ops.cpp
 )
 
-woflang_add_plugin(shortest_path_ops
-    shortest_path_ops.cpp
+woflang_add_plugin(graph_shortest_path_ops
+    graph_shortest_path_ops.cpp
 )

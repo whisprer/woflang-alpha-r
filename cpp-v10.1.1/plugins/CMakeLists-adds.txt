@@ -1,0 +1,114 @@
+# CMakeLists.txt in plugins/
+
+file(GLOB_RECURSE PLUGIN_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+foreach(plugin_src ${PLUGIN_SRCS})
+    # e.g. arts/kanji/kanji_ops.cpp → plugin_name = kanji_ops
+    get_filename_component(plugin_name ${plugin_src} NAME_WE)
+    add_library(${plugin_name} SHARED ${plugin_src})
+    target_include_directories(${plugin_name} PRIVATE ../src/core)
+endforeach()
+
+
+
+
+
+
+
+add_woflang_plugin(numeric_diff_ops plugins/math/numeric_diff_ops.cpp)
+# REMOVE / COMMENT OUT any numerical_diff_ops line
+# add_woflang_plugin(numerical_diff_ops plugins/math/numerical_diff_ops.cpp)
+
+
+
+
+
+
+
+add_woflang_plugin(gradient_hessian_ops plugins/math/gradient_hessian_ops.cpp)
+add_woflang_plugin(geom_transform_ops    plugins/math/geom_transform_ops.cpp)
+
+
+
+
+
+
+
+add_library(graph_theory_ops SHARED graph/graph_theory_ops.cpp)
+target_link_libraries(graph_theory_ops PRIVATE woflang_core)
+
+add_library(graph_search_ops SHARED graph/graph_search_ops.cpp)
+target_link_libraries(graph_search_ops PRIVATE woflang_core)
+
+
+
+
+
+
+
+# Graph colouring
+add_library(graph_coloring_ops SHARED
+    graph/graph_coloring_ops.cpp
+)
+target_link_libraries(graph_coloring_ops PRIVATE woflang_core)
+
+# Weighted shortest path
+add_library(graph_shortest_path_ops SHARED
+    graph/graph_shortest_path_ops.cpp
+)
+target_link_libraries(graph_shortest_path_ops PRIVATE woflang_core)
+
+
+
+
+
+
+
+add_woflang_plugin(stack_ops   stack_ops.cpp)
+add_woflang_plugin(assert_ops  assert_ops.cpp)
+
+
+
+
+
+
+
+add_library(modexp_ops SHARED modexp_ops.cpp)
+target_link_libraries(modexp_ops PRIVATE woflang_core)
+
+add_library(prime_ops SHARED prime_ops.cpp)
+target_link_libraries(prime_ops PRIVATE woflang_core)
+
+
+
+
+
+
+
+add_library(chemistry_ops MODULE chemistry_ops.cpp)
+target_include_directories(chemistry_ops PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/core
+    ${CMAKE_SOURCE_DIR}/plugins
+)
+
+
+
+
+
+
+# If placed under plugins/metaphysics/hebrew_ops.cpp
+add_library(hebrew_ops SHARED metaphysics/hebrew_ops.cpp)
+target_link_libraries(hebrew_ops PRIVATE woflang_core)
+target_include_directories(hebrew_ops PRIVATE
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/core
+    ${CMAKE_SOURCE_DIR}/plugins
+)
+
+
+
+
+
+

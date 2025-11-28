@@ -1,22 +1,29 @@
 // =======================================================
-// forbiddden_stack_slayer_ops.cpp - special stack slaying?
+// forbidden_stack_slayer_ops.cpp - special stack slaying
 // =======================================================
 
-#include "../../src/core/woflang.hpp"
+#ifndef WOFLANG_PLUGIN_EXPORT
+# ifdef _WIN32
+#  define WOFLANG_PLUGIN_EXPORT __declspec(dllexport)
+# else
+#  define WOFLANG_PLUGIN_EXPORT __attribute__((visibility("default")))
+# endif
+#endif
+
+#include "woflang.hpp"
 #include <iostream>
 
-// Forbidden/fun op: clears stack with drama
-class ForbiddenStackSlayerPlugin : public WoflangPlugin {
-public:
-    void register_ops(WoflangInterpreter& interp) override {
-        interp.register_op("stack_slayer", [](WoflangInterpreter& interp) {
-            std::cout << "[Forbidden] You have slain the entire stack! (void consumes all...)" << std::endl;
-            interp.clear_stack();
-        });
-    }
-};
+using woflang::WoflangInterpreter;
 
-WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
-    static ForbiddenStackSlayerPlugin plugin;
-    plugin.register_ops(interp);
+static void op_stack_slayer(WoflangInterpreter& interp) {
+    std::cout << "[Forbidden] You have slain the entire stack! (void consumes all...)\n";
+    interp.clear_stack();
+}
+
+extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
+    interp.register_op("stack_slayer", [](WoflangInterpreter& ip) {
+        op_stack_slayer(ip);
+    });
+
+    std::cout << "[forbidden_stack_slayer_ops] Plugin loaded.\n";
 }

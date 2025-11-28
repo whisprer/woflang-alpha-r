@@ -1,5 +1,3 @@
-# plugins/CMakeLists.txt
-
 # Common function to define a Woflang plugin
 function(woflang_add_plugin plugin_name)
     add_library(${plugin_name} SHARED ${ARGN})
@@ -12,6 +10,12 @@ function(woflang_add_plugin plugin_name)
         ${CMAKE_SOURCE_DIR}/plugins
     )
 
+    # 🔧 THIS IS THE IMPORTANT BIT:
+    # Link every plugin against the core library so symbols like
+    # WoflangInterpreter::register_op and WofValue::make_double
+    # resolve correctly.
+    target_link_libraries(${plugin_name} PRIVATE woflang_core)
+
     # Make sure all plugin DLLs/SOs land in one directory:
     set_target_properties(${plugin_name} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/plugins"
@@ -19,6 +23,7 @@ function(woflang_add_plugin plugin_name)
         ARCHIVE_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/plugins"
     )
 endfunction()
+
 
 # Simpler, explicit subdirectory layout:
 add_subdirectory(arts)

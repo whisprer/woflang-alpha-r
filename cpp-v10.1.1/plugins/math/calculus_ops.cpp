@@ -1,201 +1,250 @@
 // plugins/math/calculus_ops.cpp
 //
-// Numerical calculus helpers for WofLang v10.1.1
-// Implements finite-difference derivative estimators and a basic slope op.
+// Numerical calculus helpers for WofLang.
 //
-// Provided ops:
-//   derivative_central   : [f(x+h) f(x-h) h] -> df/dx (central difference)
-//   derivative_forward   : [f(x+h) f(x)   h] -> df/dx (forward difference)
-//   derivative_backward  : [f(x)   f(x-h) h] -> df/dx (backward difference)
-//   slope                : [y2 y1 x2 x1]     -> (y2 - y1) / (x2 - x1)
+// Provides basic derivative and integral primitives that operate
+// purely on numeric stack values, without needing any function
+// objects or extra types.
 //
-// Compatibility stubs (unchanged semantics):
-//   derivative           : prints hint, no stack change
-//   integral             : prints hint, no stack change
+// Stack conventions (top is rightmost):
+//
+//   slope:
+//     [x1, y1, x2, y2] -> [m]
+//       m = (y2 - y1) / (x2 - x1)
+//
+//   derivative_forward:
+//     [f(x), f(x+h), h] -> [df/dx]
+//       df/dx ≈ (f(x+h) - f(x)) / h
+//
+//   derivative_central:
+//     [f(x-h), f(x+h), h] -> [df/dx]
+//       df/dx ≈ (f(x+h) - f(x-h)) / (2h)
+//
+//   integral_trapezoid:
+//     [a, b, n, f(x0), f(x1), ..., f(xn)] -> [approx]
+//       a, b: integration bounds
+//       n:    number of subintervals (integer, ≥ 1)
+//       f(x0..xn): function samples at the n+1 grid points
+//
+//   integral_simpson:
+//     [a, b, n, f(x0), f(x1), ..., f(xn)] -> [approx]
+//       n must be even (Simpson's rule requirement).
+//
 
-#ifndef WOFLANG_PLUGIN_EXPORT
-#  ifdef _WIN32
-#    define WOFLANG_PLUGIN_EXPORT __declspec(dllexport)
-#  else
-#    define WOFLANG_PLUGIN_EXPORT __attribute__((visibility("default")))
-#  endif
-#endif
-
-#include "woflang.hpp"
+#include "../../src/core/woflang.hpp"
 
 #include <cmath>
+#include <cstddef>
 #include <iostream>
-#include <limits>
-#include <string>
-#include <cstdlib>
-#include <cerrno>
+#include <stdexcept>
+#include <vector>
 
-using namespace woflang;
+using woflang::WofValue;
+using woflang::WoflangInterpreter;
 
 namespace {
 
-double to_numeric(const WofValue& v, const char* ctx) {
-    switch (v.type) {
-        case WofType::Integer:
-            return static_cast<double>(std::get<std::int64_t>(v.value));
-        case WofType::Double:
-            return std::get<double>(v.value);
-        case WofType::String: {
-            const std::string& s = std::get<std::string>(v.value);
-            if (s.empty()) {
-                throw std::runtime_error(std::string(ctx) + ": empty string is not numeric");
-            }
-            char* end = nullptr;
-            errno = 0;
-            double val = std::strtod(s.c_str(), &end);
-            if (end == s.c_str() || errno == ERANGE) {
-                throw std::runtime_error(std::string(ctx) + ": non-numeric string \"" + s + "\"");
-            }
-            return val;
-        }
-        default:
-            throw std::runtime_error(std::string(ctx) + ": unsupported type for numeric conversion");
+// Helper to pull a numeric from a WofValue with context in error messages.
+double to_double(const WofValue &v, const char *ctx) {
+    try {
+        return v.as_numeric();
+    } catch (const std::exception &e) {
+        throw std::runtime_error(std::string("[calculus] ") + ctx + ": " + e.what());
     }
 }
 
-WofValue make_num(double x) {
-    WofValue out;
-    out.type  = WofType::Double;
-    out.value = x;
-    return out;
+// Pop from stack with bounds check.
+WofValue pop_checked(std::vector<WofValue> &st, const char *ctx) {
+    if (st.empty()) {
+        throw std::runtime_error(std::string("[calculus] stack underflow in ") + ctx);
+    }
+    WofValue v = st.back();
+    st.pop_back();
+    return v;
 }
 
-} // namespace
+// Ensure there are at least n items on stack.
+void ensure_stack_size(const std::vector<WofValue> &st, std::size_t n, const char *ctx) {
+    if (st.size() < n) {
+        throw std::runtime_error(
+            std::string("[calculus] need at least ") +
+            std::to_string(n) +
+            " stack values in " +
+            ctx +
+            ", have " +
+            std::to_string(st.size())
+        );
+    }
+}
 
-WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
-    // Central difference: df/dx ≈ (f(x+h) - f(x-h)) / (2h)
-    // Stack: f(x+h) f(x-h) h
-    interp.register_op("derivative_central", [](WoflangInterpreter& ip) {
-        if (ip.stack.size() < 3) {
-            std::cerr << "[calculus] derivative_central requires: f(x+h) f(x-h) h\n";
-            return;
-        }
+// Numerical calculus plugin registering ops with the interpreter.
+class MathlibCalculusPlugin {
+public:
+    void register_ops(WoflangInterpreter &interp) {
+        // Slope between two points: [x1, y1, x2, y2] -> [m]
+        interp.register_op("slope", [](WoflangInterpreter &ip) {
+            auto &st = ip.stack;
+            ensure_stack_size(st, 4, "slope");
 
-        WofValue v_h  = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_fm = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_fp = ip.stack.back(); ip.stack.pop_back();
+            WofValue y2v = pop_checked(st, "slope(y2)");
+            WofValue x2v = pop_checked(st, "slope(x2)");
+            WofValue y1v = pop_checked(st, "slope(y1)");
+            WofValue x1v = pop_checked(st, "slope(x1)");
 
-        double h  = to_numeric(v_h,  "[calculus] derivative_central h");
-        double fp = to_numeric(v_fp, "[calculus] derivative_central f(x+h)");
-        double fm = to_numeric(v_fm, "[calculus] derivative_central f(x-h)");
+            double y2 = to_double(y2v, "slope(y2)");
+            double x2 = to_double(x2v, "slope(x2)");
+            double y1 = to_double(y1v, "slope(y1)");
+            double x1 = to_double(x1v, "slope(x1)");
 
-        if (std::abs(h) <= std::numeric_limits<double>::epsilon()) {
-            std::cerr << "[calculus] derivative_central: h too small or zero\n";
-            ip.stack.push_back(make_num(std::numeric_limits<double>::quiet_NaN()));
-            return;
-        }
+            double dx = x2 - x1;
+            if (dx == 0.0) {
+                throw std::runtime_error("[calculus] slope: x2 - x1 == 0");
+            }
 
-        double deriv = (fp - fm) / (2.0 * h);
-        std::cout << "[calculus] derivative_central -> " << deriv << "\n";
-        ip.stack.push_back(make_num(deriv));
-    });
+            double m = (y2 - y1) / dx;
+            ip.stack.emplace_back(m);
+        });
 
-    // Forward difference: df/dx ≈ (f(x+h) - f(x)) / h
-    // Stack: f(x+h) f(x) h
-    interp.register_op("derivative_forward", [](WoflangInterpreter& ip) {
-        if (ip.stack.size() < 3) {
-            std::cerr << "[calculus] derivative_forward requires: f(x+h) f(x) h\n";
-            return;
-        }
+        // Forward difference derivative: [f(x), f(x+h), h] -> [df/dx]
+        interp.register_op("derivative_forward", [](WoflangInterpreter &ip) {
+            auto &st = ip.stack;
+            ensure_stack_size(st, 3, "derivative_forward");
 
-        WofValue v_h  = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_f0 = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_fp = ip.stack.back(); ip.stack.pop_back();
+            WofValue hv      = pop_checked(st, "derivative_forward(h)");
+            WofValue fxph_v  = pop_checked(st, "derivative_forward(fx+h)");
+            WofValue fx_v    = pop_checked(st, "derivative_forward(fx)");
 
-        double h  = to_numeric(v_h,  "[calculus] derivative_forward h");
-        double f0 = to_numeric(v_f0, "[calculus] derivative_forward f(x)");
-        double fp = to_numeric(v_fp, "[calculus] derivative_forward f(x+h)");
+            double h    = to_double(hv, "derivative_forward(h)");
+            double fxph = to_double(fxph_v, "derivative_forward(fx+h)");
+            double fx   = to_double(fx_v, "derivative_forward(fx)");
 
-        if (std::abs(h) <= std::numeric_limits<double>::epsilon()) {
-            std::cerr << "[calculus] derivative_forward: h too small or zero\n";
-            ip.stack.push_back(make_num(std::numeric_limits<double>::quiet_NaN()));
-            return;
-        }
+            if (h == 0.0) {
+                throw std::runtime_error("[calculus] derivative_forward: h == 0");
+            }
 
-        double deriv = (fp - f0) / h;
-        std::cout << "[calculus] derivative_forward -> " << deriv << "\n";
-        ip.stack.push_back(make_num(deriv));
-    });
+            double d = (fxph - fx) / h;
+            ip.stack.emplace_back(d);
+        });
 
-    // Backward difference: df/dx ≈ (f(x) - f(x-h)) / h
-    // Stack: f(x) f(x-h) h
-    interp.register_op("derivative_backward", [](WoflangInterpreter& ip) {
-        if (ip.stack.size() < 3) {
-            std::cerr << "[calculus] derivative_backward requires: f(x) f(x-h) h\n";
-            return;
-        }
+        // Central difference derivative: [f(x-h), f(x+h), h] -> [df/dx]
+        interp.register_op("derivative_central", [](WoflangInterpreter &ip) {
+            auto &st = ip.stack;
+            ensure_stack_size(st, 3, "derivative_central");
 
-        WofValue v_h  = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_fm = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_f0 = ip.stack.back(); ip.stack.pop_back();
+            WofValue hv      = pop_checked(st, "derivative_central(h)");
+            WofValue fxph_v  = pop_checked(st, "derivative_central(fx+h)");
+            WofValue fxmh_v  = pop_checked(st, "derivative_central(fx-h)");
 
-        double h  = to_numeric(v_h,  "[calculus] derivative_backward h");
-        double fm = to_numeric(v_fm, "[calculus] derivative_backward f(x-h)");
-        double f0 = to_numeric(v_f0, "[calculus] derivative_backward f(x)");
+            double h    = to_double(hv, "derivative_central(h)");
+            double fxph = to_double(fxph_v, "derivative_central(fx+h)");
+            double fxmh = to_double(fxmh_v, "derivative_central(fx-h)");
 
-        if (std::abs(h) <= std::numeric_limits<double>::epsilon()) {
-            std::cerr << "[calculus] derivative_backward: h too small or zero\n";
-            ip.stack.push_back(make_num(std::numeric_limits<double>::quiet_NaN()));
-            return;
-        }
+            if (h == 0.0) {
+                throw std::runtime_error("[calculus] derivative_central: h == 0");
+            }
 
-        double deriv = (f0 - fm) / h;
-        std::cout << "[calculus] derivative_backward -> " << deriv << "\n";
-        ip.stack.push_back(make_num(deriv));
-    });
+            double d = (fxph - fxmh) / (2.0 * h);
+            ip.stack.emplace_back(d);
+        });
 
-    // Simple secant slope: (y2 - y1) / (x2 - x1)
-    // Stack: y2 y1 x2 x1
-    interp.register_op("slope", [](WoflangInterpreter& ip) {
-        if (ip.stack.size() < 4) {
-            std::cerr << "[calculus] slope requires: y2 y1 x2 x1\n";
-            return;
-        }
+        // Trapezoidal rule:
+        //   [a, b, n, f(x0), f(x1), ..., f(xn)] -> [approx]
+        interp.register_op("integral_trapezoid", [](WoflangInterpreter &ip) {
+            auto &st = ip.stack;
+            ensure_stack_size(st, 3, "integral_trapezoid");
 
-        WofValue v_x1 = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_x2 = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_y1 = ip.stack.back(); ip.stack.pop_back();
-        WofValue v_y2 = ip.stack.back(); ip.stack.pop_back();
+            // First pop n, then b, then a (reverse of push order).
+            WofValue nv = pop_checked(st, "integral_trapezoid(n)");
+            WofValue bv = pop_checked(st, "integral_trapezoid(b)");
+            WofValue av = pop_checked(st, "integral_trapezoid(a)");
 
-        double x1 = to_numeric(v_x1, "[calculus] slope x1");
-        double x2 = to_numeric(v_x2, "[calculus] slope x2");
-        double y1 = to_numeric(v_y1, "[calculus] slope y1");
-        double y2 = to_numeric(v_y2, "[calculus] slope y2");
+            double n_d = to_double(nv, "integral_trapezoid(n)");
+            long long n_ll = static_cast<long long>(std::llround(n_d));
+            if (n_ll <= 0) {
+                throw std::runtime_error("[calculus] integral_trapezoid: n must be >= 1");
+            }
 
-        double dx = x2 - x1;
-        if (std::abs(dx) <= std::numeric_limits<double>::epsilon()) {
-            std::cerr << "[calculus] slope: x2 == x1, vertical line\n";
-            ip.stack.push_back(make_num(std::numeric_limits<double>::infinity()));
-            return;
-        }
+            double a = to_double(av, "integral_trapezoid(a)");
+            double b = to_double(bv, "integral_trapezoid(b)");
 
-        double m = (y2 - y1) / dx;
-        std::cout << "[calculus] slope -> " << m << "\n";
-        ip.stack.push_back(make_num(m));
-    });
+            std::size_t n = static_cast<std::size_t>(n_ll);
 
-    // ---- Compatibility stubs for v9 names ----
+            // Now need n+1 samples f(x0..xn) still on stack.
+            ensure_stack_size(st, n + 1, "integral_trapezoid(samples)");
 
-    interp.register_op("derivative", [](WoflangInterpreter&) {
-        std::cout << "[calculus] derivative stub: "
-                     "use derivative_central / derivative_forward / derivative_backward "
-                     "with pre-evaluated samples f(x±h).\n";
-    });
+            // Samples are assumed pushed in order x0..xn, so x_n is on top.
+            std::vector<double> f(n + 1);
+            for (std::size_t i = 0; i < n + 1; ++i) {
+                WofValue fv = pop_checked(st, "integral_trapezoid(sample)");
+                f[n - i] = to_double(fv, "integral_trapezoid(sample)"); // reverse
+            }
 
-    interp.register_op("integral", [](WoflangInterpreter&) {
-        std::cout << "[calculus] integral stub: "
-                     "numeric integration not yet implemented. "
-                     "Consider trapezoidal/Simpson rules over sample grids.\n";
-    });
+            double h = (b - a) / static_cast<double>(n);
+            double sum = 0.0;
+            for (std::size_t i = 1; i < n; ++i) {
+                sum += f[i];
+            }
 
-WOFLANG_PLUGIN_EXPORT void register_plugin(WoflangInterpreter& interp) {
-    std::cout << "[calculus] Symbolic calculus plugin loaded.\n";
-    auto plugin = std::make_unique<CalculusOpsPlugin>();
-    plugin->register_ops(interp);
-    interp.add_plugin(std::move(plugin));
+            double approx = h * (0.5 * f[0] + sum + 0.5 * f[n]);
+            ip.stack.emplace_back(approx);
+        });
+
+        // Simpson's rule:
+        //   [a, b, n, f(x0), f(x1), ..., f(xn)] -> [approx], n even
+        interp.register_op("integral_simpson", [](WoflangInterpreter &ip) {
+            auto &st = ip.stack;
+            ensure_stack_size(st, 3, "integral_simpson");
+
+            WofValue nv = pop_checked(st, "integral_simpson(n)");
+            WofValue bv = pop_checked(st, "integral_simpson(b)");
+            WofValue av = pop_checked(st, "integral_simpson(a)");
+
+            double n_d = to_double(nv, "integral_simpson(n)");
+            long long n_ll = static_cast<long long>(std::llround(n_d));
+            if (n_ll <= 0 || (n_ll % 2) != 0) {
+                throw std::runtime_error("[calculus] integral_simpson: n must be even and >= 2");
+            }
+
+            double a = to_double(av, "integral_simpson(a)");
+            double b = to_double(bv, "integral_simpson(b)");
+
+            std::size_t n = static_cast<std::size_t>(n_ll);
+
+            ensure_stack_size(st, n + 1, "integral_simpson(samples)");
+
+            std::vector<double> f(n + 1);
+            for (std::size_t i = 0; i < n + 1; ++i) {
+                WofValue fv = pop_checked(st, "integral_simpson(sample)");
+                f[n - i] = to_double(fv, "integral_simpson(sample)");
+            }
+
+            double h = (b - a) / static_cast<double>(n);
+            double sum_odd = 0.0;
+            double sum_even = 0.0;
+
+            for (std::size_t i = 1; i < n; ++i) {
+                if (i % 2 == 0) {
+                    sum_even += f[i];
+                } else {
+                    sum_odd += f[i];
+                }
+            }
+
+            double approx = (h / 3.0) * (f[0] + f[n] + 4.0 * sum_odd + 2.0 * sum_even);
+            ip.stack.emplace_back(approx);
+        });
+
+        std::cout << "[calculus] calculus_ops: registered slope/derivative/integral ops\n";
+    }
+};
+
+} // anonymous namespace
+
+// Exported entry point for the dynamic loader on all platforms.
+// Must be unmangled C linkage so that GetProcAddress/dlsym("register_plugin")
+// can find it.
+extern "C" WOFLANG_PLUGIN_EXPORT void register_plugin(woflang::WoflangInterpreter& interp) {
+    static MathlibCalculusPlugin plugin;
+    plugin.register_ops(interp);
+    std::cout << "[calculus] Numerical calculus plugin loaded.\n";
 }

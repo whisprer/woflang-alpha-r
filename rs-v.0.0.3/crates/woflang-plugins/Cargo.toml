@@ -1,0 +1,41 @@
+[package]
+name = "woflang-plugins"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Plugin collection for the Woflang stack-based language"
+
+[dependencies]
+woflang-core.workspace = true
+woflang-runtime.workspace = true
+thiserror.workspace = true
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rand = "0.8"
+
+[dev-dependencies]
+proptest.workspace = true
+
+[features]
+default = ["math", "util", "crypto", "logic"]
+math = []
+util = []
+crypto = []
+logic = []
+graph = []
+sigils = []
+language = []
+arts = []
+science = []
+games = []
+solver = []
+metaphysics = []
+quantum = []
+markov = []
+neural_chess = []
+all = ["math", "util", "crypto", "logic", "graph", "sigils", "language", "arts", "science", "games", "solver", "metaphysics", "quantum", "markov", "neural_chess"]
+
+[lints]
+workspace = true

@@ -1,0 +1,374 @@
+{
+  "metadata": {
+    "description": "Basic Russian Cyrillic alphabet with simple examples",
+    "total_letters": 33,
+    "groups": {
+      "russian_basic": 33
+    }
+  },
+  "letters": [
+    {
+      "letter": "А",
+      "lower": "а",
+      "name_en": "A",
+      "translit": "a",
+      "phonetic": "[a]",
+      "example_native": "атом",
+      "example_translit": "atom",
+      "example_en": "atom",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Б",
+      "lower": "б",
+      "name_en": "Be",
+      "translit": "b",
+      "phonetic": "[b]",
+      "example_native": "банан",
+      "example_translit": "banan",
+      "example_en": "banana",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "В",
+      "lower": "в",
+      "name_en": "Ve",
+      "translit": "v",
+      "phonetic": "[v]",
+      "example_native": "вода",
+      "example_translit": "voda",
+      "example_en": "water",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Г",
+      "lower": "г",
+      "name_en": "Ge",
+      "translit": "g",
+      "phonetic": "[g]",
+      "example_native": "гора",
+      "example_translit": "gora",
+      "example_en": "mountain",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Д",
+      "lower": "д",
+      "name_en": "De",
+      "translit": "d",
+      "phonetic": "[d]",
+      "example_native": "дом",
+      "example_translit": "dom",
+      "example_en": "house",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Е",
+      "lower": "е",
+      "name_en": "Ye/E",
+      "translit": "e",
+      "phonetic": "[je]/[e]",
+      "example_native": "еда",
+      "example_translit": "yeda",
+      "example_en": "food",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ё",
+      "lower": "ё",
+      "name_en": "Yo",
+      "translit": "yo",
+      "phonetic": "[jo]",
+      "example_native": "ёлка",
+      "example_translit": "yolka",
+      "example_en": "fir tree",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ж",
+      "lower": "ж",
+      "name_en": "Zhe",
+      "translit": "zh",
+      "phonetic": "[ʐ]/[ʒ]",
+      "example_native": "жук",
+      "example_translit": "zhuk",
+      "example_en": "beetle",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "З",
+      "lower": "з",
+      "name_en": "Ze",
+      "translit": "z",
+      "phonetic": "[z]",
+      "example_native": "зона",
+      "example_translit": "zona",
+      "example_en": "zone",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "И",
+      "lower": "и",
+      "name_en": "I",
+      "translit": "i",
+      "phonetic": "[i]",
+      "example_native": "игра",
+      "example_translit": "igra",
+      "example_en": "game",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Й",
+      "lower": "й",
+      "name_en": "Short I",
+      "translit": "y",
+      "phonetic": "[j]",
+      "example_native": "май",
+      "example_translit": "may",
+      "example_en": "May",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "К",
+      "lower": "к",
+      "name_en": "Ka",
+      "translit": "k",
+      "phonetic": "[k]",
+      "example_native": "кот",
+      "example_translit": "kot",
+      "example_en": "cat",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Л",
+      "lower": "л",
+      "name_en": "El",
+      "translit": "l",
+      "phonetic": "[l]",
+      "example_native": "лис",
+      "example_translit": "lis",
+      "example_en": "fox",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "М",
+      "lower": "м",
+      "name_en": "Em",
+      "translit": "m",
+      "phonetic": "[m]",
+      "example_native": "мама",
+      "example_translit": "mama",
+      "example_en": "mum",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Н",
+      "lower": "н",
+      "name_en": "En",
+      "translit": "n",
+      "phonetic": "[n]",
+      "example_native": "нос",
+      "example_translit": "nos",
+      "example_en": "nose",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "О",
+      "lower": "о",
+      "name_en": "O",
+      "translit": "o",
+      "phonetic": "[o]",
+      "example_native": "океан",
+      "example_translit": "okean",
+      "example_en": "ocean",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "П",
+      "lower": "п",
+      "name_en": "Pe",
+      "translit": "p",
+      "phonetic": "[p]",
+      "example_native": "путь",
+      "example_translit": "put",
+      "example_en": "path",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Р",
+      "lower": "р",
+      "name_en": "Er",
+      "translit": "r",
+      "phonetic": "[r]",
+      "example_native": "река",
+      "example_translit": "reka",
+      "example_en": "river",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "С",
+      "lower": "с",
+      "name_en": "Es",
+      "translit": "s",
+      "phonetic": "[s]",
+      "example_native": "соль",
+      "example_translit": "sol",
+      "example_en": "salt",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Т",
+      "lower": "т",
+      "name_en": "Te",
+      "translit": "t",
+      "phonetic": "[t]",
+      "example_native": "ток",
+      "example_translit": "tok",
+      "example_en": "current",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "У",
+      "lower": "у",
+      "name_en": "U",
+      "translit": "u",
+      "phonetic": "[u]",
+      "example_native": "утро",
+      "example_translit": "utro",
+      "example_en": "morning",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ф",
+      "lower": "ф",
+      "name_en": "Ef",
+      "translit": "f",
+      "phonetic": "[f]",
+      "example_native": "факт",
+      "example_translit": "fakt",
+      "example_en": "fact",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Х",
+      "lower": "х",
+      "name_en": "Kha",
+      "translit": "kh",
+      "phonetic": "[x]/[h]",
+      "example_native": "хлеб",
+      "example_translit": "khleb",
+      "example_en": "bread",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ц",
+      "lower": "ц",
+      "name_en": "Tse",
+      "translit": "ts",
+      "phonetic": "[ts]",
+      "example_native": "цирк",
+      "example_translit": "tsirk",
+      "example_en": "circus",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ч",
+      "lower": "ч",
+      "name_en": "Che",
+      "translit": "ch",
+      "phonetic": "[tʃ]",
+      "example_native": "чай",
+      "example_translit": "chay",
+      "example_en": "tea",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ш",
+      "lower": "ш",
+      "name_en": "Sha",
+      "translit": "sh",
+      "phonetic": "[ʂ]/[ʃ]",
+      "example_native": "шок",
+      "example_translit": "shok",
+      "example_en": "shock",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Щ",
+      "lower": "щ",
+      "name_en": "Shcha",
+      "translit": "shch",
+      "phonetic": "[ɕː]/[ʃtʃ]",
+      "example_native": "щит",
+      "example_translit": "shchit",
+      "example_en": "shield",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ъ",
+      "lower": "ъ",
+      "name_en": "Hard sign",
+      "translit": "hard_sign",
+      "phonetic": "separator",
+      "example_native": "объект",
+      "example_translit": "obyekt",
+      "example_en": "object",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ы",
+      "lower": "ы",
+      "name_en": "Y",
+      "translit": "y",
+      "phonetic": "[ɨ]",
+      "example_native": "сыр",
+      "example_translit": "syr",
+      "example_en": "cheese",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ь",
+      "lower": "ь",
+      "name_en": "Soft sign",
+      "translit": "soft_sign",
+      "phonetic": "palatalizes",
+      "example_native": "день",
+      "example_translit": "den'",
+      "example_en": "day",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Э",
+      "lower": "э",
+      "name_en": "E",
+      "translit": "e",
+      "phonetic": "[e]",
+      "example_native": "эхо",
+      "example_translit": "ekho",
+      "example_en": "echo",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Ю",
+      "lower": "ю",
+      "name_en": "Yu",
+      "translit": "yu",
+      "phonetic": "[ju]",
+      "example_native": "юг",
+      "example_translit": "yug",
+      "example_en": "south",
+      "group": "russian_basic"
+    },
+    {
+      "letter": "Я",
+      "lower": "я",
+      "name_en": "Ya",
+      "translit": "ya",
+      "phonetic": "[ja]",
+      "example_native": "якорь",
+      "example_translit": "yakor'",
+      "example_en": "anchor",
+      "group": "russian_basic"
+    }
+  ]
+}

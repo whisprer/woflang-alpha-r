@@ -26,25 +26,65 @@ enum class WofType {
     Unknown,
     Integer,
     Double,
+    Bool,
     String,
-    Symbol
+    Symbol,
 };
 
-struct WofValue {
+class WofValue {
+public:
+    // Underlying storage: we support "empty", integer, double, bool and string.
+    // Symbols are represented as strings with type = WofType::Symbol.
+    using Storage = std::variant<std::monostate, std::int64_t, double, bool, std::string>;
+
     WofType type{WofType::Unknown};
-    std::variant<std::monostate, std::int64_t, double, std::string> value{};
-    std::shared_ptr<Unit> unit{};
+    Storage value{};
+    std::shared_ptr<UnitInfo> unit{};
+
+    // ----- Constructors -----
+
+    WofValue() = default;
+
+    explicit WofValue(std::int64_t v)
+        : type(WofType::Integer),
+          value(v) {}
+
+    explicit WofValue(double v)
+        : type(WofType::Double),
+        value(v) {}
+
+    explicit WofValue(bool b)
+        : type(WofType::Bool),
+          value(b) {}
+
+    explicit WofValue(std::string s)
+        : type(WofType::String),
+          value(std::move(s)) {}
+
+    WofValue(const char* s)
+        : type(WofType::String),
+          value(std::string(s)) {}
+
+    // ----- Static factories used all over the plugins -----
 
     static WofValue make_int(std::int64_t v);
     static WofValue make_double(double v);
-    static WofValue make_string(const std::string& s);
-    static WofValue make_symbol(const std::string& s);
+    static WofValue make_string(std::string s);
+    static WofValue make_symbol(std::string s);
 
-    std::string to_string() const;
-    bool is_numeric() const;
-    double as_numeric() const;
+    // ----- Basic helpers -----
 
     bool operator==(const WofValue& other) const;
+
+    // Numeric check: matches the implementation in woflang.cpp
+    bool is_numeric() const;
+
+    // Convert to numeric; implementation is in woflang.cpp and already
+    // handles Integer / Double / Bool, and falls back for strings.
+    double as_numeric() const;
+
+    // String rendering; implemented in woflang.cpp
+    std::string to_string() const;
 };
 
 class WoflangInterpreter;

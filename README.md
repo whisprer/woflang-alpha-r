@@ -1,3 +1,17 @@
+[README.md]
+
+<p align="center">
+  <a href="https://github.com/whisprer/woflang-alpha-r">
+    <img src="https://img.shields.io/github/stars/whisprer/woflang-alpha-r?style=for-the-badge" alt="GitHub stars" />
+  </a>
+  <a href="https://github.com/whisprer/woflang-alpha-r/issues">
+    <img src="https://img.shields.io/github/issues/whisprer/woflang-alpha-r?style=for-the-badge" alt="GitHub issues" />
+  </a>
+  <a href="https://github.com/whisprer/woflang-alpha-r/fork">
+    <img src="https://img.shields.io/github/forks/whisprer/woflang-alpha-r?style=for-the-badge" alt="GitHub forks" />
+  </a>
+</p>
+
 # WofLang Alpha-R
 ## A Unicode-Native Stack Language for Creative & Symbolic Computation
 

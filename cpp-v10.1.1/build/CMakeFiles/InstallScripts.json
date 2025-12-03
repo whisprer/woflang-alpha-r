@@ -1,0 +1,24 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/arts/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/constants/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/crypto/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/equation_solver/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/games/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/graph/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/language/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/logic/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/markov/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/math/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/metaphysics/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/quantum/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/science/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/sigils/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/sigil-utils/cmake_install.cmake",
+		"D:/code/woflang-alpha-r/cpp-v10.1.1/build/plugins/util/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

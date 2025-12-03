@@ -100,13 +100,14 @@
 **Architecture:** x86 64-bit    
 
 **Lines by Module:**
-- core: ~x00 lines
-- main: ~x00 lines
-- repl: ~x00 lines
-- data: ~x000 lines
-- io: ~x00 lines
-- math: ~x00 lines
-- plugins (66 modules): ~x0000 lines
+- core: ~850 lines
+- main: ~550 lines
+- repl: ~10 lines
+- data: ~28,500 lines
+- io: ~75 lines
+- math: ~275 lines
+- plugins (67 modules): ~10,000 lines
+- *total:* 40,000 lines
 
 ---
 

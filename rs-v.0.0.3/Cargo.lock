@@ -1554,6 +1554,7 @@ dependencies = [
  "rustyline",
  "woflang-core",
  "woflang-ops",
+ "woflang-plugins",
  "woflang-runtime",
 ]
 
@@ -1576,6 +1577,19 @@ dependencies = [
  "proptest",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
+ "thiserror 2.0.17",
+ "woflang-core",
+ "woflang-runtime",
+]
+
+[[package]]
+name = "woflang-plugins"
+version = "10.1.1"
+dependencies = [
+ "proptest",
+ "rand 0.8.5",
+ "serde",
+ "serde_json",
  "thiserror 2.0.17",
  "woflang-core",
  "woflang-runtime",

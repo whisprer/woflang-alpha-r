@@ -1,3 +1,3 @@
 # ninja log v7
-9	50	7860774909050467	D:/code/woflang-alpha-r/cpp-v10.1.1/build/CMakeFiles/cmake.verify_globs	6fc91e3692bf372d
-60	2972	7860774909548270	CMakeFiles/woflang_core.dir/src/io/tokenizer.cpp.obj	4ff61cf15d1f4ebf
+10	56	7872945631588060	D:/code/woflang-alpha-r/cpp-v10.1.1/build/CMakeFiles/cmake.verify_globs	6fc91e3692bf372d
+66	2940	7872945632156014	CMakeFiles/woflang_core.dir/src/io/tokenizer.cpp.obj	4ff61cf15d1f4ebf

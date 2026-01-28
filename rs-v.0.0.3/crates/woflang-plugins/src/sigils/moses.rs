@@ -4,7 +4,7 @@
 //! - `moses` - Non-destructive visualization of stack halves
 //! - `moses_split` - Destructive split with separator marker
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Format a WofValue for display.
@@ -13,8 +13,7 @@ fn describe_value(v: &WofValue) -> String {
         WofValue::Integer(n) => n.to_string(),
         WofValue::Float(f) => format!("{:.6}", f),
         WofValue::String(s) => format!("\"{}\"", s),
-        WofValue::Bool(b) => if *b { "true" } else { "false" }.to_string(),
-        WofValue::List(items) => format!("[{} items]", items.len()),
+        WofValue::Symbol(s) => format!(":{}", s),
         WofValue::Nil => "nil".to_string(),
     }
 }
@@ -115,7 +114,7 @@ pub fn register(interp: &mut Interpreter) {
         for i in 0..len {
             if let Ok(val) = interp.stack().peek_at(i) {
                 if let WofValue::String(s) = val {
-                    if s == "⟡-SEA-SPLIT-⟡" {
+                    if s.as_ref() == "⟡-SEA-SPLIT-⟡" {
                         found_pos = i as i64;
                         break;
                     }

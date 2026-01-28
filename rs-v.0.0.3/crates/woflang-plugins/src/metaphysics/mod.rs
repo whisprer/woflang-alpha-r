@@ -53,6 +53,7 @@ mod entropy;
 mod learning;
 mod over_unity;
 
+use woflang_core::InterpreterContext;
 use woflang_runtime::Interpreter;
 
 /// Register all metaphysics operations.

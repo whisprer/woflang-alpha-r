@@ -18,7 +18,7 @@
 //! - `edo_freq` - Equal division of octave (degree edo base → Hz)
 //! - `swing_ms` - Swing delay (bpm swing_ratio → ms)
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 use std::collections::HashMap;
 

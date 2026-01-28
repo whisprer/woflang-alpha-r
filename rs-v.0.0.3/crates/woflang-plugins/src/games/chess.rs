@@ -13,7 +13,7 @@
 //! - `chess_move` - Make a move (e.g., "e2e4")
 
 use std::sync::{Mutex, OnceLock};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

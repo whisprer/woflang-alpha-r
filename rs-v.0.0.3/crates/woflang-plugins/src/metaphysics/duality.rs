@@ -13,7 +13,7 @@
 //! - `dual_logic` - Textual formula dualization
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -40,8 +40,8 @@ fn to_bool(v: &WofValue) -> bool {
     match v {
         WofValue::Integer(n) => *n != 0,
         WofValue::Float(f) => *f != 0.0,
-        WofValue::Bool(b) => *b,
         WofValue::String(s) => !s.is_empty(),
+        WofValue::Symbol(s) => !s.is_empty(),
         WofValue::Nil => false,
     }
 }

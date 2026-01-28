@@ -11,7 +11,7 @@
 //! - `unique_count` - Count unique values on stack
 
 use std::collections::HashMap;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -26,7 +26,7 @@ fn make_entropy_key(v: &WofValue) -> String {
         WofValue::Integer(n) => format!("i:{}", n),
         WofValue::Float(f) => format!("f:{:.10}", f),
         WofValue::String(s) => format!("s:{}", s),
-        WofValue::Bool(b) => format!("b:{}", b),
+        WofValue::Symbol(s) => format!("y:{}", s),
         WofValue::Nil => "nil".to_string(),
     }
 }

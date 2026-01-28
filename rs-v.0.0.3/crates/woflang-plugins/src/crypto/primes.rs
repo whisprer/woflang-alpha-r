@@ -2,7 +2,7 @@
 //!
 //! Provides primality testing, prime generation, and factorization.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register prime number operations.

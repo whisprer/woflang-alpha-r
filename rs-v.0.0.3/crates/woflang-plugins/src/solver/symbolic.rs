@@ -20,7 +20,7 @@
 //! - `sym_diff` - Differentiate top expression
 
 use std::sync::{Mutex, OnceLock};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

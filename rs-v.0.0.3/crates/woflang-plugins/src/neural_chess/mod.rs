@@ -58,7 +58,8 @@ pub use ganglion::{Ganglion, NeuralClockCoordinator};
 use std::error::Error;
 use std::sync::Mutex;
 use std::sync::OnceLock;
-use woflang_runtime::{Interpreter, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
+use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GLOBAL AI INSTANCE
@@ -182,8 +183,8 @@ pub fn register(interp: &mut Interpreter) {
 
     interp.register("chess_move", |interp| {
         let move_str = interp.pop()
-            .and_then(|v| v.as_string().map(|s| s.to_string()))
-            .ok_or("Expected move string (e.g., 'e2e4')")?;
+            .and_then(|v| v.as_string())
+            .map_err(|_| WofError::Runtime("Expected move string (e.g., 'e2e4')".to_string()))?;
         
         let mut session_lock = get_session().lock().unwrap();
         if let Some(ref mut session) = *session_lock {

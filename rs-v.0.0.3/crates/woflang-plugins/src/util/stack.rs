@@ -2,7 +2,7 @@
 //!
 //! Additional stack operations beyond the basic dup/swap/drop.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register stack utility operations.
@@ -106,7 +106,7 @@ pub fn register(interp: &mut Interpreter) {
         if n >= len {
             return Err(WofError::Runtime(format!("pick: index {} out of range", n)));
         }
-        let item = interp.stack().get(len - 1 - n)?.clone();
+        let item = interp.stack().peek_at(n)?.clone();
         interp.stack_mut().push(item);
         Ok(())
     });

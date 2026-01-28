@@ -9,7 +9,7 @@
 //! - `simplify_mul_zero` - X 0 * → 0, 0 X * → 0
 //! - `simplify_add_zero` - X 0 + → X, 0 X + → X
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -47,7 +47,8 @@ fn is_one(v: &WofValue) -> bool {
 /// Get string content from a value.
 fn as_string(v: &WofValue) -> Option<String> {
     match v {
-        WofValue::String(s) => Some(s.clone()),
+        WofValue::String(s) => Some(s.to_string()),
+        WofValue::Symbol(s) => Some(s.to_string()),
         _ => None,
     }
 }
@@ -56,6 +57,7 @@ fn as_string(v: &WofValue) -> Option<String> {
 fn same_symbol(a: &WofValue, b: &WofValue) -> bool {
     match (a, b) {
         (WofValue::String(s1), WofValue::String(s2)) => s1 == s2,
+        (WofValue::Symbol(s1), WofValue::Symbol(s2)) => s1 == s2,
         _ => false,
     }
 }
@@ -265,15 +267,17 @@ pub fn register(interp: &mut Interpreter) {
         let a_bool = match &a {
             WofValue::Integer(n) => *n != 0,
             WofValue::Float(f) => *f != 0.0,
-            WofValue::Bool(b) => *b,
-            _ => false,
+            WofValue::String(s) => !s.is_empty(),
+            WofValue::Symbol(s) => !s.is_empty(),
+            WofValue::Nil => false,
         };
 
         let b_bool = match &b {
             WofValue::Integer(n) => *n != 0,
             WofValue::Float(f) => *f != 0.0,
-            WofValue::Bool(b) => *b,
-            _ => false,
+            WofValue::String(s) => !s.is_empty(),
+            WofValue::Symbol(s) => !s.is_empty(),
+            WofValue::Nil => false,
         };
 
         let result = a_bool == b_bool;

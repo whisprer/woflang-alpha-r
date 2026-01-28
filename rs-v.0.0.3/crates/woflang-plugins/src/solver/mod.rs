@@ -42,6 +42,7 @@ mod numeric;
 mod pattern;
 mod simplify;
 
+use woflang_core::InterpreterContext;
 use woflang_runtime::Interpreter;
 
 /// Register all solver operations.

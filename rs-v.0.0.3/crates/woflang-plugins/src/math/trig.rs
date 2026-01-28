@@ -3,7 +3,7 @@
 //! Provides sin, cos, tan, their inverses, hyperbolic variants,
 //! and degree/radian conversion utilities.
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register trigonometric operations.

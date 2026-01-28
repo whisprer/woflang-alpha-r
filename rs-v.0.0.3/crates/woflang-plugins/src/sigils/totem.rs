@@ -5,6 +5,7 @@
 //! - `:wofsigil` - Display the Woflang glyph totem
 //! - `:wolf` - Display the wolf ASCII art
 
+use woflang_core::InterpreterContext;
 use woflang_runtime::Interpreter;
 
 /// Register totem operations.

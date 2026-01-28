@@ -2,7 +2,7 @@
 //!
 //! Provides assert, assert_eq, expect, and related testing helpers.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register assertion operations.

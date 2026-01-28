@@ -64,6 +64,7 @@ pub mod neural_chess;
 pub mod data;
 
 use woflang_runtime::Interpreter;
+use woflang_core::InterpreterContext;
 
 /// Register all enabled plugins with the interpreter.
 pub fn register_all(interp: &mut Interpreter) {

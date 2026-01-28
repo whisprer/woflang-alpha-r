@@ -64,10 +64,22 @@ impl WofStack {
         self.pop()?.as_integer()
     }
 
+    /// Alias for `pop_integer`.
+    #[inline]
+    pub fn pop_int(&mut self) -> Result<i64> {
+        self.pop_integer()
+    }
+
     /// Pop a value, converting it to a double.
     #[inline]
     pub fn pop_double(&mut self) -> Result<f64> {
         self.pop()?.as_double()
+    }
+
+    /// Alias for `pop_double`.
+    #[inline]
+    pub fn pop_float(&mut self) -> Result<f64> {
+        self.pop_double()
     }
 
     /// Pop a value, extracting it as a numeric f64.

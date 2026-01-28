@@ -4,7 +4,7 @@
 
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// An unweighted graph with adjacency list representation.

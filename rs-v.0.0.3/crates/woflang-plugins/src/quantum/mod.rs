@@ -27,7 +27,7 @@
 
 use std::sync::{Mutex, OnceLock};
 use rand::Rng;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

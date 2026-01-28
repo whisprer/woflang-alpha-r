@@ -3,7 +3,7 @@
 //! Cryptic glyph haiku and other surprises:
 //! - `:egg` - Display a random cryptic glyph haiku
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// The sacred haiku collection.

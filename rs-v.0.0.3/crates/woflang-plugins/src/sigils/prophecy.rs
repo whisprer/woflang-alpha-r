@@ -5,7 +5,7 @@
 //! - `prophecy_chain` - View all prophecies from this session
 
 use std::sync::{Mutex, OnceLock};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// The sacred prophecies.

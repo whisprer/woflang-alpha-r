@@ -6,11 +6,11 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 use serde::Deserialize;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Embed the FULL cyrillic database at compile time.
-const CYRILLIC_JSON: &str = include_str!("../data/cyrillic_database.json");
+const CYRILLIC_JSON: &str = include_str!("../../data/cyrillic_database.json");
 
 /// JSON structure for deserialization.
 #[derive(Debug, Deserialize)]

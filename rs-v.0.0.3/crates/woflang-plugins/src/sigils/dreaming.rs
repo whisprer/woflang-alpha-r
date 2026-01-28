@@ -3,7 +3,7 @@
 //! Surreal debug stream with mystical glyph traces.
 //! - `:dreaming` - Generate surreal dreamlog trace
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Mystical glyphs for the dreamlog.

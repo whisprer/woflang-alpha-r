@@ -2,7 +2,7 @@
 //!
 //! Provides greedy graph coloring using Welsh-Powell heuristic.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 use super::core::get_graph;

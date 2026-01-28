@@ -10,7 +10,7 @@
 //! - `polar_to_cart` - Polar to cartesian (r theta → x y)
 
 use std::f64::consts::PI;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register all geometry operations.

@@ -2,7 +2,7 @@
 //!
 //! Provides exp, ln, log, log10, log2, pow, sqrt, cbrt, and related functions.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register exponential/logarithmic operations.

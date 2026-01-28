@@ -8,7 +8,7 @@ use std::collections::HashMap;
 use std::sync::OnceLock;
 
 /// Embed the FULL constants database at compile time.
-const CONSTANTS_JSON: &str = include_str!("../data/wof_constants_module.json");
+const CONSTANTS_JSON: &str = include_str!("../../data/wof_constants_module.json");
 
 /// A physical or mathematical constant.
 #[derive(Debug, Clone, Serialize, Deserialize)]

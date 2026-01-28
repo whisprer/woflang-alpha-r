@@ -11,7 +11,7 @@
 //! - `temp_convert` - Temperature conversion (value mode → converted)
 //! - `avogadro` - Push Avogadro's number
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

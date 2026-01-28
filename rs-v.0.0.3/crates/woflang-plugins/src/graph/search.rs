@@ -3,7 +3,7 @@
 //! Provides BFS, DFS, reachability, and path existence queries.
 
 use std::collections::VecDeque;
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 use super::core::{get_graph, Graph};

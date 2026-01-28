@@ -8,7 +8,7 @@
 //! - `:deity` - Toggle divine recursion mode
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // Global state flags

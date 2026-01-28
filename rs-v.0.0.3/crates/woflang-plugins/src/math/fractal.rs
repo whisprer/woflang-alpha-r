@@ -7,7 +7,7 @@
 //! - `hausdorff_dim` - Self-similar Hausdorff dimension
 //! - `julia` - Julia set iteration count
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

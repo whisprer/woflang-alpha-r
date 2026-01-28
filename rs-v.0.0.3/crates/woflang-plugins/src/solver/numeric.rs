@@ -11,7 +11,7 @@
 //! - `solve_quadratic` - Solve ax² + bx + c = 0
 //! - `solve_linear_2x2` - Solve 2x2 system of linear equations
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

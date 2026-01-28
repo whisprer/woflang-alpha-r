@@ -6,7 +6,7 @@
 //! - `hebrews_it` - Tell the classic Moses tea joke
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Hebrew mode flag.
@@ -30,9 +30,8 @@ fn value_to_string(v: &WofValue) -> String {
     match v {
         WofValue::Integer(n) => n.to_string(),
         WofValue::Float(f) => format!("{}", f),
-        WofValue::String(s) => s.clone(),
-        WofValue::Bool(b) => if *b { "true" } else { "false" }.to_string(),
-        WofValue::List(items) => format!("[{} items]", items.len()),
+        WofValue::String(s) => s.to_string(),
+        WofValue::Symbol(s) => s.to_string(),
         WofValue::Nil => "nil".to_string(),
     }
 }

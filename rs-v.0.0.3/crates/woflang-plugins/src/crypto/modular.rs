@@ -2,7 +2,7 @@
 //!
 //! Provides modular exponentiation, inverse, GCD/LCM, and related functions.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register modular arithmetic operations.

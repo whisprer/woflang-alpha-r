@@ -6,11 +6,11 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 use serde::Deserialize;
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Embed the FULL kanji database at compile time.
-const KANJI_JSON: &str = include_str!("../data/kanji_database.json");
+const KANJI_JSON: &str = include_str!("../../data/kanji_database.json");
 
 /// JSON structure for deserialization.
 #[derive(Debug, Deserialize)]

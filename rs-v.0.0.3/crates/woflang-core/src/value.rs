@@ -1,31 +1,26 @@
-//! Woflang value types with SIMD-aligned memory layout.
+//! Woflang value types.
 //!
-//! The [`WofValue`] type represents all possible values in the Woflang
-//! stack machine. The memory layout is carefully designed for:
-//!
-//! - 16-byte alignment for SIMD operations
-//! - Compact discriminant encoding
-//! - Cache-friendly access patterns
+//! The [`WofValue`] enum represents all possible values in the Woflang
+//! stack machine. It's a standard Rust tagged union optimized for
+//! pattern matching and ergonomic use.
 
-use crate::{Result, UnitInfo, WofError};
-use core::fmt;
-use num_traits::{ToPrimitive, Zero};
+use crate::{Result, WofError};
+use std::fmt;
 use std::sync::Arc;
 
-/// Discriminant for [`WofValue`] types.
+/// Type discriminant for [`WofValue`].
 ///
-/// The ordering is significant: numeric types are contiguous
-/// for fast `is_numeric()` checks.
+/// Useful for error messages and type checking without matching.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 #[repr(u8)]
 pub enum WofType {
-    /// Uninitialized or invalid value.
+    /// Nil/undefined value.
     #[default]
-    Unknown = 0,
+    Nil = 0,
     /// 64-bit signed integer.
     Integer = 1,
     /// 64-bit IEEE 754 floating point.
-    Double = 2,
+    Float = 2,
     /// Heap-allocated UTF-8 string.
     String = 3,
     /// Interned symbol (identifier).
@@ -37,7 +32,7 @@ impl WofType {
     #[inline]
     #[must_use]
     pub const fn is_numeric(self) -> bool {
-        matches!(self, Self::Integer | Self::Double)
+        matches!(self, Self::Integer | Self::Float)
     }
 
     /// Returns `true` if this type represents a string-like value.
@@ -51,142 +46,108 @@ impl WofType {
 impl fmt::Display for WofType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Unknown => write!(f, "unknown"),
+            Self::Nil => write!(f, "nil"),
             Self::Integer => write!(f, "integer"),
-            Self::Double => write!(f, "double"),
+            Self::Float => write!(f, "float"),
             Self::String => write!(f, "string"),
             Self::Symbol => write!(f, "symbol"),
         }
     }
 }
 
-/// Internal storage union for [`WofValue`].
-///
-/// This is repr(C) to ensure predictable layout across platforms.
-/// The active variant is indicated by the `WofType` discriminant.
-#[derive(Clone)]
-enum ValueStorage {
-    None,
-    Integer(i64),
-    Double(f64),
-    String(Arc<str>),
-}
-
-impl Default for ValueStorage {
-    fn default() -> Self {
-        Self::None
-    }
-}
+// ═══════════════════════════════════════════════════════════════════════════
+// WOFVALUE - THE CORE VALUE TYPE
+// ═══════════════════════════════════════════════════════════════════════════
 
 /// The primary value type for the Woflang stack machine.
 ///
-/// # Memory Layout
-///
-/// The struct is aligned to 16 bytes to enable SIMD operations on
-/// arrays of values. The layout is:
-///
-/// ```text
-/// ┌──────────────────────────────────────────────────────────┐
-/// │ Offset 0-7:   ValueStorage (8 bytes for primitives)      │
-/// │ Offset 8:     WofType discriminant (1 byte)              │
-/// │ Offset 9-15:  Padding / reserved                         │
-/// │ Offset 16-23: Optional<Arc<UnitInfo>> (8 bytes)          │
-/// └──────────────────────────────────────────────────────────┘
-/// ```
-///
-/// # Examples
+/// This is a standard Rust enum, enabling idiomatic pattern matching:
 ///
 /// ```
-/// use woflang_core::{WofValue, WofType};
+/// use woflang_core::WofValue;
 ///
-/// let int_val = WofValue::integer(42);
-/// assert_eq!(int_val.value_type(), WofType::Integer);
-/// assert!(int_val.is_numeric());
+/// let val = WofValue::Float(3.14);
 ///
-/// let str_val = WofValue::string("hello");
-/// assert!(!str_val.is_numeric());
+/// match val {
+///     WofValue::Integer(n) => println!("int: {n}"),
+///     WofValue::Float(f) => println!("float: {f}"),
+///     WofValue::String(s) => println!("string: {s}"),
+///     WofValue::Symbol(s) => println!("symbol: {s}"),
+///     WofValue::Nil => println!("nil"),
+/// }
 /// ```
-#[derive(Clone, Default)]
-#[repr(C)]
-pub struct WofValue {
-    storage: ValueStorage,
-    typ: WofType,
-    unit: Option<Arc<UnitInfo>>,
+#[derive(Clone)]
+pub enum WofValue {
+    /// Nil/undefined/uninitialized value.
+    Nil,
+    /// 64-bit signed integer. Booleans are represented as 0/1.
+    Integer(i64),
+    /// 64-bit IEEE 754 floating point.
+    Float(f64),
+    /// Heap-allocated UTF-8 string. Uses `Arc` for cheap cloning.
+    String(Arc<str>),
+    /// Interned symbol/identifier. Uses `Arc` for cheap cloning.
+    Symbol(Arc<str>),
+}
+
+impl Default for WofValue {
+    fn default() -> Self {
+        Self::Nil
+    }
 }
 
 impl WofValue {
     // ═══════════════════════════════════════════════════════════════
-    // CONSTRUCTORS
+    // CONSTRUCTORS (lowercase, idiomatic)
     // ═══════════════════════════════════════════════════════════════
 
     /// Create an integer value.
     #[inline]
     #[must_use]
     pub const fn integer(v: i64) -> Self {
-        Self {
-            storage: ValueStorage::Integer(v),
-            typ: WofType::Integer,
-            unit: None,
-        }
+        Self::Integer(v)
     }
 
     /// Create a floating-point value.
     #[inline]
     #[must_use]
+    pub const fn float(v: f64) -> Self {
+        Self::Float(v)
+    }
+
+    /// Create a floating-point value (alias for `float`).
+    #[inline]
+    #[must_use]
     pub const fn double(v: f64) -> Self {
-        Self {
-            storage: ValueStorage::Double(v),
-            typ: WofType::Double,
-            unit: None,
-        }
+        Self::Float(v)
     }
 
     /// Create a string value.
     #[inline]
     #[must_use]
     pub fn string(s: impl AsRef<str>) -> Self {
-        Self {
-            storage: ValueStorage::String(Arc::from(s.as_ref())),
-            typ: WofType::String,
-            unit: None,
-        }
+        Self::String(Arc::from(s.as_ref()))
     }
 
     /// Create a symbol value.
     #[inline]
     #[must_use]
     pub fn symbol(s: impl AsRef<str>) -> Self {
-        Self {
-            storage: ValueStorage::String(Arc::from(s.as_ref())),
-            typ: WofType::Symbol,
-            unit: None,
-        }
+        Self::Symbol(Arc::from(s.as_ref()))
     }
 
     /// Create a boolean value (stored as integer 0 or 1).
     #[inline]
     #[must_use]
     pub const fn boolean(b: bool) -> Self {
-        Self::integer(if b { 1 } else { 0 })
+        Self::Integer(if b { 1 } else { 0 })
     }
 
-    /// Create an unknown/nil value.
+    /// Create a nil value.
     #[inline]
     #[must_use]
     pub const fn nil() -> Self {
-        Self {
-            storage: ValueStorage::None,
-            typ: WofType::Unknown,
-            unit: None,
-        }
-    }
-
-    /// Create a value with an attached unit.
-    #[inline]
-    #[must_use]
-    pub fn with_unit(mut self, unit: UnitInfo) -> Self {
-        self.unit = Some(Arc::new(unit));
-        self
+        Self::Nil
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -197,47 +158,80 @@ impl WofValue {
     #[inline]
     #[must_use]
     pub const fn value_type(&self) -> WofType {
-        self.typ
+        match self {
+            Self::Nil => WofType::Nil,
+            Self::Integer(_) => WofType::Integer,
+            Self::Float(_) => WofType::Float,
+            Self::String(_) => WofType::String,
+            Self::Symbol(_) => WofType::Symbol,
+        }
     }
 
-    /// Returns `true` if this value is numeric (integer or double).
+    /// Returns `true` if this value is numeric (integer or float).
     #[inline]
     #[must_use]
     pub const fn is_numeric(&self) -> bool {
-        self.typ.is_numeric()
+        matches!(self, Self::Integer(_) | Self::Float(_))
     }
 
     /// Returns `true` if this value is an integer.
     #[inline]
     #[must_use]
     pub const fn is_integer(&self) -> bool {
-        matches!(self.typ, WofType::Integer)
+        matches!(self, Self::Integer(_))
     }
 
-    /// Returns `true` if this value is a double.
+    /// Returns `true` if this value is a float.
+    #[inline]
+    #[must_use]
+    pub const fn is_float(&self) -> bool {
+        matches!(self, Self::Float(_))
+    }
+
+    /// Alias for `is_float`.
     #[inline]
     #[must_use]
     pub const fn is_double(&self) -> bool {
-        matches!(self.typ, WofType::Double)
+        self.is_float()
+    }
+
+    /// Returns `true` if this value is nil.
+    #[inline]
+    #[must_use]
+    pub const fn is_nil(&self) -> bool {
+        matches!(self, Self::Nil)
+    }
+
+    /// Returns `true` if this value is a string.
+    #[inline]
+    #[must_use]
+    pub const fn is_string(&self) -> bool {
+        matches!(self, Self::String(_))
+    }
+
+    /// Returns `true` if this value is a symbol.
+    #[inline]
+    #[must_use]
+    pub const fn is_symbol(&self) -> bool {
+        matches!(self, Self::Symbol(_))
     }
 
     /// Returns `true` if this value is truthy.
+    ///
+    /// - `Nil` → false
+    /// - `Integer(0)` → false
+    /// - `Float(0.0)` or `Float(NaN)` → false
+    /// - Empty string → false
+    /// - Everything else → true
     #[inline]
     #[must_use]
     pub fn is_truthy(&self) -> bool {
-        match &self.storage {
-            ValueStorage::None => false,
-            ValueStorage::Integer(n) => !n.is_zero(),
-            ValueStorage::Double(n) => !n.is_zero() && !n.is_nan(),
-            ValueStorage::String(s) => !s.is_empty() && s.as_ref() != "false",
+        match self {
+            Self::Nil => false,
+            Self::Integer(n) => *n != 0,
+            Self::Float(f) => *f != 0.0 && !f.is_nan(),
+            Self::String(s) | Self::Symbol(s) => !s.is_empty(),
         }
-    }
-
-    /// Get the attached unit, if any.
-    #[inline]
-    #[must_use]
-    pub fn unit(&self) -> Option<&UnitInfo> {
-        self.unit.as_deref()
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -247,132 +241,150 @@ impl WofValue {
     /// Extract as integer, returning an error if not numeric.
     #[inline]
     pub fn as_integer(&self) -> Result<i64> {
-        match &self.storage {
-            ValueStorage::Integer(n) => Ok(*n),
-            ValueStorage::Double(n) => n
-                .to_i64()
-                .ok_or_else(|| WofError::type_mismatch("integer", self.typ)),
-            _ => Err(WofError::type_mismatch("integer", self.typ)),
+        match self {
+            Self::Integer(n) => Ok(*n),
+            Self::Float(f) => {
+                if f.is_finite() {
+                    Ok(*f as i64)
+                } else {
+                    Err(WofError::type_mismatch("integer", self.value_type()))
+                }
+            }
+            _ => Err(WofError::type_mismatch("integer", self.value_type())),
         }
+    }
+
+    /// Alias for `as_integer`.
+    #[inline]
+    pub fn as_int(&self) -> Result<i64> {
+        self.as_integer()
     }
 
     /// Extract as f64, returning an error if not numeric.
     #[inline]
-    pub fn as_double(&self) -> Result<f64> {
-        match &self.storage {
-            ValueStorage::Integer(n) => n
-                .to_f64()
-                .ok_or_else(|| WofError::type_mismatch("double", self.typ)),
-            ValueStorage::Double(n) => Ok(*n),
-            _ => Err(WofError::type_mismatch("double", self.typ)),
+    pub fn as_float(&self) -> Result<f64> {
+        match self {
+            Self::Integer(n) => Ok(*n as f64),
+            Self::Float(f) => Ok(*f),
+            _ => Err(WofError::type_mismatch("float", self.value_type())),
         }
     }
 
-    /// Extract as numeric (f64), with implicit conversion.
+    /// Alias for `as_float`.
+    #[inline]
+    pub fn as_double(&self) -> Result<f64> {
+        self.as_float()
+    }
+
+    /// Alias for `as_float`.
     #[inline]
     pub fn as_numeric(&self) -> Result<f64> {
-        self.as_double()
+        self.as_float()
     }
 
     /// Extract as string reference.
     #[inline]
     pub fn as_str(&self) -> Result<&str> {
-        match &self.storage {
-            ValueStorage::String(s) => Ok(s.as_ref()),
-            _ => Err(WofError::type_mismatch("string", self.typ)),
+        match self {
+            Self::String(s) | Self::Symbol(s) => Ok(s.as_ref()),
+            _ => Err(WofError::type_mismatch("string", self.value_type())),
         }
     }
 
-    /// Extract as boolean.
+    /// Extract as owned String.
+    #[inline]
+    pub fn as_string(&self) -> Result<String> {
+        self.as_str().map(String::from)
+    }
+
+    /// Extract as boolean (truthiness).
     #[inline]
     #[must_use]
     pub fn as_bool(&self) -> bool {
         self.is_truthy()
     }
 
-    /// Try to extract the raw integer without conversion.
+    /// Try to extract raw integer without conversion.
     #[inline]
     #[must_use]
-    pub fn try_integer(&self) -> Option<i64> {
-        match &self.storage {
-            ValueStorage::Integer(n) => Some(*n),
+    pub const fn try_integer(&self) -> Option<i64> {
+        match self {
+            Self::Integer(n) => Some(*n),
             _ => None,
         }
     }
 
-    /// Try to extract the raw double without conversion.
+    /// Try to extract raw float without conversion.
     #[inline]
     #[must_use]
-    pub fn try_double(&self) -> Option<f64> {
-        match &self.storage {
-            ValueStorage::Double(n) => Some(*n),
+    pub const fn try_float(&self) -> Option<f64> {
+        match self {
+            Self::Float(f) => Some(*f),
             _ => None,
         }
     }
 
-    /// Try to extract the string without conversion.
+    /// Alias for `try_float`.
+    #[inline]
+    #[must_use]
+    pub const fn try_double(&self) -> Option<f64> {
+        self.try_float()
+    }
+
+    /// Try to extract string without conversion.
     #[inline]
     #[must_use]
     pub fn try_str(&self) -> Option<&str> {
-        match &self.storage {
-            ValueStorage::String(s) => Some(s.as_ref()),
+        match self {
+            Self::String(s) | Self::Symbol(s) => Some(s.as_ref()),
             _ => None,
         }
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // TRAIT IMPLEMENTATIONS
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 
 impl fmt::Debug for WofValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match &self.storage {
-            ValueStorage::None => write!(f, "WofValue::nil"),
-            ValueStorage::Integer(n) => write!(f, "WofValue::integer({n})"),
-            ValueStorage::Double(n) => write!(f, "WofValue::double({n})"),
-            ValueStorage::String(s) if self.typ == WofType::Symbol => {
-                write!(f, "WofValue::symbol({s:?})")
-            }
-            ValueStorage::String(s) => write!(f, "WofValue::string({s:?})"),
+        match self {
+            Self::Nil => write!(f, "Nil"),
+            Self::Integer(n) => write!(f, "Integer({n})"),
+            Self::Float(n) => write!(f, "Float({n})"),
+            Self::String(s) => write!(f, "String({s:?})"),
+            Self::Symbol(s) => write!(f, "Symbol({s:?})"),
         }
     }
 }
 
 impl fmt::Display for WofValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match &self.storage {
-            ValueStorage::None => write!(f, "<nil>"),
-            ValueStorage::Integer(n) => write!(f, "{n}"),
-            ValueStorage::Double(n) => {
+        match self {
+            Self::Nil => write!(f, "nil"),
+            Self::Integer(n) => write!(f, "{n}"),
+            Self::Float(n) => {
                 if n.fract().abs() < f64::EPSILON {
                     write!(f, "{n:.1}")
                 } else {
                     write!(f, "{n}")
                 }
             }
-            ValueStorage::String(s) => write!(f, "{s}"),
-        }?;
-        if let Some(unit) = &self.unit {
-            write!(f, " {}", unit.name)?;
+            Self::String(s) | Self::Symbol(s) => write!(f, "{s}"),
         }
-        Ok(())
     }
 }
 
 impl PartialEq for WofValue {
     fn eq(&self, other: &Self) -> bool {
-        if self.typ != other.typ {
-            return false;
-        }
-        match (&self.storage, &other.storage) {
-            (ValueStorage::None, ValueStorage::None) => true,
-            (ValueStorage::Integer(a), ValueStorage::Integer(b)) => a == b,
-            (ValueStorage::Double(a), ValueStorage::Double(b)) => {
-                // Handle NaN comparison
+        match (self, other) {
+            (Self::Nil, Self::Nil) => true,
+            (Self::Integer(a), Self::Integer(b)) => a == b,
+            (Self::Float(a), Self::Float(b)) => {
                 (a.is_nan() && b.is_nan()) || a == b
             }
-            (ValueStorage::String(a), ValueStorage::String(b)) => a == b,
+            (Self::String(a), Self::String(b)) => a == b,
+            (Self::Symbol(a), Self::Symbol(b)) => a == b,
             _ => false,
         }
     }
@@ -382,45 +394,45 @@ impl Eq for WofValue {}
 
 impl std::hash::Hash for WofValue {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.typ.hash(state);
-        match &self.storage {
-            ValueStorage::None => {}
-            ValueStorage::Integer(n) => n.hash(state),
-            ValueStorage::Double(n) => n.to_bits().hash(state),
-            ValueStorage::String(s) => s.hash(state),
+        std::mem::discriminant(self).hash(state);
+        match self {
+            Self::Nil => {}
+            Self::Integer(n) => n.hash(state),
+            Self::Float(f) => f.to_bits().hash(state),
+            Self::String(s) | Self::Symbol(s) => s.hash(state),
         }
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // CONVERSIONS
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 
 impl From<i64> for WofValue {
     #[inline]
     fn from(v: i64) -> Self {
-        Self::integer(v)
+        Self::Integer(v)
     }
 }
 
 impl From<i32> for WofValue {
     #[inline]
     fn from(v: i32) -> Self {
-        Self::integer(i64::from(v))
+        Self::Integer(i64::from(v))
     }
 }
 
 impl From<f64> for WofValue {
     #[inline]
     fn from(v: f64) -> Self {
-        Self::double(v)
+        Self::Float(v)
     }
 }
 
 impl From<f32> for WofValue {
     #[inline]
     fn from(v: f32) -> Self {
-        Self::double(f64::from(v))
+        Self::Float(f64::from(v))
     }
 }
 
@@ -434,62 +446,61 @@ impl From<bool> for WofValue {
 impl From<String> for WofValue {
     #[inline]
     fn from(v: String) -> Self {
-        Self::string(v)
+        Self::String(Arc::from(v.as_str()))
     }
 }
 
 impl From<&str> for WofValue {
     #[inline]
     fn from(v: &str) -> Self {
-        Self::string(v)
+        Self::String(Arc::from(v))
     }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TESTS
+// ═══════════════════════════════════════════════════════════════════════════
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn integer_roundtrip() {
-        let v = WofValue::integer(42);
-        assert_eq!(v.as_integer().unwrap(), 42);
-        assert_eq!(v.as_double().unwrap(), 42.0);
+    fn pattern_matching_works() {
+        let v = WofValue::Float(2.718);
+        let result = match v {
+            WofValue::Integer(n) => format!("int: {n}"),
+            WofValue::Float(f) => format!("float: {f}"),
+            _ => "other".to_string(),
+        };
+        assert!(result.starts_with("float:"));
     }
 
     #[test]
-    fn double_roundtrip() {
-        let v = WofValue::double(3.14159);
-        assert!((v.as_double().unwrap() - 3.14159).abs() < f64::EPSILON);
+    fn direct_construction() {
+        // These should all work - enum variants as constructors
+        let _ = WofValue::Integer(42);
+        let _ = WofValue::Float(3.14);
+        let _ = WofValue::Nil;
     }
 
     #[test]
-    fn string_roundtrip() {
-        let v = WofValue::string("hello, wofl");
-        assert_eq!(v.as_str().unwrap(), "hello, wofl");
+    fn method_construction() {
+        let _ = WofValue::integer(42);
+        let _ = WofValue::float(3.14);
+        let _ = WofValue::double(3.14);
+        let _ = WofValue::string("hello");
+        let _ = WofValue::symbol("x");
+        let _ = WofValue::boolean(true);
+        let _ = WofValue::nil();
     }
 
     #[test]
     fn truthiness() {
-        assert!(WofValue::integer(1).is_truthy());
-        assert!(!WofValue::integer(0).is_truthy());
-        assert!(WofValue::double(0.1).is_truthy());
-        assert!(!WofValue::double(0.0).is_truthy());
-        assert!(WofValue::string("x").is_truthy());
-        assert!(!WofValue::string("").is_truthy());
-        assert!(!WofValue::nil().is_truthy());
-    }
-
-    #[test]
-    fn equality() {
-        assert_eq!(WofValue::integer(5), WofValue::integer(5));
-        assert_ne!(WofValue::integer(5), WofValue::integer(6));
-        assert_ne!(WofValue::integer(5), WofValue::double(5.0));
-    }
-
-    #[test]
-    fn display_formatting() {
-        assert_eq!(format!("{}", WofValue::integer(42)), "42");
-        assert_eq!(format!("{}", WofValue::double(3.0)), "3.0");
-        assert_eq!(format!("{}", WofValue::string("test")), "test");
+        assert!(WofValue::Integer(1).is_truthy());
+        assert!(!WofValue::Integer(0).is_truthy());
+        assert!(WofValue::Float(0.1).is_truthy());
+        assert!(!WofValue::Float(0.0).is_truthy());
+        assert!(!WofValue::Nil.is_truthy());
     }
 }

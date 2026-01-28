@@ -11,7 +11,7 @@
 //! - `diff_central` - Central difference
 //! - `diff_second` - Second derivative
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register all gradient/differentiation operations.
@@ -30,7 +30,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xmh_y = interp.stack_mut().pop()?.as_float()?;  // f(x-h, y)
 
         if h.abs() < f64::EPSILON {
-            return Err("grad2_central: step h must be non-zero".into());
+            return Err(WofError::Runtime("grad2_central: step h must be non-zero".to_string()));
         }
 
         let gx = (f_xph_y - f_xmh_y) / (2.0 * h);
@@ -62,7 +62,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xmh_ymh = interp.stack_mut().pop()?.as_float()?;  // f(x-h, y-h)
 
         if h.abs() < f64::EPSILON {
-            return Err("hess2_central: step h must be non-zero".into());
+            return Err(WofError::Runtime("hess2_central: step h must be non-zero".to_string()));
         }
 
         let h2 = h * h;
@@ -90,7 +90,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_x = interp.stack_mut().pop()?.as_float()?;
 
         if h.abs() < f64::EPSILON {
-            return Err("diff_forward: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff_forward: step h must be non-zero".to_string()));
         }
 
         let deriv = (f_xph - f_x) / h;
@@ -106,7 +106,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xmh = interp.stack_mut().pop()?.as_float()?;
 
         if h.abs() < f64::EPSILON {
-            return Err("diff_backward: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff_backward: step h must be non-zero".to_string()));
         }
 
         let deriv = (f_x - f_xmh) / h;
@@ -122,7 +122,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xmh = interp.stack_mut().pop()?.as_float()?;
 
         if h.abs() < f64::EPSILON {
-            return Err("diff_central: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff_central: step h must be non-zero".to_string()));
         }
 
         let deriv = (f_xph - f_xmh) / (2.0 * h);
@@ -139,7 +139,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xmh = interp.stack_mut().pop()?.as_float()?;
 
         if h.abs() < f64::EPSILON {
-            return Err("diff_second: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff_second: step h must be non-zero".to_string()));
         }
 
         let second = (f_xph - 2.0 * f_x + f_xmh) / (h * h);
@@ -153,7 +153,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xph = interp.stack_mut().pop()?.as_float()?;
         let f_x = interp.stack_mut().pop()?.as_float()?;
         if h.abs() < f64::EPSILON {
-            return Err("diff.forward: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff.forward: step h must be non-zero".to_string()));
         }
         interp.stack_mut().push(WofValue::Float((f_xph - f_x) / h));
         Ok(())
@@ -164,7 +164,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_x = interp.stack_mut().pop()?.as_float()?;
         let f_xmh = interp.stack_mut().pop()?.as_float()?;
         if h.abs() < f64::EPSILON {
-            return Err("diff.backward: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff.backward: step h must be non-zero".to_string()));
         }
         interp.stack_mut().push(WofValue::Float((f_x - f_xmh) / h));
         Ok(())
@@ -175,7 +175,7 @@ pub fn register(interp: &mut Interpreter) {
         let f_xph = interp.stack_mut().pop()?.as_float()?;
         let f_xmh = interp.stack_mut().pop()?.as_float()?;
         if h.abs() < f64::EPSILON {
-            return Err("diff.central: step h must be non-zero".into());
+            return Err(WofError::Runtime("diff.central: step h must be non-zero".to_string()));
         }
         interp.stack_mut().push(WofValue::Float((f_xph - f_xmh) / (2.0 * h)));
         Ok(())

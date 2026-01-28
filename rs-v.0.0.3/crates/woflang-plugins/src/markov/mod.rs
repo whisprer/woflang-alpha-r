@@ -12,7 +12,7 @@
 
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -104,7 +104,7 @@ const TRANSITIONS: &[(&str, &[&str])] = &[
 // ═══════════════════════════════════════════════════════════════════════════
 
 /// Get a random suggestion from a list.
-fn random_suggestion(suggestions: &[&str]) -> Option<&str> {
+fn random_suggestion<'a>(suggestions: &[&'a str]) -> Option<&'a str> {
     suggestions.choose(&mut thread_rng()).copied()
 }
 

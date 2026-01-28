@@ -3,7 +3,7 @@
 //! Provides factorial, fibonacci, GCD, LCM, combinations, permutations,
 //! and other number theory functions.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register discrete math operations.

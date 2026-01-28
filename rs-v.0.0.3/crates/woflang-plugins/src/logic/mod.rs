@@ -24,7 +24,7 @@
 
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -133,10 +133,9 @@ fn to_bool(v: &WofValue) -> bool {
     match v {
         WofValue::Integer(n) => *n != 0,
         WofValue::Float(f) => *f != 0.0,
-        WofValue::Bool(b) => *b,
         WofValue::String(s) => !s.is_empty(),
+        WofValue::Symbol(s) => !s.is_empty(),
         WofValue::Nil => false,
-        _ => true,
     }
 }
 
@@ -149,11 +148,11 @@ fn make_bool(b: bool) -> WofValue {
 fn values_equal(a: &WofValue, b: &WofValue) -> bool {
     match (a, b) {
         (WofValue::String(s1), WofValue::String(s2)) => s1 == s2,
+        (WofValue::Symbol(s1), WofValue::Symbol(s2)) => s1 == s2,
         (WofValue::Integer(n1), WofValue::Integer(n2)) => n1 == n2,
         (WofValue::Float(f1), WofValue::Float(f2)) => (f1 - f2).abs() < f64::EPSILON,
         (WofValue::Integer(n), WofValue::Float(f)) |
         (WofValue::Float(f), WofValue::Integer(n)) => (*n as f64 - f).abs() < f64::EPSILON,
-        (WofValue::Bool(b1), WofValue::Bool(b2)) => b1 == b2,
         (WofValue::Nil, WofValue::Nil) => true,
         _ => false,
     }

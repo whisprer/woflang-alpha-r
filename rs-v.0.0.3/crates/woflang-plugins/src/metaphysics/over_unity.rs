@@ -9,7 +9,7 @@
 //! - `free_energy` - Generate free energy (spoiler: it doesn't work)
 //! - `thermodynamics` - Print the laws of thermodynamics
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 use rand::Rng;
 

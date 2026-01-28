@@ -10,7 +10,7 @@
 
 use std::sync::{Mutex, OnceLock};
 use std::f64::consts::PI;
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// The last forbidden message.

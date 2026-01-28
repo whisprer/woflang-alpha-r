@@ -11,7 +11,7 @@
 //!
 //! - `pattern_solve` - Parse and solve an equation string
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 // ═══════════════════════════════════════════════════════════════════════════

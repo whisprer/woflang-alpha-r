@@ -305,7 +305,7 @@ impl NeuralChessAI {
 
             let selected_move = if board.side_to_move == Color::White {
                 self.select_move(&board)
-            } else if let Some(opp) = opponent {
+            } else if let Some(ref mut opp) = opponent {
                 opp.select_move(&board)
             } else {
                 self.select_move(&board)

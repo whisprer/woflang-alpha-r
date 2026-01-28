@@ -3,7 +3,7 @@
 //! Core types and traits for the Woflang stack-based programming language.
 //!
 //! This crate provides:
-//! - [`WofValue`]: The primary value type with SIMD-aligned memory layout
+//! - [`WofValue`]: The primary value type (enum for pattern matching)
 //! - [`WofStack`]: A type-safe stack abstraction
 //! - [`WofError`]: Comprehensive error types via `thiserror`
 //! - [`OpHandler`]: The trait for operation implementations
@@ -11,11 +11,19 @@
 //! - [`BlockRegistry`]: Block tracking for structured control flow
 //! - [`ScopeStack`]: Lexical scoping with variable bindings
 //!
-//! ## Memory Layout
+//! ## Value Types
 //!
-//! All value types are aligned to 16 bytes for SIMD compatibility. The
-//! discriminated union uses a compact representation optimized for cache
-//! locality when processing batches of values.
+//! `WofValue` is a Rust enum supporting idiomatic pattern matching:
+//!
+//! ```ignore
+//! match val {
+//!     WofValue::Integer(n) => println!("int: {n}"),
+//!     WofValue::Float(f) => println!("float: {f}"),
+//!     WofValue::String(s) => println!("string: {s}"),
+//!     WofValue::Symbol(s) => println!("symbol: {s}"),
+//!     WofValue::Nil => println!("nil"),
+//! }
+//! ```
 
 #![deny(unsafe_code)]
 #![warn(missing_docs)]

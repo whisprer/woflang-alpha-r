@@ -3,7 +3,7 @@
 //! Provides floor, ceil, round, abs, sign, min, max, clamp, and related functions.
 //! Note: Core arithmetic (+, -, *, /, %) is in woflang-ops.
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register basic math operations.

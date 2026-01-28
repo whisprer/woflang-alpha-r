@@ -4,7 +4,7 @@
 //! - `:mirror` - Toggle mirror mode and reverse the stack
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Mirror mode flag.
@@ -68,15 +68,15 @@ pub fn register(interp: &mut Interpreter) {
     // Stack: string → 0|1
     interp.register("palindrome?", |interp| {
         let val = interp.stack_mut().pop()?;
-        let s = match val {
-            WofValue::String(s) => s,
+        let s: String = match val {
+            WofValue::String(s) => s.to_string(),
             WofValue::Integer(n) => n.to_string(),
             _ => return Ok(()),
         };
         
         let cleaned: String = s.chars()
-            .filter(|c| c.is_alphanumeric())
-            .map(|c| c.to_lowercase().next().unwrap_or(c))
+            .filter(|c: &char| c.is_alphanumeric())
+            .map(|c: char| c.to_lowercase().next().unwrap_or(c))
             .collect();
         
         let reversed: String = cleaned.chars().rev().collect();

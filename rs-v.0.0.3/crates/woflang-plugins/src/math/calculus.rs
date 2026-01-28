@@ -3,7 +3,7 @@
 //! Provides numerical differentiation (finite differences) and
 //! basic integration helpers.
 
-use woflang_core::{WofError, WofValue};
+use woflang_core::{InterpreterContext, WofError, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Register calculus operations.

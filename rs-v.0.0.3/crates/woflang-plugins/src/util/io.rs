@@ -2,7 +2,7 @@
 //!
 //! Provides print, input, debug output, and stack visualization.
 
-use woflang_core::WofValue;
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 use std::io::{self, Write};
 

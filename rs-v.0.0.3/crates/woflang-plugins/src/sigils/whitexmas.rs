@@ -4,7 +4,7 @@
 //! - `:whitexmas` - Display animated sigil snow
 //! - `:matrix` - Matrix-style sigil rain
 
-use woflang_core::InterpreterContext;
+// use woflang_core::InterpreterContext;
 use woflang_runtime::Interpreter;
 
 /// Mystical sigils for the snowstorm.

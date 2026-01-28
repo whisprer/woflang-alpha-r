@@ -8,11 +8,11 @@
 
 use super::tensor::Tensor;
 use super::brain::BrainCore;
-use super::chess::{Board, Move, Square, Color, GameResult, PieceType};
+use super::chess::{Board, Move, Color, GameResult};
 use super::cnn::board_to_planes;
 use super::ganglion::PingMeasurer;
 
-use std::collections::HashMap;
+// use std::collections::HashMap;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TRAINING EXAMPLE
@@ -193,7 +193,7 @@ impl NeuralChessAI {
 
         // Get neural network evaluation
         let planes = Self::board_to_input(board);
-        let (value, policy) = self.brain.forward(&planes);
+        let (_value, policy) = self.brain.forward(&planes);
 
         // Record move for RNN/LSTM context
         if let Some(last_move) = legal_moves.first() {
@@ -286,12 +286,12 @@ impl NeuralChessAI {
     }
 
     /// Play a complete game against another AI (or self).
-    pub fn play_game(&mut self, opponent: Option<&mut NeuralChessAI>) -> GameRecord {
+    pub fn play_game(&mut self, mut opponent: Option<&mut NeuralChessAI>) -> GameRecord {
         let mut board = Board::starting_position();
         let mut record = GameRecord::new();
         
         self.brain.reset_history();
-        if let Some(opp) = opponent.as_ref() {
+        if let Some(_opp) = opponent.as_ref() {
             // opponent.brain.reset_history();  // Can't mutate here
         }
 

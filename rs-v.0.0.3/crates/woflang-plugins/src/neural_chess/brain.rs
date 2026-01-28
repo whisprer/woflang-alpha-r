@@ -11,12 +11,12 @@
 //! - The three networks provide complementary information
 
 use super::tensor::Tensor;
-use super::activation::{relu, sigmoid, softmax, Activation};
+use super::activation::{softmax, Activation};
 use super::layers::{Dense, Layer};
 use super::rnn::RNN;
 use super::lstm::LSTM;
 use super::cnn::ChessCNN;
-use super::ganglion::{Ganglion, NeuralClockCoordinator};
+use super::ganglion::NeuralClockCoordinator;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // FUSION LAYER

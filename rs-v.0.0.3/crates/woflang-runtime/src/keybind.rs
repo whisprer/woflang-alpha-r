@@ -18,7 +18,7 @@
 //! ```
 
 use std::collections::HashMap;
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::{self, BufRead, BufReader, Write};
 use std::path::PathBuf;
 
@@ -193,7 +193,7 @@ impl KeyBindings {
             }
             
             // Try to match an alias
-            let start = result.len();
+            let _start = result.len();
             let mut token = String::new();
             
             // Collect alphanumeric token

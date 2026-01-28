@@ -224,7 +224,7 @@ fn sieve_of_eratosthenes(limit: usize) -> Vec<usize> {
     }
 
     is_prime.iter().enumerate()
-        .filter(|(_, &p)| p)
+        .filter(|&(_, &p)| p)
         .map(|(i, _)| i)
         .collect()
 }

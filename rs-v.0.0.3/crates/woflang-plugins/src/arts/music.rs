@@ -340,7 +340,7 @@ pub fn register(interp: &mut Interpreter) {
     interp.register("note_freq", |interp| {
         // Check if we have an A4 reference on stack
         let val = interp.stack_mut().pop()?;
-        let (midi, a4) = if let Ok(top) = interp.stack().peek() {
+        let (midi, a4) = if let Ok(_top) = interp.stack().peek() {
             // Two values: midi is below, a4 is val
             let a4 = val.as_float().unwrap_or(440.0);
             let midi = interp.stack_mut().pop()?.as_int()? as i32;

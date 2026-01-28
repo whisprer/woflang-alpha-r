@@ -58,7 +58,7 @@ fn to_lower(s: &str) -> String {
 /// - "true" ↔ "false"
 fn dualize_formula(formula: &str) -> String {
     let mut result = formula.to_string();
-    let lower = to_lower(formula);
+    let _lower = to_lower(formula);
     
     // Use placeholders to avoid re-rewrites
     let replacements = [

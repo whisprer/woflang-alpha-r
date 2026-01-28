@@ -237,13 +237,30 @@ Constants:
 // BENCHMARK SUITE
 // ═══════════════════════════════════════════════════════════════════════
 
+/// Standalone primality test (no interpreter overhead)
+fn is_prime_standalone(n: u64) -> bool {
+    if n <= 1 { return false; }
+    if n <= 3 { return true; }
+    if n % 2 == 0 || n % 3 == 0 { return false; }
+    
+    let mut i = 5u64;
+    while i.saturating_mul(i) <= n {
+        if n % i == 0 || n % (i + 2) == 0 {
+            return false;
+        }
+        i += 6;
+    }
+    true
+}
+
 fn run_benchmark() -> Result<()> {
     println!("🔢 WofLang Prime Benchmarking Suite");
-    println!("===================================\n");
+    println!("═══════════════════════════════════════════════════════════════\n");
 
-    let mut interp = Interpreter::new();
-    woflang_ops::register_all(&mut interp);
-
+    // First run standalone benchmark (pure Rust, no interpreter)
+    println!("📊 STANDALONE BENCHMARK (Pure Rust, no interpreter overhead)");
+    println!("─────────────────────────────────────────────────────────────");
+    
     struct BenchTest {
         name: &'static str,
         number: u64,
@@ -271,19 +288,62 @@ fn run_benchmark() -> Result<()> {
     ];
 
     println!(
-        "{:<20} {:<18} {:<12} {:<12} {:<12} {:<5}",
+        "{:<18} {:<18} {:<12} {:<12} {:<12} {:<5}",
         "Test Name", "Number", "Expected", "Result", "Time (µs)", "OK"
     );
-    println!("{}", "-".repeat(80));
+    println!("{}", "─".repeat(75));
 
-    let mut total_time = 0.0;
-    let mut correct = 0;
+    let mut total_time_standalone = 0.0;
+    let mut correct_standalone = 0;
 
     for test in &tests {
-        print!("{:<20} {:<18} {:<12}", test.name, test.number, 
-               if test.expected_prime { "PRIME" } else { "COMPOSITE" });
-        std::io::Write::flush(&mut std::io::stdout()).ok();
+        let start = Instant::now();
+        let result = is_prime_standalone(test.number);
+        let duration = start.elapsed().as_secs_f64() * 1_000_000.0;
+        
+        let is_correct = result == test.expected_prime;
+        if is_correct { correct_standalone += 1; }
+        
+        println!(
+            "{:<18} {:<18} {:<12} {:<12} {:<12.2} {}",
+            test.name,
+            test.number,
+            if test.expected_prime { "PRIME" } else { "COMPOSITE" },
+            if result { "PRIME" } else { "COMPOSITE" },
+            duration,
+            if is_correct { "✓" } else { "✗" }
+        );
+        
+        total_time_standalone += duration;
+    }
 
+    println!("{}", "─".repeat(75));
+    println!("Standalone: Total {:.2} µs, Avg {:.2} µs, {}/{} correct ({:.1}%)\n",
+        total_time_standalone,
+        total_time_standalone / tests.len() as f64,
+        correct_standalone,
+        tests.len(),
+        100.0 * correct_standalone as f64 / tests.len() as f64
+    );
+
+    // Now run interpreter benchmark
+    println!("📊 INTERPRETER BENCHMARK (Through WofLang VM)");
+    println!("─────────────────────────────────────────────────────────────");
+
+    let mut interp = Interpreter::new();
+    woflang_ops::register_all(&mut interp);
+    woflang_plugins::register_all(&mut interp);
+
+    println!(
+        "{:<18} {:<18} {:<12} {:<12} {:<12} {:<5}",
+        "Test Name", "Number", "Expected", "Result", "Time (µs)", "OK"
+    );
+    println!("{}", "─".repeat(75));
+
+    let mut total_time_interp = 0.0;
+    let mut correct_interp = 0;
+
+    for test in &tests {
         interp.clear();
         let command = format!("{} prime_check", test.number);
 
@@ -300,35 +360,86 @@ fn run_benchmark() -> Result<()> {
                     .unwrap_or(false);
 
                 let is_correct = result == test.expected_prime;
-                if is_correct {
-                    correct += 1;
-                }
+                if is_correct { correct_interp += 1; }
 
                 println!(
-                    "{:<12} {:<12.2} {}",
+                    "{:<18} {:<18} {:<12} {:<12} {:<12.2} {}",
+                    test.name,
+                    test.number,
+                    if test.expected_prime { "PRIME" } else { "COMPOSITE" },
                     if result { "PRIME" } else { "COMPOSITE" },
                     duration,
                     if is_correct { "✓" } else { "✗" }
                 );
             }
             Err(e) => {
-                println!("{:<12} {:<12.2} ✗", "ERROR", 0.0);
+                println!(
+                    "{:<18} {:<18} {:<12} {:<12} {:<12.2} {}",
+                    test.name, test.number, 
+                    if test.expected_prime { "PRIME" } else { "COMPOSITE" },
+                    "ERROR", 0.0, "✗"
+                );
                 eprintln!("    Error: {e}");
             }
         }
 
-        total_time += duration;
+        total_time_interp += duration;
     }
 
-    println!("{}", "-".repeat(80));
-    println!("Total time: {:.2} µs", total_time);
-    println!("Average time: {:.2} µs", total_time / tests.len() as f64);
-    println!("Correct results: {}/{}", correct, tests.len());
-    println!(
-        "Success rate: {:.1}%",
-        100.0 * correct as f64 / tests.len() as f64
+    println!("{}", "─".repeat(75));
+    println!("Interpreter: Total {:.2} µs, Avg {:.2} µs, {}/{} correct ({:.1}%)\n",
+        total_time_interp,
+        total_time_interp / tests.len() as f64,
+        correct_interp,
+        tests.len(),
+        100.0 * correct_interp as f64 / tests.len() as f64
     );
-    println!("\n🐺 Benchmark complete! 🐺\n");
+
+    // Additional math benchmarks
+    println!("📊 MATH OPERATIONS BENCHMARK");
+    println!("─────────────────────────────────────────────────────────────");
+    
+    let math_tests = [
+        ("Addition (1M ops)", "0", |i: &mut Interpreter| {
+            for _ in 0..1000 {
+                i.exec_line("1 +").ok();
+            }
+        }),
+        ("Multiplication", "1", |i: &mut Interpreter| {
+            for _ in 0..1000 {
+                i.exec_line("2 *").ok();
+            }
+        }),
+        ("Square root", "12345678", |i: &mut Interpreter| {
+            for _ in 0..1000 {
+                i.exec_line("sqrt dup").ok();
+            }
+        }),
+        ("Trigonometry", "0.5", |i: &mut Interpreter| {
+            for _ in 0..1000 {
+                i.exec_line("sin cos tan atan").ok();
+            }
+        }),
+    ];
+
+    println!("{:<25} {:<15} {:<15}", "Operation", "Time (ms)", "Ops/sec");
+    println!("{}", "─".repeat(55));
+
+    for (name, setup, bench_fn) in math_tests {
+        interp.clear();
+        interp.exec_line(setup).ok();
+        
+        let start = Instant::now();
+        bench_fn(&mut interp);
+        let duration = start.elapsed().as_secs_f64() * 1000.0;
+        let ops_per_sec = 1000.0 / (duration / 1000.0);
+        
+        println!("{:<25} {:<15.2} {:<15.0}", name, duration, ops_per_sec);
+    }
+
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("🐺 Benchmark complete! 🐺");
+    println!("═══════════════════════════════════════════════════════════════\n");
 
     Ok(())
 }
@@ -342,13 +453,16 @@ fn run_tests() -> Result<()> {
 
     let mut interp = Interpreter::new();
     woflang_ops::register_all(&mut interp);
+    woflang_plugins::register_all(&mut interp);
 
     let mut passed = 0;
+    let mut failed = 0;
     let mut total = 0;
 
+    // Test helper that captures results
     let mut test = |name: &str, code: &str, should_succeed: bool| {
         total += 1;
-        print!("🔬 Testing {name}: ");
+        print!("🔬 {name}: ");
         std::io::Write::flush(&mut std::io::stdout()).ok();
 
         interp.clear();
@@ -359,6 +473,7 @@ fn run_tests() -> Result<()> {
                     passed += 1;
                 } else {
                     println!("❌ FAIL (should have failed)");
+                    failed += 1;
                 }
             }
             Err(e) => {
@@ -367,85 +482,395 @@ fn run_tests() -> Result<()> {
                     passed += 1;
                 } else {
                     println!("❌ FAIL: {e}");
+                    failed += 1;
                 }
             }
         }
     };
 
+    // Test with value check
+    let mut test_value = |name: &str, code: &str, check: fn(&Interpreter) -> bool| {
+        total += 1;
+        print!("🔬 {name}: ");
+        std::io::Write::flush(&mut std::io::stdout()).ok();
+
+        interp.clear();
+        match interp.exec_line(code) {
+            Ok(()) => {
+                if check(&interp) {
+                    println!("✅ PASS");
+                    passed += 1;
+                } else {
+                    println!("❌ FAIL (wrong value)");
+                    failed += 1;
+                }
+            }
+            Err(e) => {
+                println!("❌ FAIL: {e}");
+                failed += 1;
+            }
+        }
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // BASIC MATH
+    // ═══════════════════════════════════════════════════════════════
+    println!("═══════════════════════════════════════════════════════════════");
     println!("=== 🔢 BASIC MATH OPERATIONS ===");
-    test("Push numbers", "42 3.14 -17", true);
-    test("Addition", "5 3 +", true);
-    test("Subtraction", "10 4 -", true);
-    test("Multiplication", "6 7 *", true);
-    test("Division", "20 4 /", true);
-    test("Power", "2 8 pow", true);
-    test("Square root", "16 sqrt", true);
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Push integer", "42", true);
+    test("Push float", "3.14159", true);
+    test("Push negative", "-17", true);
+    test_value("Addition 5+3=8", "5 3 +", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 8.0).unwrap_or(false)
+    });
+    test_value("Subtraction 10-4=6", "10 4 -", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 6.0).unwrap_or(false)
+    });
+    test_value("Multiplication 6*7=42", "6 7 *", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 42.0).unwrap_or(false)
+    });
+    test_value("Division 20/4=5", "20 4 /", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 5.0).unwrap_or(false)
+    });
+    test_value("Power 2^8=256", "2 8 pow", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 256.0).unwrap_or(false)
+    });
+    test_value("Square root √16=4", "16 sqrt", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 4.0).unwrap_or(false)
+    });
+    test("Modulo", "17 5 mod", true);
+    test("Absolute value", "-42 abs", true);
+    test("Floor", "3.7 floor", true);
+    test("Ceiling", "3.2 ceil", true);
+    test("Round", "3.5 round", true);
+    test("Natural log", "e ln", true);
+    test("Log base 10", "100 log10", true);
+    test("Exponential", "1 exp", true);
+    test("Factorial", "5 fact", true);
 
-    println!("\n=== 📐 TRIGONOMETRY ===");
-    test("Pi constant", "pi", true);
+    // ═══════════════════════════════════════════════════════════════
+    // TRIGONOMETRY
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 📐 TRIGONOMETRY ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Pi constant", "π", true);
+    test("Pi (ascii)", "pi", true);
     test("E constant", "e", true);
-    test("Sine", "pi 2 / sin", true);
-    test("Cosine", "0 cos", true);
+    test("Tau constant", "τ", true);
+    test("Phi (golden ratio)", "φ", true);
+    test_value("sin(π/2) ≈ 1", "π 2 / sin", |i| {
+        i.stack().peek().map(|v| (v.as_float().unwrap_or(0.0) - 1.0).abs() < 0.0001).unwrap_or(false)
+    });
+    test_value("cos(0) = 1", "0 cos", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 1.0).unwrap_or(false)
+    });
+    test("Tangent", "0.5 tan", true);
+    test("Arc sine", "0.5 asin", true);
+    test("Arc cosine", "0.5 acos", true);
+    test("Arc tangent", "1 atan", true);
+    test("Hyperbolic sine", "1 sinh", true);
+    test("Hyperbolic cosine", "1 cosh", true);
+    test("Degrees to radians", "180 deg2rad", true);
+    test("Radians to degrees", "π rad2deg", true);
 
-    println!("\n=== 📊 STACK OPERATIONS ===");
-    test("Clear and setup", "clear 1 2 3", true);
-    test("Duplicate top", "42 dup", true);
-    test("Swap top two", "1 2 swap", true);
-    test("Drop top", "1 2 drop", true);
-    test("Show stack", "1 2 3 .", true);
+    // ═══════════════════════════════════════════════════════════════
+    // STACK OPERATIONS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 📊 STACK OPERATIONS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Clear stack", "1 2 3 clear", true);
+    test_value("Duplicate top", "42 dup", |i| i.stack().len() == 2);
+    test_value("Swap top two", "1 2 swap", |i| {
+        i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 1.0).unwrap_or(false)
+    });
+    test_value("Drop top", "1 2 drop", |i| i.stack().len() == 1);
+    test("Over operation", "1 2 over", true);
+    test("Rot operation", "1 2 3 rot", true);
+    test("Show stack (.)", "1 2 3 .", true);
+    test("Stack depth", "1 2 3 depth", true);
+    test("Pick operation", "1 2 3 1 pick", true);
+    test("Stack slayer", "1 2 3 4 5 stack_slayer", true);
 
-    #[cfg(feature = "quantum-ops")]
-    {
-        println!("\n=== ⚛️ QUANTUM COMPUTING ===");
-        test("Create |0⟩ state", "|0⟩", true);
-        test("Create |1⟩ state", "|1⟩", true);
-        test("Hadamard gate", "|0⟩ H", true);
-        test("Pauli-X gate", "|0⟩ X", true);
-        test("Pauli-Z gate", "|0⟩ Z", true);
-        test("Quantum measurement", "|0⟩ measure", true);
-        test("Bell state creation", "bell", true);
-    }
+    // ═══════════════════════════════════════════════════════════════
+    // LOGIC OPERATIONS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🧮 LOGIC OPERATIONS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test_value("AND: 1 ∧ 1 = 1", "1 1 and", |i| {
+        i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
+    });
+    test_value("AND: 1 ∧ 0 = 0", "1 0 and", |i| {
+        !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
+    });
+    test_value("OR: 0 ∨ 1 = 1", "0 1 or", |i| {
+        i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
+    });
+    test_value("XOR: 1 ⊕ 1 = 0", "1 1 xor", |i| {
+        !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
+    });
+    test_value("NOT: ¬0 = 1", "0 not", |i| {
+        i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
+    });
+    test("Unicode AND (∧)", "1 1 ∧", true);
+    test("Unicode OR (∨)", "0 1 ∨", true);
+    test("Unicode NOT (¬)", "1 ¬", true);
+    test("Implies (→)", "1 0 implies", true);
+    test("Biconditional (↔)", "1 1 iff", true);
+    test("NAND", "1 1 nand", true);
+    test("NOR", "0 0 nor", true);
+    test("Comparison: =", "5 5 =", true);
+    test("Comparison: <", "3 5 <", true);
+    test("Comparison: >", "5 3 >", true);
+    test("Comparison: ≤", "3 5 ≤", true);
+    test("Comparison: ≥", "5 3 ≥", true);
+    test("Comparison: ≠", "3 5 ≠", true);
 
-    #[cfg(feature = "crypto-ops")]
-    {
-        println!("\n=== 🔐 CRYPTOGRAPHY ===");
-        test("Prime check (prime)", "17 prime_check", true);
-        test("Prime check (composite)", "15 prime_check", true);
-        test("Random number", "1 100 random", true);
-        test("Hash function", "42 hash", true);
-        test("Base64 encode", "123 base64_encode", true);
-        test("Diffie-Hellman demo", "diffie_hellman", true);
-    }
+    // ═══════════════════════════════════════════════════════════════
+    // CRYPTOGRAPHY
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🔐 CRYPTOGRAPHY ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test_value("Prime check (17 is prime)", "17 prime_check", |i| {
+        i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
+    });
+    test_value("Prime check (15 is composite)", "15 prime_check", |i| {
+        !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
+    });
+    test("Next prime", "10 next_prime", true);
+    test("GCD", "48 18 gcd", true);
+    test("LCM", "12 18 lcm", true);
+    test("Modular exponentiation", "2 10 1000 mod_exp", true);
+    test("Modular inverse", "3 11 mod_inv", true);
+    test("Random number", "1 100 random", true);
+    test("Hash function", "42 hash", true);
 
-    println!("\n=== 🧮 LOGIC OPERATIONS ===");
-    test("Logical AND", "1 1 and", true);
-    test("Logical OR", "0 1 or", true);
-    test("Logical XOR", "1 1 xor", true);
-    test("Logical NOT", "0 not", true);
-    test("Tautology demo", "tautology", true);
+    // ═══════════════════════════════════════════════════════════════
+    // GEOMETRY
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 📐 GEOMETRY ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Circle area", "5 circle_area", true);
+    test("Circle circumference", "5 circle_circumf", true);
+    test("Sphere volume", "3 sphere_vol", true);
+    test("Sphere surface", "3 sphere_surface", true);
+    test("Pythagorean distance", "3 4 hypot", true);
+    test("Distance 2D", "0 0 3 4 dist2d", true);
 
-    println!("\n=== 🎭 DRAMATIC OPERATIONS ===");
-    test("Stack resurrection", "resurrect", true);
-    test("Stack slayer", "1 2 3 stack_slayer", true);
+    // ═══════════════════════════════════════════════════════════════
+    // CALCULUS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== ∫ CALCULUS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Numerical derivative", "1 0.001 diff_central", true);
+    test("Trapezoidal integration", "0 1 100 trapezoid", true);
+    test("Simpson integration", "0 1 100 simpson", true);
 
-    println!("\n=== 🔮 SYMBOLIC LOGIC TESTS ===");
-    test("True implies false", "1 0 implies", true);
-    test("True implies true", "1 1 implies", true);
-    test("False implies true", "0 1 implies", true);
-    test("And: true ∧ true", "1 1 ∧", true);
-    test("Not true (¬)", "1 ¬", true);
+    // ═══════════════════════════════════════════════════════════════
+    // FRACTALS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🌀 FRACTALS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Mandelbrot check (in set)", "-0.5 0 50 mandelbrot", true);
+    test("Mandelbrot check (outside)", "2 2 50 mandelbrot", true);
+    test("Julia iteration", "0.1 0.1 -0.7 0.27015 50 julia", true);
+    test("Sierpinski triangle", "4 sierpinski", true);
 
-    println!("\n{}", "=".repeat(60));
-    println!("🏆 TEST RESULTS SUMMARY:");
-    println!("   Passed: {passed}/{total} tests");
-    println!("   Success Rate: {:.1}%", 100.0 * passed as f64 / total as f64);
+    // ═══════════════════════════════════════════════════════════════
+    // QUANTUM (if enabled)
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== ⚛️ QUANTUM COMPUTING ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Create |0⟩ state", "|0⟩", true);
+    test("Create |1⟩ state", "|1⟩", true);
+    test("Hadamard gate", "|0⟩ H", true);
+    test("Pauli-X gate", "|0⟩ X", true);
+    test("Pauli-Y gate", "|0⟩ Y", true);
+    test("Pauli-Z gate", "|0⟩ Z", true);
+    test("Phase gate S", "|0⟩ S", true);
+    test("T gate", "|0⟩ T", true);
+    test("Quantum measurement", "|0⟩ measure", true);
+    test("Superposition", "superposition", true);
+    test("Bell state", "bell", true);
+    test("CNOT gate", "0 1 cnot", true);
 
-    if passed == total {
+    // ═══════════════════════════════════════════════════════════════
+    // SIGILS & MYSTICAL
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🔮 SIGILS & MYSTICAL ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Resurrect constants", "resurrect", true);
+    test("Mirror operation", "12345 mirror", true);
+    test("Palindrome check", "12321 palindrome?", true);
+    test("Entropy calculation", "1 2 3 4 5 entropy", true);
+    test("Chaos operation", "chaos", true);
+    test("Order operation", "5 2 8 1 9 order", true);
+    test("Moses stack split", "1 2 3 moses", true);
+    test("Prophecy", "prophecy", true);
+    test("Dreaming", "dreaming", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // GREEK LETTERS (mathematical constants)
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🏛️ GREEK CONSTANTS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Alpha (α)", "α", true);
+    test("Beta (β)", "β", true);
+    test("Gamma (γ)", "γ", true);
+    test("Delta (δ)", "δ", true);
+    test("Epsilon (ε)", "ε", true);
+    test("Lambda (λ)", "λ", true);
+    test("Omega (ω)", "ω", true);
+    test("Infinity (∞)", "∞", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // DISCRETE MATH
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🔢 DISCRETE MATH ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Fibonacci", "10 fib", true);
+    test("Binomial coefficient", "5 2 binomial", true);
+    test("Permutations", "5 3 permute", true);
+    test("Combinations", "5 3 choose", true);
+    test("Is even", "4 even?", true);
+    test("Is odd", "5 odd?", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // CHEMISTRY
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🧪 CHEMISTRY ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Hydrogen info", "1 element_info", true);
+    test("Carbon atomic weight", "6 atomic_weight", true);
+    test("Temperature: C to K", "25 celsius_to_kelvin", true);
+    test("Temperature: K to C", "300 kelvin_to_celsius", true);
+    test("Temperature: C to F", "100 celsius_to_fahrenheit", true);
+    test("Avogadro constant", "avogadro", true);
+    test("Gas constant R", "gas_constant", true);
+    test("Boltzmann constant", "boltzmann", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // MUSIC & ARTS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🎵 MUSIC & ARTS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("MIDI to frequency", "69 midi_to_freq", true);
+    test("Frequency to MIDI", "440 freq_to_midi", true);
+    test("Note interval", "60 64 interval", true);
+    test("Concert A", "concert_a", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // GRAPH OPERATIONS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🕸️ GRAPH OPERATIONS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Graph new", "graph_new", true);
+    test("Add vertex", "1 vertex_add", true);
+    test("Graph chromatic", "graph_chromatic", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // NEURAL CHESS (if enabled)
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== ♟️ NEURAL CHESS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Chess new game", "chess_new", true);
+    test("Chess show board", "chess_show", true);
+    test("Chess AI new", "chess_ai_new", true);
+    test("Chess help", "chess_help", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // MARKOV CHAINS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🎲 MARKOV CHAINS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Markov init", "markov_init", true);
+    test("Markov step", "markov_step", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // SOLVER / SYMBOLIC
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🧮 SYMBOLIC SOLVER ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Simplify expression", "simplify", true);
+    test("Newton-Raphson", "2 1.0 0.0001 10 newton", true);
+    test("Bisection method", "0 2 0.0001 100 bisect", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // KANJI & CYRILLIC LANGUAGE
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== 🈶 LANGUAGE OPS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Kanji lookup", "kanji_lookup", true);
+    test("Cyrillic lookup", "cyrillic_lookup", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // HEBREW SIGILS
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("=== ✡️ HEBREW SIGILS ===");
+    println!("═══════════════════════════════════════════════════════════════");
+    
+    test("Aleph (א)", "א", true);
+    test("Beth (ב)", "ב", true);
+    test("Gimel (ג)", "ג", true);
+    test("Gematria", "gematria", true);
+
+    // ═══════════════════════════════════════════════════════════════
+    // SUMMARY
+    // ═══════════════════════════════════════════════════════════════
+    println!("\n═══════════════════════════════════════════════════════════════");
+    println!("🏆 TEST RESULTS SUMMARY");
+    println!("═══════════════════════════════════════════════════════════════");
+    println!("   ✅ Passed: {passed}");
+    println!("   ❌ Failed: {failed}");
+    println!("   📊 Total:  {total}");
+    println!("   📈 Success Rate: {:.1}%", 100.0 * passed as f64 / total as f64);
+    println!();
+
+    if failed == 0 {
         println!("🎉 ALL TESTS PASSED! WofLang is fully operational! 🐺✨");
     } else {
-        println!("⚠️  Some tests failed - check implementations above.");
+        println!("⚠️  {failed} test(s) failed - some operations may not be registered.");
+        println!("   This is expected if certain plugin features are disabled.");
     }
-    println!("\nSystem Status: 🟢 FULLY OPERATIONAL 🟢");
+    println!("\nSystem Status: {} 🐺", if failed == 0 { "🟢 FULLY OPERATIONAL" } else { "🟡 PARTIALLY OPERATIONAL" });
 
     Ok(())
 }

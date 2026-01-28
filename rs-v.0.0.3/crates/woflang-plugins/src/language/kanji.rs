@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 use serde::Deserialize;
-use woflang_core::{InterpreterContext, WofError, WofValue};
+use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;
 
 /// Embed the FULL kanji database at compile time.

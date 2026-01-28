@@ -22,7 +22,7 @@
 //! - `cat_obj`, `cat_mor`, `cat_comp` - Define categories
 //! - `cat_hom`, `cat_show`, `cat_clear` - Query and manage
 
-use std::collections::HashMap;
+// use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 use woflang_core::{InterpreterContext, WofValue};
 use woflang_runtime::Interpreter;

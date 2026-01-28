@@ -307,8 +307,8 @@ impl Tensor {
         let mut result = Self::zeros(&new_shape);
         
         // Iterate through all elements and accumulate
-        let axis_size = self.shape[axis];
-        let axis_stride = self.strides[axis];
+        let _axis_size = self.shape[axis];
+        let _axis_stride = self.strides[axis];
         
         for (i, &val) in self.data.iter().enumerate() {
             // Calculate index without the summed axis
@@ -316,7 +316,7 @@ impl Tensor {
             let mut remaining = i;
             let mut new_stride_idx = 0;
             
-            for (dim, (&size, &stride)) in self.shape.iter().zip(&self.strides).enumerate() {
+            for (dim, (&_size, &stride)) in self.shape.iter().zip(&self.strides).enumerate() {
                 if dim != axis {
                     let idx = remaining / stride;
                     if new_stride_idx < result.strides.len() {

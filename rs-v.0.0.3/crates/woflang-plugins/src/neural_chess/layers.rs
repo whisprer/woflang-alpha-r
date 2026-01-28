@@ -480,7 +480,7 @@ impl Layer for Dropout {
         let mut mask_data = Vec::with_capacity(input.size());
         let scale = 1.0 / (1.0 - self.p);
         
-        for i in 0..input.size() {
+        for _i in 0..input.size() {
             self.seed = self.seed.wrapping_mul(6364136223846793005).wrapping_add(1);
             let rand_val = ((self.seed >> 33) as f32) / (u32::MAX as f32);
             

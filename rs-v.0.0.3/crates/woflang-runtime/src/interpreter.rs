@@ -51,6 +51,7 @@ struct CallFrame {
     /// Tokens to resume after return.
     remaining_tokens: VecDeque<OwnedToken>,
     /// Block depth at call site.
+    #[allow(dead_code)]
     block_depth: usize,
 }
 
@@ -133,6 +134,7 @@ pub enum LoopType {
 #[derive(Debug, Clone)]
 struct LoopFrame {
     /// The loop body tokens.
+    #[allow(dead_code)]
     body: Vec<OwnedToken>,
     /// Type of loop.
     loop_type: LoopType,

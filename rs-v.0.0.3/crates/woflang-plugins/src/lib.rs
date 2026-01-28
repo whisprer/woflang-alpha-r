@@ -15,6 +15,7 @@
 //! ```
 
 #![allow(clippy::module_name_repetitions)]
+#![allow(edition_2024_expr_fragment_specifier)]
 
 #[cfg(feature = "math")]
 pub mod math;
@@ -64,7 +65,7 @@ pub mod neural_chess;
 pub mod data;
 
 use woflang_runtime::Interpreter;
-use woflang_core::InterpreterContext;
+// use woflang_core::InterpreterContext;
 
 /// Register all enabled plugins with the interpreter.
 pub fn register_all(interp: &mut Interpreter) {

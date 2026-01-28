@@ -55,7 +55,7 @@ pub use chess::{Board, Move, Square, Color, GameResult, PieceType};
 pub use ai::{NeuralChessAI, GameSession, TrainingConfig};
 pub use ganglion::{Ganglion, NeuralClockCoordinator};
 
-use std::error::Error;
+// use std::error::Error;
 use std::sync::Mutex;
 use std::sync::OnceLock;
 use woflang_core::{InterpreterContext, WofError, WofValue};
@@ -89,7 +89,7 @@ pub fn register(interp: &mut Interpreter) {
     // AI MANAGEMENT
     // ─────────────────────────────────────────────────────────────────────
 
-    interp.register("chess_ai_new", |interp| {
+    interp.register("chess_ai_new", |_interp| {
         let mut ai_lock = get_ai().lock().unwrap();
         *ai_lock = NeuralChessAI::new();
         println!("♟️  Neural Chess AI initialized!");
@@ -97,7 +97,7 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("chess_ai_status", |interp| {
+    interp.register("chess_ai_status", |_interp| {
         let ai = get_ai().lock().unwrap();
         println!("{}", ai.status_report());
         Ok(())
@@ -161,7 +161,7 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("chess_show", |interp| {
+    interp.register("chess_show", |_interp| {
         let session_lock = get_session().lock().unwrap();
         if let Some(ref session) = *session_lock {
             println!("{}", session.display());
@@ -210,7 +210,7 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("chess_ai_play", |interp| {
+    interp.register("chess_ai_play", |_interp| {
         let mut session_lock = get_session().lock().unwrap();
         if let Some(ref mut session) = *session_lock {
             if session.is_game_over() {
@@ -271,7 +271,7 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("chess_undo", |interp| {
+    interp.register("chess_undo", |_interp| {
         println!("⚠️  Undo not yet implemented (would require game state history)");
         Ok(())
     });
@@ -280,7 +280,7 @@ pub fn register(interp: &mut Interpreter) {
     // STANDALONE BOARD OPERATIONS
     // ─────────────────────────────────────────────────────────────────────
 
-    interp.register("chess_board_new", |interp| {
+    interp.register("chess_board_new", |_interp| {
         let board = Board::starting_position();
         println!("{}", board);
         Ok(())
@@ -326,7 +326,7 @@ pub fn register(interp: &mut Interpreter) {
     // BRAIN DIAGNOSTICS
     // ─────────────────────────────────────────────────────────────────────
 
-    interp.register("chess_brain_info", |interp| {
+    interp.register("chess_brain_info", |_interp| {
         let ai = get_ai().lock().unwrap();
         println!("{}", ai.brain.diagnostics());
         Ok(())
@@ -349,7 +349,7 @@ pub fn register(interp: &mut Interpreter) {
     // HELP
     // ─────────────────────────────────────────────────────────────────────
 
-    interp.register("chess_help", |interp| {
+    interp.register("chess_help", |_interp| {
         println!("╔═══════════════════════════════════════════════════════════════╗");
         println!("║              NEURAL CHESS - WOFLANG OPERATIONS                ║");
         println!("╠═══════════════════════════════════════════════════════════════╣");
@@ -381,12 +381,12 @@ pub fn register(interp: &mut Interpreter) {
     // UNICODE ALIASES
     // ─────────────────────────────────────────────────────────────────────
 
-    interp.register("♟", |interp| {
+    interp.register("♟", |_interp| {
         println!("{}", get_ai().lock().unwrap().status_report());
         Ok(())
     });
 
-    interp.register("♔", |interp| {
+    interp.register("♔", |_interp| {
         // Show board
         let session = get_session().lock().unwrap();
         if let Some(ref s) = *session {
@@ -397,7 +397,7 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("♕", |interp| {
+    interp.register("♕", |_interp| {
         // AI status
         let ai = get_ai().lock().unwrap();
         let ping = ai.stats.avg_move_time_ms;

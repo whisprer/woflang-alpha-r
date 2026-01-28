@@ -433,7 +433,7 @@ pub fn board_to_planes(board: &[i8; 64]) -> Vec<Tensor> {
 
 /// Additional feature planes for enhanced position understanding.
 pub fn additional_planes(
-    board: &[i8; 64],
+    _board: &[i8; 64],
     castling_rights: u8,
     en_passant: Option<usize>,
     halfmove: u32,

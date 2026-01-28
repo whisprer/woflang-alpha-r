@@ -91,7 +91,7 @@ impl Qubit {
     /// Measure the qubit, collapsing to classical bit
     pub fn measure(&mut self) -> i64 {
         let mut rng = rand::thread_rng();
-        let r: f64 = rng.gen();
+        let r: f64 = rng.r#gen();
 
         if r < self.prob_zero() {
             // Collapse to |0⟩
@@ -178,7 +178,7 @@ fn quantum_register() -> &'static Mutex<Vec<Qubit>> {
 
 fn random_bit() -> i64 {
     let mut rng = rand::thread_rng();
-    if rng.gen::<bool>() { 1 } else { 0 }
+    if rng.r#gen::<bool>() { 1 } else { 0 }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

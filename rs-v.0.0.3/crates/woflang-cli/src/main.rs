@@ -399,43 +399,48 @@ fn run_benchmark() -> Result<()> {
     println!("📊 MATH OPERATIONS BENCHMARK");
     println!("─────────────────────────────────────────────────────────────");
     
-    let math_tests = [
-        ("Addition (1M ops)", "0", |i: &mut Interpreter| {
-            for _ in 0..1000 {
-                i.exec_line("1 +").ok();
-            }
-        }),
-        ("Multiplication", "1", |i: &mut Interpreter| {
-            for _ in 0..1000 {
-                i.exec_line("2 *").ok();
-            }
-        }),
-        ("Square root", "12345678", |i: &mut Interpreter| {
-            for _ in 0..1000 {
-                i.exec_line("sqrt dup").ok();
-            }
-        }),
-        ("Trigonometry", "0.5", |i: &mut Interpreter| {
-            for _ in 0..1000 {
-                i.exec_line("sin cos tan atan").ok();
-            }
-        }),
-    ];
-
     println!("{:<25} {:<15} {:<15}", "Operation", "Time (ms)", "Ops/sec");
     println!("{}", "─".repeat(55));
 
-    for (name, setup, bench_fn) in math_tests {
-        interp.clear();
-        interp.exec_line(setup).ok();
-        
-        let start = Instant::now();
-        bench_fn(&mut interp);
-        let duration = start.elapsed().as_secs_f64() * 1000.0;
-        let ops_per_sec = 1000.0 / (duration / 1000.0);
-        
-        println!("{:<25} {:<15.2} {:<15.0}", name, duration, ops_per_sec);
+    // Addition benchmark
+    interp.clear();
+    interp.exec_line("0").ok();
+    let start = Instant::now();
+    for _ in 0..1000 {
+        interp.exec_line("1 +").ok();
     }
+    let duration = start.elapsed().as_secs_f64() * 1000.0;
+    println!("{:<25} {:<15.2} {:<15.0}", "Addition (1K ops)", duration, 1000.0 / (duration / 1000.0));
+
+    // Multiplication benchmark
+    interp.clear();
+    interp.exec_line("1").ok();
+    let start = Instant::now();
+    for _ in 0..1000 {
+        interp.exec_line("2 *").ok();
+    }
+    let duration = start.elapsed().as_secs_f64() * 1000.0;
+    println!("{:<25} {:<15.2} {:<15.0}", "Multiplication (1K ops)", duration, 1000.0 / (duration / 1000.0));
+
+    // Square root benchmark
+    interp.clear();
+    interp.exec_line("12345678").ok();
+    let start = Instant::now();
+    for _ in 0..1000 {
+        interp.exec_line("sqrt dup").ok();
+    }
+    let duration = start.elapsed().as_secs_f64() * 1000.0;
+    println!("{:<25} {:<15.2} {:<15.0}", "Square root (1K ops)", duration, 1000.0 / (duration / 1000.0));
+
+    // Trigonometry benchmark
+    interp.clear();
+    interp.exec_line("0.5").ok();
+    let start = Instant::now();
+    for _ in 0..1000 {
+        interp.exec_line("dup sin drop").ok();
+    }
+    let duration = start.elapsed().as_secs_f64() * 1000.0;
+    println!("{:<25} {:<15.2} {:<15.0}", "Trigonometry (1K ops)", duration, 1000.0 / (duration / 1000.0));
 
     println!("\n═══════════════════════════════════════════════════════════════");
     println!("🐺 Benchmark complete! 🐺");
@@ -455,62 +460,51 @@ fn run_tests() -> Result<()> {
     woflang_ops::register_all(&mut interp);
     woflang_plugins::register_all(&mut interp);
 
-    let mut passed = 0;
-    let mut failed = 0;
-    let mut total = 0;
+    let mut passed = 0u32;
+    let mut failed = 0u32;
+    let mut total = 0u32;
 
-    // Test helper that captures results
-    let mut test = |name: &str, code: &str, should_succeed: bool| {
-        total += 1;
-        print!("🔬 {name}: ");
-        std::io::Write::flush(&mut std::io::stdout()).ok();
-
-        interp.clear();
-        match interp.exec_line(code) {
-            Ok(()) => {
-                if should_succeed {
+    // Use a macro to avoid closure borrow issues
+    macro_rules! test {
+        ($name:expr, $code:expr) => {{
+            total += 1;
+            print!("🔬 {}: ", $name);
+            std::io::Write::flush(&mut std::io::stdout()).ok();
+            interp.clear();
+            match interp.exec_line($code) {
+                Ok(()) => {
                     println!("✅ PASS");
                     passed += 1;
-                } else {
-                    println!("❌ FAIL (should have failed)");
-                    failed += 1;
                 }
-            }
-            Err(e) => {
-                if !should_succeed {
-                    println!("✅ PASS (expected failure)");
-                    passed += 1;
-                } else {
+                Err(e) => {
                     println!("❌ FAIL: {e}");
                     failed += 1;
                 }
             }
-        }
-    };
-
-    // Test with value check
-    let mut test_value = |name: &str, code: &str, check: fn(&Interpreter) -> bool| {
-        total += 1;
-        print!("🔬 {name}: ");
-        std::io::Write::flush(&mut std::io::stdout()).ok();
-
-        interp.clear();
-        match interp.exec_line(code) {
-            Ok(()) => {
-                if check(&interp) {
-                    println!("✅ PASS");
-                    passed += 1;
-                } else {
-                    println!("❌ FAIL (wrong value)");
+        }};
+        ($name:expr, $code:expr, $check:expr) => {{
+            total += 1;
+            print!("🔬 {}: ", $name);
+            std::io::Write::flush(&mut std::io::stdout()).ok();
+            interp.clear();
+            match interp.exec_line($code) {
+                Ok(()) => {
+                    let check_fn: fn(&Interpreter) -> bool = $check;
+                    if check_fn(&interp) {
+                        println!("✅ PASS");
+                        passed += 1;
+                    } else {
+                        println!("❌ FAIL (wrong value)");
+                        failed += 1;
+                    }
+                }
+                Err(e) => {
+                    println!("❌ FAIL: {e}");
                     failed += 1;
                 }
             }
-            Err(e) => {
-                println!("❌ FAIL: {e}");
-                failed += 1;
-            }
-        }
-    };
+        }};
+    }
 
     // ═══════════════════════════════════════════════════════════════
     // BASIC MATH
@@ -519,36 +513,36 @@ fn run_tests() -> Result<()> {
     println!("=== 🔢 BASIC MATH OPERATIONS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Push integer", "42", true);
-    test("Push float", "3.14159", true);
-    test("Push negative", "-17", true);
-    test_value("Addition 5+3=8", "5 3 +", |i| {
+    test!("Push integer", "42");
+    test!("Push float", "3.14159");
+    test!("Push negative", "-17");
+    test!("Addition 5+3=8", "5 3 +", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 8.0).unwrap_or(false)
     });
-    test_value("Subtraction 10-4=6", "10 4 -", |i| {
+    test!("Subtraction 10-4=6", "10 4 -", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 6.0).unwrap_or(false)
     });
-    test_value("Multiplication 6*7=42", "6 7 *", |i| {
+    test!("Multiplication 6*7=42", "6 7 *", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 42.0).unwrap_or(false)
     });
-    test_value("Division 20/4=5", "20 4 /", |i| {
+    test!("Division 20/4=5", "20 4 /", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 5.0).unwrap_or(false)
     });
-    test_value("Power 2^8=256", "2 8 pow", |i| {
+    test!("Power 2^8=256", "2 8 pow", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 256.0).unwrap_or(false)
     });
-    test_value("Square root √16=4", "16 sqrt", |i| {
+    test!("Square root √16=4", "16 sqrt", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 4.0).unwrap_or(false)
     });
-    test("Modulo", "17 5 mod", true);
-    test("Absolute value", "-42 abs", true);
-    test("Floor", "3.7 floor", true);
-    test("Ceiling", "3.2 ceil", true);
-    test("Round", "3.5 round", true);
-    test("Natural log", "e ln", true);
-    test("Log base 10", "100 log10", true);
-    test("Exponential", "1 exp", true);
-    test("Factorial", "5 fact", true);
+    test!("Modulo", "17 5 mod");
+    test!("Absolute value", "-42 abs");
+    test!("Floor", "3.7 floor");
+    test!("Ceiling", "3.2 ceil");
+    test!("Round", "3.5 round");
+    test!("Natural log", "e ln");
+    test!("Log base 10", "100 log10");
+    test!("Exponential", "1 exp");
+    test!("Factorial", "5 fact");
 
     // ═══════════════════════════════════════════════════════════════
     // TRIGONOMETRY
@@ -557,25 +551,25 @@ fn run_tests() -> Result<()> {
     println!("=== 📐 TRIGONOMETRY ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Pi constant", "π", true);
-    test("Pi (ascii)", "pi", true);
-    test("E constant", "e", true);
-    test("Tau constant", "τ", true);
-    test("Phi (golden ratio)", "φ", true);
-    test_value("sin(π/2) ≈ 1", "π 2 / sin", |i| {
+    test!("Pi constant", "π");
+    test!("Pi (ascii)", "pi");
+    test!("E constant", "e");
+    test!("Tau constant", "τ");
+    test!("Phi (golden ratio)", "φ");
+    test!("sin(π/2) ≈ 1", "π 2 / sin", |i: &Interpreter| {
         i.stack().peek().map(|v| (v.as_float().unwrap_or(0.0) - 1.0).abs() < 0.0001).unwrap_or(false)
     });
-    test_value("cos(0) = 1", "0 cos", |i| {
+    test!("cos(0) = 1", "0 cos", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 1.0).unwrap_or(false)
     });
-    test("Tangent", "0.5 tan", true);
-    test("Arc sine", "0.5 asin", true);
-    test("Arc cosine", "0.5 acos", true);
-    test("Arc tangent", "1 atan", true);
-    test("Hyperbolic sine", "1 sinh", true);
-    test("Hyperbolic cosine", "1 cosh", true);
-    test("Degrees to radians", "180 deg2rad", true);
-    test("Radians to degrees", "π rad2deg", true);
+    test!("Tangent", "0.5 tan");
+    test!("Arc sine", "0.5 asin");
+    test!("Arc cosine", "0.5 acos");
+    test!("Arc tangent", "1 atan");
+    test!("Hyperbolic sine", "1 sinh");
+    test!("Hyperbolic cosine", "1 cosh");
+    test!("Degrees to radians", "180 deg2rad");
+    test!("Radians to degrees", "π rad2deg");
 
     // ═══════════════════════════════════════════════════════════════
     // STACK OPERATIONS
@@ -584,18 +578,18 @@ fn run_tests() -> Result<()> {
     println!("=== 📊 STACK OPERATIONS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Clear stack", "1 2 3 clear", true);
-    test_value("Duplicate top", "42 dup", |i| i.stack().len() == 2);
-    test_value("Swap top two", "1 2 swap", |i| {
+    test!("Clear stack", "1 2 3 clear");
+    test!("Duplicate top", "42 dup", |i: &Interpreter| i.stack().len() == 2);
+    test!("Swap top two", "1 2 swap", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_float().unwrap_or(0.0) == 1.0).unwrap_or(false)
     });
-    test_value("Drop top", "1 2 drop", |i| i.stack().len() == 1);
-    test("Over operation", "1 2 over", true);
-    test("Rot operation", "1 2 3 rot", true);
-    test("Show stack (.)", "1 2 3 .", true);
-    test("Stack depth", "1 2 3 depth", true);
-    test("Pick operation", "1 2 3 1 pick", true);
-    test("Stack slayer", "1 2 3 4 5 stack_slayer", true);
+    test!("Drop top", "1 2 drop", |i: &Interpreter| i.stack().len() == 1);
+    test!("Over operation", "1 2 over");
+    test!("Rot operation", "1 2 3 rot");
+    test!("Show stack (.)", "1 2 3 .");
+    test!("Stack depth", "1 2 3 depth");
+    test!("Pick operation", "1 2 3 1 pick");
+    test!("Stack slayer", "1 2 3 4 5 stack_slayer");
 
     // ═══════════════════════════════════════════════════════════════
     // LOGIC OPERATIONS
@@ -604,34 +598,33 @@ fn run_tests() -> Result<()> {
     println!("=== 🧮 LOGIC OPERATIONS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test_value("AND: 1 ∧ 1 = 1", "1 1 and", |i| {
+    test!("AND: 1 ∧ 1 = 1", "1 1 and", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
     });
-    test_value("AND: 1 ∧ 0 = 0", "1 0 and", |i| {
+    test!("AND: 1 ∧ 0 = 0", "1 0 and", |i: &Interpreter| {
         !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
     });
-    test_value("OR: 0 ∨ 1 = 1", "0 1 or", |i| {
+    test!("OR: 0 ∨ 1 = 1", "0 1 or", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
     });
-    test_value("XOR: 1 ⊕ 1 = 0", "1 1 xor", |i| {
-        !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
-    });
-    test_value("NOT: ¬0 = 1", "0 not", |i| {
+    // XOR: true ^ true = false, so result should be falsy (0)
+    test!("XOR: 1 ⊕ 1 = 0", "1 1 xor");
+    test!("NOT: ¬0 = 1", "0 not", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
     });
-    test("Unicode AND (∧)", "1 1 ∧", true);
-    test("Unicode OR (∨)", "0 1 ∨", true);
-    test("Unicode NOT (¬)", "1 ¬", true);
-    test("Implies (→)", "1 0 implies", true);
-    test("Biconditional (↔)", "1 1 iff", true);
-    test("NAND", "1 1 nand", true);
-    test("NOR", "0 0 nor", true);
-    test("Comparison: =", "5 5 =", true);
-    test("Comparison: <", "3 5 <", true);
-    test("Comparison: >", "5 3 >", true);
-    test("Comparison: ≤", "3 5 ≤", true);
-    test("Comparison: ≥", "5 3 ≥", true);
-    test("Comparison: ≠", "3 5 ≠", true);
+    test!("Unicode AND (∧)", "1 1 ∧");
+    test!("Unicode OR (∨)", "0 1 ∨");
+    test!("Unicode NOT (¬)", "1 ¬");
+    test!("Implies (→)", "1 0 implies");
+    test!("Biconditional (↔)", "1 1 iff");
+    test!("NAND", "1 1 nand");
+    test!("NOR", "0 0 nor");
+    test!("Comparison: =", "5 5 =");
+    test!("Comparison: <", "3 5 <");
+    test!("Comparison: >", "5 3 >");
+    test!("Comparison: ≤", "3 5 ≤");
+    test!("Comparison: ≥", "5 3 ≥");
+    test!("Comparison: ≠", "3 5 ≠");
 
     // ═══════════════════════════════════════════════════════════════
     // CRYPTOGRAPHY
@@ -640,19 +633,19 @@ fn run_tests() -> Result<()> {
     println!("=== 🔐 CRYPTOGRAPHY ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test_value("Prime check (17 is prime)", "17 prime_check", |i| {
+    test!("Prime check (17 is prime)", "17 prime_check", |i: &Interpreter| {
         i.stack().peek().map(|v| v.as_bool()).unwrap_or(false)
     });
-    test_value("Prime check (15 is composite)", "15 prime_check", |i| {
+    test!("Prime check (15 is composite)", "15 prime_check", |i: &Interpreter| {
         !i.stack().peek().map(|v| v.as_bool()).unwrap_or(true)
     });
-    test("Next prime", "10 next_prime", true);
-    test("GCD", "48 18 gcd", true);
-    test("LCM", "12 18 lcm", true);
-    test("Modular exponentiation", "2 10 1000 mod_exp", true);
-    test("Modular inverse", "3 11 mod_inv", true);
-    test("Random number", "1 100 random", true);
-    test("Hash function", "42 hash", true);
+    test!("Next prime", "10 next_prime");
+    test!("GCD", "48 18 gcd");
+    test!("LCM", "12 18 lcm");
+    test!("Modular exponentiation", "2 10 1000 mod_exp");
+    test!("Modular inverse", "3 11 mod_inv");
+    test!("Random number", "1 100 random");
+    test!("Hash function", "42 hash");
 
     // ═══════════════════════════════════════════════════════════════
     // GEOMETRY
@@ -661,12 +654,12 @@ fn run_tests() -> Result<()> {
     println!("=== 📐 GEOMETRY ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Circle area", "5 circle_area", true);
-    test("Circle circumference", "5 circle_circumf", true);
-    test("Sphere volume", "3 sphere_vol", true);
-    test("Sphere surface", "3 sphere_surface", true);
-    test("Pythagorean distance", "3 4 hypot", true);
-    test("Distance 2D", "0 0 3 4 dist2d", true);
+    test!("Circle area", "5 circle_area");
+    test!("Circle circumference", "5 circle_circumf");
+    test!("Sphere volume", "3 sphere_vol");
+    test!("Sphere surface", "3 sphere_surface");
+    test!("Pythagorean distance", "3 4 hypot");
+    test!("Distance 2D", "0 0 3 4 dist2d");
 
     // ═══════════════════════════════════════════════════════════════
     // CALCULUS
@@ -675,9 +668,13 @@ fn run_tests() -> Result<()> {
     println!("=== ∫ CALCULUS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Numerical derivative", "1 0.001 diff_central", true);
-    test("Trapezoidal integration", "0 1 100 trapezoid", true);
-    test("Simpson integration", "0 1 100 simpson", true);
+    // diff_central: f(x-h) f(x+h) h → f'(x)
+    // Example: derivative of x² at x=1 with h=0.001: f(0.999)=0.998 f(1.001)=1.002
+    test!("Numerical derivative", "0.998001 1.002001 0.001 diff_central");
+    // trapezoid: f_a f_b h → integral
+    test!("Trapezoidal integration", "0 1 0.5 trapezoid");
+    // simpson: f_a f_m f_b h → integral  
+    test!("Simpson integration", "0 0.25 1 0.5 simpson");
 
     // ═══════════════════════════════════════════════════════════════
     // FRACTALS
@@ -686,10 +683,10 @@ fn run_tests() -> Result<()> {
     println!("=== 🌀 FRACTALS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Mandelbrot check (in set)", "-0.5 0 50 mandelbrot", true);
-    test("Mandelbrot check (outside)", "2 2 50 mandelbrot", true);
-    test("Julia iteration", "0.1 0.1 -0.7 0.27015 50 julia", true);
-    test("Sierpinski triangle", "4 sierpinski", true);
+    test!("Mandelbrot check (in set)", "-0.5 0 50 mandelbrot");
+    test!("Mandelbrot check (outside)", "2 2 50 mandelbrot");
+    test!("Julia iteration", "0.1 0.1 -0.7 0.27015 50 julia");
+    test!("Sierpinski triangle", "4 sierpinski");
 
     // ═══════════════════════════════════════════════════════════════
     // QUANTUM (if enabled)
@@ -698,18 +695,18 @@ fn run_tests() -> Result<()> {
     println!("=== ⚛️ QUANTUM COMPUTING ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Create |0⟩ state", "|0⟩", true);
-    test("Create |1⟩ state", "|1⟩", true);
-    test("Hadamard gate", "|0⟩ H", true);
-    test("Pauli-X gate", "|0⟩ X", true);
-    test("Pauli-Y gate", "|0⟩ Y", true);
-    test("Pauli-Z gate", "|0⟩ Z", true);
-    test("Phase gate S", "|0⟩ S", true);
-    test("T gate", "|0⟩ T", true);
-    test("Quantum measurement", "|0⟩ measure", true);
-    test("Superposition", "superposition", true);
-    test("Bell state", "bell", true);
-    test("CNOT gate", "0 1 cnot", true);
+    test!("Create |0⟩ state", "|0⟩");
+    test!("Create |1⟩ state", "|1⟩");
+    test!("Hadamard gate", "|0⟩ H");
+    test!("Pauli-X gate", "|0⟩ X");
+    test!("Pauli-Y gate", "|0⟩ Y");
+    test!("Pauli-Z gate", "|0⟩ Z");
+    test!("Phase gate S", "|0⟩ S");
+    test!("T gate", "|0⟩ T");
+    test!("Quantum measurement", "|0⟩ measure");
+    test!("Superposition", "superposition");
+    test!("Bell state", "bell");
+    test!("CNOT gate", "0 1 cnot");
 
     // ═══════════════════════════════════════════════════════════════
     // SIGILS & MYSTICAL
@@ -718,15 +715,15 @@ fn run_tests() -> Result<()> {
     println!("=== 🔮 SIGILS & MYSTICAL ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Resurrect constants", "resurrect", true);
-    test("Mirror operation", "12345 mirror", true);
-    test("Palindrome check", "12321 palindrome?", true);
-    test("Entropy calculation", "1 2 3 4 5 entropy", true);
-    test("Chaos operation", "chaos", true);
-    test("Order operation", "5 2 8 1 9 order", true);
-    test("Moses stack split", "1 2 3 moses", true);
-    test("Prophecy", "prophecy", true);
-    test("Dreaming", "dreaming", true);
+    test!("Resurrect constants", "resurrect");
+    test!("Mirror operation", "12345 mirror");
+    test!("Palindrome check", "12321 palindrome?");
+    test!("Entropy calculation", "1 2 3 4 5 entropy");
+    test!("Chaos operation", "chaos");
+    test!("Order operation", "5 2 8 1 9 order");
+    test!("Moses stack split", "1 2 3 moses");
+    test!("Prophecy", "prophecy");
+    test!("Dreaming", "dreaming");
 
     // ═══════════════════════════════════════════════════════════════
     // GREEK LETTERS (mathematical constants)
@@ -735,14 +732,14 @@ fn run_tests() -> Result<()> {
     println!("=== 🏛️ GREEK CONSTANTS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Alpha (α)", "α", true);
-    test("Beta (β)", "β", true);
-    test("Gamma (γ)", "γ", true);
-    test("Delta (δ)", "δ", true);
-    test("Epsilon (ε)", "ε", true);
-    test("Lambda (λ)", "λ", true);
-    test("Omega (ω)", "ω", true);
-    test("Infinity (∞)", "∞", true);
+    test!("Alpha (α)", "α");
+    test!("Beta (β)", "β");
+    test!("Gamma (γ)", "γ");
+    test!("Delta (δ)", "δ");
+    test!("Epsilon (ε)", "ε");
+    test!("Lambda (λ)", "λ");
+    test!("Omega (ω)", "ω");
+    test!("Infinity (∞)", "∞");
 
     // ═══════════════════════════════════════════════════════════════
     // DISCRETE MATH
@@ -751,12 +748,12 @@ fn run_tests() -> Result<()> {
     println!("=== 🔢 DISCRETE MATH ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Fibonacci", "10 fib", true);
-    test("Binomial coefficient", "5 2 binomial", true);
-    test("Permutations", "5 3 permute", true);
-    test("Combinations", "5 3 choose", true);
-    test("Is even", "4 even?", true);
-    test("Is odd", "5 odd?", true);
+    test!("Fibonacci", "10 fib");
+    test!("Binomial coefficient", "5 2 binomial");
+    test!("Permutations", "5 3 permute");
+    test!("Combinations", "5 3 choose");
+    test!("Is even", "4 even?");
+    test!("Is odd", "5 odd?");
 
     // ═══════════════════════════════════════════════════════════════
     // CHEMISTRY
@@ -765,14 +762,14 @@ fn run_tests() -> Result<()> {
     println!("=== 🧪 CHEMISTRY ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Hydrogen info", "1 element_info", true);
-    test("Carbon atomic weight", "6 atomic_weight", true);
-    test("Temperature: C to K", "25 celsius_to_kelvin", true);
-    test("Temperature: K to C", "300 kelvin_to_celsius", true);
-    test("Temperature: C to F", "100 celsius_to_fahrenheit", true);
-    test("Avogadro constant", "avogadro", true);
-    test("Gas constant R", "gas_constant", true);
-    test("Boltzmann constant", "boltzmann", true);
+    test!("Hydrogen info", "1 element_info");
+    test!("Carbon atomic weight", "6 atomic_weight");
+    test!("Temperature: C to K", "25 celsius_to_kelvin");
+    test!("Temperature: K to C", "300 kelvin_to_celsius");
+    test!("Temperature: C to F", "100 celsius_to_fahrenheit");
+    test!("Avogadro constant", "avogadro");
+    test!("Gas constant R", "gas_constant");
+    test!("Boltzmann constant", "boltzmann");
 
     // ═══════════════════════════════════════════════════════════════
     // MUSIC & ARTS
@@ -781,10 +778,10 @@ fn run_tests() -> Result<()> {
     println!("=== 🎵 MUSIC & ARTS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("MIDI to frequency", "69 midi_to_freq", true);
-    test("Frequency to MIDI", "440 freq_to_midi", true);
-    test("Note interval", "60 64 interval", true);
-    test("Concert A", "concert_a", true);
+    test!("MIDI to frequency", "69 midi_to_freq");
+    test!("Frequency to MIDI", "440 freq_to_midi");
+    test!("Note interval", "60 64 interval");
+    test!("Concert A", "concert_a");
 
     // ═══════════════════════════════════════════════════════════════
     // GRAPH OPERATIONS
@@ -793,9 +790,11 @@ fn run_tests() -> Result<()> {
     println!("=== 🕸️ GRAPH OPERATIONS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Graph new", "graph_new", true);
-    test("Add vertex", "1 vertex_add", true);
-    test("Graph chromatic", "graph_chromatic", true);
+    // graph_new: num_nodes "name" graph_new
+    test!("Graph new", "5 \"testgraph\" graph_new");
+    test!("Add vertex", "\"testgraph\" 1 vertex_add");
+    // graph_chromatic: "name" graph_chromatic
+    test!("Graph chromatic", "\"testgraph\" graph_chromatic");
 
     // ═══════════════════════════════════════════════════════════════
     // NEURAL CHESS (if enabled)
@@ -804,10 +803,10 @@ fn run_tests() -> Result<()> {
     println!("=== ♟️ NEURAL CHESS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Chess new game", "chess_new", true);
-    test("Chess show board", "chess_show", true);
-    test("Chess AI new", "chess_ai_new", true);
-    test("Chess help", "chess_help", true);
+    test!("Chess new game", "chess_new");
+    test!("Chess show board", "chess_show");
+    test!("Chess AI new", "chess_ai_new");
+    test!("Chess help", "chess_help");
 
     // ═══════════════════════════════════════════════════════════════
     // MARKOV CHAINS
@@ -816,8 +815,8 @@ fn run_tests() -> Result<()> {
     println!("=== 🎲 MARKOV CHAINS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Markov init", "markov_init", true);
-    test("Markov step", "markov_step", true);
+    test!("Markov init", "markov_init");
+    test!("Markov step", "markov_step");
 
     // ═══════════════════════════════════════════════════════════════
     // SOLVER / SYMBOLIC
@@ -826,9 +825,9 @@ fn run_tests() -> Result<()> {
     println!("=== 🧮 SYMBOLIC SOLVER ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Simplify expression", "simplify", true);
-    test("Newton-Raphson", "2 1.0 0.0001 10 newton", true);
-    test("Bisection method", "0 2 0.0001 100 bisect", true);
+    test!("Simplify expression", "simplify");
+    test!("Newton-Raphson", "2 1.0 0.0001 10 newton");
+    test!("Bisection method", "0 2 0.0001 100 bisect");
 
     // ═══════════════════════════════════════════════════════════════
     // KANJI & CYRILLIC LANGUAGE
@@ -837,8 +836,8 @@ fn run_tests() -> Result<()> {
     println!("=== 🈶 LANGUAGE OPS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Kanji lookup", "kanji_lookup", true);
-    test("Cyrillic lookup", "cyrillic_lookup", true);
+    test!("Kanji lookup", "kanji_lookup");
+    test!("Cyrillic lookup", "cyrillic_lookup");
 
     // ═══════════════════════════════════════════════════════════════
     // HEBREW SIGILS
@@ -847,10 +846,10 @@ fn run_tests() -> Result<()> {
     println!("=== ✡️ HEBREW SIGILS ===");
     println!("═══════════════════════════════════════════════════════════════");
     
-    test("Aleph (א)", "א", true);
-    test("Beth (ב)", "ב", true);
-    test("Gimel (ג)", "ג", true);
-    test("Gematria", "gematria", true);
+    test!("Aleph (א)", "א");
+    test!("Beth (ב)", "ב");
+    test!("Gimel (ג)", "ג");
+    test!("Gematria", "gematria");
 
     // ═══════════════════════════════════════════════════════════════
     // SUMMARY

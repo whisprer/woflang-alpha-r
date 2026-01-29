@@ -144,10 +144,23 @@ pub fn register(interp: &mut Interpreter) {
         Ok(())
     });
 
-    interp.register("φ", |interp| {
+    // Euler's totient function (renamed to avoid conflict with golden ratio φ)
+    interp.register("totient", |interp| {
         let n = interp.stack_mut().pop()?.as_integer()?;
         if n <= 0 {
-            return Err(WofError::Runtime("φ: n must be positive".into()));
+            return Err(WofError::Runtime("totient: n must be positive".into()));
+        }
+        
+        let result = euler_totient(n as u64);
+        interp.stack_mut().push(WofValue::integer(result as i64));
+        Ok(())
+    });
+
+    // Alias for totient
+    interp.register("euler_phi", |interp| {
+        let n = interp.stack_mut().pop()?.as_integer()?;
+        if n <= 0 {
+            return Err(WofError::Runtime("euler_phi: n must be positive".into()));
         }
         
         let result = euler_totient(n as u64);

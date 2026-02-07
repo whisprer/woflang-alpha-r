@@ -1,0 +1,24 @@
+[package]
+name = "woflang-runtime"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Runtime interpreter for the Woflang stack-based language"
+
+[dependencies]
+woflang-core.workspace = true
+thiserror.workspace = true
+dirs = "5.0"
+libloading = { workspace = true, optional = true }
+
+[dev-dependencies]
+proptest.workspace = true
+
+[features]
+default = []
+dynamic-plugins = ["dep:libloading"]
+
+[lints]
+workspace = true

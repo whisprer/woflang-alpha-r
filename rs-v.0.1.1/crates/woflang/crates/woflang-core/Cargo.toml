@@ -1,0 +1,25 @@
+[package]
+name = "woflang-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Core types and traits for the Woflang stack-based language"
+
+[dependencies]
+thiserror.workspace = true
+bytemuck.workspace = true
+serde = { workspace = true, optional = true }
+num-traits.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+
+[features]
+default = []
+serde = ["dep:serde"]
+simd = []
+
+[lints]
+workspace = true

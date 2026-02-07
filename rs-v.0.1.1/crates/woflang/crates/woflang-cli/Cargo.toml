@@ -1,0 +1,33 @@
+[package]
+name = "woflang-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Command-line interface for the Woflang stack-based language"
+
+[[bin]]
+name = "woflang"
+path = "src/main.rs"
+
+[dependencies]
+woflang-core.workspace = true
+woflang-runtime = { workspace = true, features = ["dynamic-plugins"] }
+woflang-ops = { workspace = true, features = ["all-ops"] }
+woflang-plugins = { workspace = true, features = ["all"] }
+woflang-analog.workspace = true
+clap.workspace = true
+color-eyre.workspace = true
+eyre.workspace = true
+rustyline.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
+
+[[bench]]
+name = "prime_bench"
+harness = false
+
+[lints]
+workspace = true

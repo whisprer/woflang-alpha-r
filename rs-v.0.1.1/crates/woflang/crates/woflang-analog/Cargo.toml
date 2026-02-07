@@ -1,0 +1,24 @@
+[package]
+name = "woflang-analog"
+version = "0.1.0"
+edition = "2021"
+description = "Analog computing mode for WofLang - bounded continuum arithmetic"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/whispr-dev/woflang"
+keywords = ["woflang", "analog", "bounded-arithmetic", "signal-processing"]
+categories = ["mathematics", "science"]
+
+[dependencies]
+woflang-core = { path = "../woflang-core" }
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "analog_bench"
+harness = false
+
+[features]
+default = []
+# Future SIMD feature flag
+simd = []

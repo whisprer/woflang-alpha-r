@@ -1,0 +1,31 @@
+[package]
+name = "woflang-ops"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Standard library operations for the Woflang stack-based language"
+
+[dependencies]
+woflang-core.workspace = true
+woflang-runtime.workspace = true
+thiserror.workspace = true
+rand.workspace = true
+rand_chacha.workspace = true
+num-integer.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+
+[features]
+default = ["std-ops", "math-ops", "logic-ops"]
+std-ops = []
+math-ops = []
+logic-ops = []
+quantum-ops = []
+crypto-ops = []
+all-ops = ["std-ops", "math-ops", "logic-ops", "quantum-ops", "crypto-ops"]
+
+[lints]
+workspace = true
